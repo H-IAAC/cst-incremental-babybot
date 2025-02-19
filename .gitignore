@@ -1,0 +1,13 @@
+/build/
+/dist/
+/.gradle/
+/results/
+/profile/
+/data/
+/models/
+/recordings/
+/backup/
+/clear_qtables/
+*.txt
+*.db
+*.log

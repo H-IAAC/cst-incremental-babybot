@@ -1,0 +1,2080 @@
+Script: /dockerstartup/vnc_startup.sh
+uid=0(root) gid=0(root) groups=0(root)
+
+Preparing VNC server configuration files ...
+xauth:  file /home/headless/.Xauthority does not exist
+
+New '738746bf173b:1 ()' desktop is 738746bf173b:1
+
+Creating default startup script /home/headless/.vnc/xstartup
+Creating default config /home/headless/.vnc/config
+Starting applications specified in /home/headless/.vnc/xstartup
+Log file is /home/headless/.vnc/738746bf173b:1.log
+
+Killing Xvnc process ID 24
+Saving default startup script as /home/headless/.vnc/xstartup.old
+Replacing default startup script /home/headless/.vnc/xstartup
+Starting noVNC
+Starting VNC server ...
+... remove old VNC locks to be a reattachable container
+... VNC params: VNC_COL_DEPTH=24, VNC_RESOLUTION=1360x768
+... VNC params: VNC_BLACKLIST_TIMEOUT=0, VNC_BLACKLIST_THRESHOLD=20
+... VNC server started on display :1
+Connect via VNC viewer with 172.17.0.2:5901
+Connect via noVNC with http://172.17.0.2:6901
+Executing command: '/bin/bash -c bash -c "     /dockerstartup/vnc_startup.sh &     /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim.sh /root/rl_CSR/scenes/training_obj2.ttt&     sleep 10 &&     JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64  &&     cd /root/rl_CSR &&     ./gradlew --configure-on-demand -x check run"'
+Script: /dockerstartup/vnc_startup.sh
+uid=0(root) gid=0(root) groups=0(root)
+Starting noVNC
+Starting VNC server ...
+... remove old VNC locks to be a reattachable container
+loaded library "libcoppeliaSim.so"
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms" ...
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqeglfs.so"
+Found metadata in lib /usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqeglfs.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "eglfs"
+        ]
+    },
+    "className": "QEglFSIntegrationPlugin",
+    "debug": false,
+    "version": 329989
+}
+
+
+Got keys from plugin meta data ("eglfs")
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqlinuxfb.so"
+Found metadata in lib /usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqlinuxfb.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "linuxfb"
+        ]
+    },
+    "className": "QLinuxFbIntegrationPlugin",
+    "debug": false,
+    "version": 329989
+}
+
+
+Got keys from plugin meta data ("linuxfb")
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqminimal.so"
+Found metadata in lib /usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqminimal.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "minimal"
+        ]
+    },
+    "className": "QMinimalIntegrationPlugin",
+    "debug": false,
+    "version": 329989
+}
+
+
+Got keys from plugin meta data ("minimal")
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqminimalegl.so"
+Found metadata in lib /usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqminimalegl.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "minimalegl"
+        ]
+    },
+    "className": "QMinimalEglIntegrationPlugin",
+    "debug": false,
+    "version": 329989
+}
+
+
+Got keys from plugin meta data ("minimalegl")
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqoffscreen.so"
+Found metadata in lib /usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqoffscreen.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "offscreen"
+        ]
+    },
+    "className": "QOffscreenIntegrationPlugin",
+    "debug": false,
+    "version": 329989
+}
+
+
+Got keys from plugin meta data ("offscreen")
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqvnc.so"
+Found metadata in lib /usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqvnc.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "vnc"
+        ]
+    },
+    "className": "QVncIntegrationPlugin",
+    "debug": false,
+    "version": 329989
+}
+
+
+Got keys from plugin meta data ("vnc")
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqxcb.so"
+Found metadata in lib /usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqxcb.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "xcb"
+        ]
+    },
+    "className": "QXcbIntegrationPlugin",
+    "debug": false,
+    "version": 329989
+}
+
+
+Got keys from plugin meta data ("xcb")
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04" ...
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/92-SLKey-HID.rules"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/92-SLKey-HID.rules' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/92-SLKey-HID.rules' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_bubbleRob"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_bubbleRob'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_resolver"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_resolver'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_b0RemoteApi"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_b0RemoteApi'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_remoteApi"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_remoteApi'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobServer"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobServer'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim.sh"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim.sh' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim.sh' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSimProV401XX-LicenseAgreement.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSimProV401XX-LicenseAgreement.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSimProV401XX-LicenseAgreement.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/credits.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/credits.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/credits.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/e-puckLicense.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/e-puckLicense.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/e-puckLicense.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/irb360s.ik"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/irb360s.ik' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/irb360s.ik' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/lbr_iiwa_7_r800.ik"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/lbr_iiwa_7_r800.ik' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/lbr_iiwa_7_r800.ik' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libb0.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libb0.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSimHeadless.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSimHeadless.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so.1.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libLoadErrorCheck.sh"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libLoadErrorCheck.sh' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libLoadErrorCheck.sh' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/liblua5.1.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/liblua5.1.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libluajit-5.1.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libluajit-5.1.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1.0.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1.0.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1.0.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.15"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so.7.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so.7.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0.0.122'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0.0.122"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0.0.122'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtAssimp.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtAssimp.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBlueZero.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBlueZero.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBubbleRob.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBubbleRob.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBwf.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBwf.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCodeEditor.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCodeEditor.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCollada.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCollada.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtConvexDecompose.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtConvexDecompose.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCustomUI.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCustomUI.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-78.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-78.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-83.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-83.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsNewton.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsNewton.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsOde.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsOde.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsVortex.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsVortex.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtExternalRenderer.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtExternalRenderer.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGeometric.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGeometric.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGLTF.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGLTF.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtICP.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtICP.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtIK.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtIK.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtImage.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtImage.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtK3.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtK3.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaCommander.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaCommander.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaRemoteApiClient.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaRemoteApiClient.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtMtb.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtMtb.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOMPL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOMPL.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenGL3Renderer.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenGL3Renderer.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenMesh.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenMesh.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtQhull.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtQhull.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtReflexxesTypeII.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtReflexxesTypeII.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRemoteApi.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRemoteApi.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtROSInterface.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtROSInterface.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRRS1.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRRS1.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSDF.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSDF.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSurfaceReconstruction.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSurfaceReconstruction.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtUrdf.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtUrdf.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtURLDrop.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtURLDrop.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtVision.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtVision.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimLua.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimLua.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libSL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libSL.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so.1.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libv_rep.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libvvcl.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libvvcl.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/ltn12.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/ltn12.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/ltn12.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mime.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mime.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mime.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mtbServer"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mtbServer'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rcsServer"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rcsServer'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/readme.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/readme.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/readme.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/remoteApiConnections.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/remoteApiConnections.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/remoteApiConnections.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rosBubbleRob"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rosBubbleRob'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/sim_notepad++.zip"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/sim_notepad++.zip' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/sim_notepad++.zip' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_addOnFunctionDemo.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_addOnFunctionDemo.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_addOnFunctionDemo.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_gltfExporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_gltfExporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_gltfExporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticExporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticExporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticExporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticImporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticImporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticImporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-addOnScriptDemo.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-addOnScriptDemo.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-addOnScriptDemo.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-b0RemoteApiServer.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-b0RemoteApiServer.lua' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-b0RemoteApiServer.lua' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-gltfAnimationExporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-gltfAnimationExporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-gltfAnimationExporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript_PyRep.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript_PyRep.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript_PyRep.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/socket.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/socket.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/socket.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo3'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/platforms" ...
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms" ...
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqeglfs.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqeglfs.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "eglfs"
+        ]
+    },
+    "archreq": 0,
+    "className": "QEglFSIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("eglfs")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqlinuxfb.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqlinuxfb.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "linuxfb"
+        ]
+    },
+    "archreq": 0,
+    "className": "QLinuxFbIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("linuxfb")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqminimal.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqminimal.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "minimal"
+        ]
+    },
+    "archreq": 0,
+    "className": "QMinimalIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("minimal")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqminimalegl.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqminimalegl.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "minimalegl"
+        ]
+    },
+    "archreq": 0,
+    "className": "QMinimalEglIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("minimalegl")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqoffscreen.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqoffscreen.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "offscreen"
+        ]
+    },
+    "archreq": 0,
+    "className": "QOffscreenIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("offscreen")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqvnc.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqvnc.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "vnc"
+        ]
+    },
+    "archreq": 0,
+    "className": "QVncIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("vnc")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqwebgl.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqwebgl.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "webgl"
+        ]
+    },
+    "archreq": 0,
+    "className": "QWebGLIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("webgl")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqxcb.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforms/libqxcb.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.3",
+    "MetaData": {
+        "Keys": [
+            "xcb"
+        ]
+    },
+    "archreq": 0,
+    "className": "QXcbIntegrationPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("xcb")
+loaded library "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqxcb.so"
+qt.qpa.xcb: could not connect to display :1
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms" ...
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqeglfs.so"
+Got keys from plugin meta data ()
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqlinuxfb.so"
+Got keys from plugin meta data ()
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqminimal.so"
+Got keys from plugin meta data ()
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqminimalegl.so"
+Got keys from plugin meta data ()
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqoffscreen.so"
+Got keys from plugin meta data ()
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqvnc.so"
+Got keys from plugin meta data ()
+QFactoryLoader::QFactoryLoader() looking at "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqxcb.so"
+Got keys from plugin meta data ()
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04" ...
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/92-SLKey-HID.rules"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/92-SLKey-HID.rules' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/92-SLKey-HID.rules' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_bubbleRob"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_bubbleRob'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_resolver"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/b0_resolver'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_b0RemoteApi"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_b0RemoteApi'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_remoteApi"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobClient_remoteApi'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobServer"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/bubbleRobServer'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim.sh"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim.sh' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSim.sh' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSimProV401XX-LicenseAgreement.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSimProV401XX-LicenseAgreement.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/coppeliaSimProV401XX-LicenseAgreement.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/credits.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/credits.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/credits.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/e-puckLicense.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/e-puckLicense.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/e-puckLicense.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/irb360s.ik"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/irb360s.ik' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/irb360s.ik' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/lbr_iiwa_7_r800.ik"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/lbr_iiwa_7_r800.ik' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/lbr_iiwa_7_r800.ik' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libassimp.so.4.1.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavcodec.so.57.107.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavformat.so.57.83.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libavutil.so.55.78.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libb0.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libb0.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_filesystem.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_program_options.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_regex.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_serialization.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_system.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so.1.65.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libboost_thread.so.1.65.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libCGAL.so.13.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSimHeadless.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSimHeadless.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so.1.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcrypto.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libdc1394.so.22.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicudata.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicui18n.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libicuuc.so.56.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libLoadErrorCheck.sh"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libLoadErrorCheck.sh' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libLoadErrorCheck.sh' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/liblua5.1.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/liblua5.1.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libluajit-5.1.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libluajit-5.1.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1.0.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1.0.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libnorm.so.1.0.0'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.15"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libompl.so.1.4.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_core.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgcodecs.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_imgproc.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libopencv_videoio.so.4.0.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so.7.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshCore.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so.7.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libOpenMeshTools.so.7.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0.0.122'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0.0.122"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libpgm-5.2.so.0.0.122'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libqscintilla2_qt5.so.13.2.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DCore.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DExtras.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DInput.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DLogic.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt53DRender.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Concurrent.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5DBus.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gamepad.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Gui.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Network.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5OpenGL.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5PrintSupport.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5SerialPort.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Xml.so.5.12.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtAssimp.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtAssimp.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBlueZero.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBlueZero.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBubbleRob.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBubbleRob.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBwf.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtBwf.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCodeEditor.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCodeEditor.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCollada.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCollada.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtConvexDecompose.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtConvexDecompose.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCustomUI.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtCustomUI.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-78.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-78.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-83.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsBullet-2-83.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsNewton.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsNewton.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsOde.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsOde.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsVortex.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtDynamicsVortex.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtExternalRenderer.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtExternalRenderer.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGeometric.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGeometric.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGLTF.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtGLTF.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtICP.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtICP.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtIK.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtIK.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtImage.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtImage.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtK3.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtK3.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaCommander.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaCommander.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaRemoteApiClient.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtLuaRemoteApiClient.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtMtb.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtMtb.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOMPL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOMPL.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenGL3Renderer.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenGL3Renderer.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenMesh.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtOpenMesh.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtQhull.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtQhull.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtReflexxesTypeII.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtReflexxesTypeII.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRemoteApi.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRemoteApi.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtROSInterface.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtROSInterface.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRRS1.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtRRS1.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSDF.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSDF.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSurfaceReconstruction.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtSurfaceReconstruction.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtUrdf.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtUrdf.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtURLDrop.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtURLDrop.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtVision.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimExtVision.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimLua.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libsimLua.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libSL.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libSL.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so.1.1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libssl.so.1.1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libswscale.so.4.8.100'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbb_preview.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so.2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libtbbmalloc_proxy.so.2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libv_rep.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libvvcl.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libvvcl.so'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxCore.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxFoundation.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxMath.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libVxPlatform.so.2020.3.0.68'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libzmq.so.5.1.5'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/ltn12.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/ltn12.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/ltn12.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mime.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mime.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mime.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mtbServer"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/mtbServer'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rcsServer"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rcsServer'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/readme.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/readme.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/readme.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/remoteApiConnections.txt"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/remoteApiConnections.txt' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/remoteApiConnections.txt' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rosBubbleRob"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/rosBubbleRob'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/sim_notepad++.zip"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/sim_notepad++.zip' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/sim_notepad++.zip' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_addOnFunctionDemo.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_addOnFunctionDemo.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_addOnFunctionDemo.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_gltfExporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_gltfExporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_gltfExporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticExporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticExporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticExporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticImporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticImporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnFunc_minimalisticImporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-addOnScriptDemo.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-addOnScriptDemo.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-addOnScriptDemo.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-b0RemoteApiServer.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-b0RemoteApiServer.lua' is not an ELF object (file too small)
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-b0RemoteApiServer.lua' is not an ELF object (file too small)" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-gltfAnimationExporter.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-gltfAnimationExporter.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript-gltfAnimationExporter.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript_PyRep.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript_PyRep.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/simAddOnScript_PyRep.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/socket.lua"
+QElfParser: '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/socket.lua' is not an ELF object
+"'/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/socket.lua' is not an ELF object" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo1"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo1'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo2"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo2'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo3"
+"Failed to extract plugin meta data from '/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/standAloneKinematicsDemo3'" 
+         not a plugin
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/platformthemes" ...
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platformthemes" ...
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platformthemes/libqgtk3.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platformthemes/libqgtk3.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QPA.QPlatformThemeFactoryInterface.5.1",
+    "MetaData": {
+        "Keys": [
+            "gtk3"
+        ]
+    },
+    "archreq": 0,
+    "className": "QGtk3ThemePlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("gtk3")
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/platforminputcontexts" ...
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/platforminputcontexts" ...
+no screens available, assuming 24-bit color
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/styles" ...
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/styles" ...
+... VNC params: VNC_COL_DEPTH=24, VNC_RESOLUTION=1360x768
+... VNC params: VNC_BLACKLIST_TIMEOUT=0, VNC_BLACKLIST_THRESHOLD=20
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libvvcl.so"
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/iconengines" ...
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/iconengines" ...
+QFactoryLoader::QFactoryLoader() checking directory path "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/imageformats" ...
+QFactoryLoader::QFactoryLoader() checking directory path "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats" ...
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqgif.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqgif.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "gif"
+        ],
+        "MimeTypes": [
+            "image/gif"
+        ]
+    },
+    "archreq": 0,
+    "className": "QGifPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("gif")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqicns.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqicns.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "icns"
+        ],
+        "MimeTypes": [
+            "image/x-icns"
+        ]
+    },
+    "archreq": 0,
+    "className": "QICNSPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("icns")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqico.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqico.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "ico",
+            "cur"
+        ],
+        "MimeTypes": [
+            "image/vnd.microsoft.icon",
+            "image/vnd.microsoft.icon"
+        ]
+    },
+    "archreq": 0,
+    "className": "QICOPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("ico", "cur")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqjpeg.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqjpeg.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "jpg",
+            "jpeg"
+        ],
+        "MimeTypes": [
+            "image/jpeg",
+            "image/jpeg"
+        ]
+    },
+    "archreq": 0,
+    "className": "QJpegPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("jpg", "jpeg")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqsvg.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqsvg.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "svg",
+            "svgz"
+        ],
+        "MimeTypes": [
+            "image/svg+xml",
+            "image/svg+xml-compressed"
+        ]
+    },
+    "archreq": 0,
+    "className": "QSvgPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("svg", "svgz")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtga.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtga.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "tga"
+        ],
+        "MimeTypes": [
+            "image/x-tga"
+        ]
+    },
+    "archreq": 0,
+    "className": "QTgaPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("tga")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtiff.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtiff.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "tiff",
+            "tif"
+        ],
+        "MimeTypes": [
+            "image/tiff",
+            "image/tiff"
+        ]
+    },
+    "archreq": 0,
+    "className": "QTiffPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("tiff", "tif")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwbmp.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwbmp.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "wbmp"
+        ],
+        "MimeTypes": [
+            "image/vnd.wap.wbmp"
+        ]
+    },
+    "archreq": 0,
+    "className": "QWbmpPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("wbmp")
+QFactoryLoader::QFactoryLoader() looking at "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwebp.so"
+Found metadata in lib /opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwebp.so, metadata=
+{
+    "IID": "org.qt-project.Qt.QImageIOHandlerFactoryInterface",
+    "MetaData": {
+        "Keys": [
+            "webp"
+        ],
+        "MimeTypes": [
+            "image/webp"
+        ]
+    },
+    "archreq": 0,
+    "className": "QWebpPlugin",
+    "debug": false,
+    "version": 330752
+}
+
+
+Got keys from plugin meta data ("webp")
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqgif.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqicns.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqico.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqjpeg.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqsvg.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtga.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtiff.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwbmp.so"
+loaded library "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwebp.so"
+
+
+Error: signal 11:
+
+/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so(_Z11_segHandleri+0x2b)[0x7fae7f2d5bab]
+/lib/x86_64-linux-gnu/libc.so.6(+0x3ef10)[0x7fae831a8f10]
+/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5(_ZN14QXcbConnection16processXcbEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x14)[0x7fae7b798114]
+/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5XcbQpa.so.5(+0x6bbd3)[0x7fae7b7bfbd3]
+/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x2e7)[0x7fae8008b537]
+/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x4c770)[0x7fae8008b770]
+/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x2c)[0x7fae8008b7fc]
+/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Core.so.5(_ZN20QEventDispatcherGlib13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x5f)[0x7fae83dc741f]
+/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libQt5Widgets.so.5(_ZN13QSplashScreen7repaintEv+0x10)[0x7fae7e48bb70]
+/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libcoppeliaSim.so(_ZN3App16showSplashScreenEv+0x297)[0x7fae7f44b807]
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqgif.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqicns.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqico.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqjpeg.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqsvg.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtga.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqtiff.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwbmp.so" 
+QLibraryPrivate::unload succeeded on "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/imageformats/libqwebp.so" 
+QLibraryPrivate::unload succeeded on "/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms/libqxcb.so" 
+[CoppeliaSimClient]    loading the CoppeliaSim library...
+[CoppeliaSimClient]    done.
+[CoppeliaSimClient:loadinfo]   launching CoppeliaSim...
+[CoppeliaSim:loadinfo]   CoppeliaSim V4.1.0., (rev. 1), flavor: 2
+[CoppeliaSim:loadinfo]   no dongle was found. If you are using a dongle license key, make sure to read the readme.txt file.
+[CoppeliaSim:loadinfo]   Legacy machine ID: 51B6-94EB-B7C3-9CEC-F7E3-6D1D
+[CoppeliaSim:loadinfo]   Machine ID: 8319-7371-A069-0000-55AE-0102
+[CoppeliaSim:loadinfo]   using the default Lua library.
+[CoppeliaSim:loadinfo]   loaded the video compression library.
+On QtCore unload, "/opt/CoppeliaSim_Pro_V4_1_0_Ubuntu18_04/libvvcl.so" was leaked, with 2 users
+On QtCore unload, "libcoppeliaSim.so" was leaked, with 2 users
+... VNC server started on display :1
+Connect via VNC viewer with 172.17.0.2:5901
+Connect via noVNC with http://172.17.0.2:6901
+Downloading https://services.gradle.org/distributions/gradle-6.8.3-bin.zip
+

@@ -1,0 +1,92 @@
+
+
+plugins {
+  	id 'jacoco'
+  	id 'maven'
+        id 'application'
+        id 'java-library'
+}
+
+mainClassName = 'cst_attmod_app.CST_incremental_babybot'
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    jcenter()
+    mavenCentral()
+    maven { url "https://github.com/rosjava/rosjava_mvn_repo/raw/master" }
+
+    maven { 
+    	url 'https://jitpack.io'
+    }
+
+}
+
+dependencies {
+
+// group : name : version
+
+// Implementation: defines dependencies that are necessary to compile and run the main source set code that are not part of the API exposed by the project. "implementation" supersedes the "compile" configuration
+// annotationProcessor: Annotation processors used during compilation and their dependencies, for the source set "main".
+// testImplementation: defines dependencies that are necessary to compile and run the test source set code.
+ 
+
+
+// CST
+//api group: 'com.github.CST-Group', name: 'cst', version:versionCST
+implementation 'com.github.CST-Group:cst:1.4.2'
+
+
+// JUNIT
+testImplementation group: 'junit', name: 'junit', version:versionJunit
+
+//implementation 'com.github.CST-Group:cst-desktop:1.0.6'
+
+
+// Neptune
+implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
+
+// bytedeco
+implementation group: 'org.bytedeco', name: 'javacpp', version:versionBytedeco
+
+// DL4J
+implementation group: 'org.deeplearning4j', name: 'deeplearning4j-core', version:versionDL4J 
+implementation group: 'org.deeplearning4j', name: 'rl4j-core', version:versionDL4J
+
+// lombok
+implementation group: 'org.projectlombok', name: 'lombok', version:versionLombok
+annotationProcessor group: 'org.projectlombok', name: 'lombok', version:versionLombok
+
+// ND4J
+implementation group: 'org.nd4j', name: 'nd4j-native', version:versionDL4J
+implementation group: 'org.nd4j', name: 'nd4j-native-platform', version:versionDL4J
+
+// SLF4J
+implementation group: 'org.slf4j', name: 'slf4j-api', version:versionSLF4J
+implementation 'ch.qos.logback:logback-classic:1.2.11'
+
+implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+
+}
+
+task uberJar(type: Jar) {
+    archiveClassifier = 'full'
+    manifest {
+      attributes(
+        'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+        'Main-Class': mainClassName
+      )
+    }
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+}
+artifacts
+{
+    archives uberJar
+}

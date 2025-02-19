@@ -1,0 +1,14 @@
+# Prerequisites
+
+Docker installed on your machine.
+Access to the Java program and the scene file for CoppeliaSim
+
+Pull the accetto/xubuntu-vnc-novnc Docker Image
+This Docker image is a good base because it provides a lightweight Ubuntu environment with a VNC server and a NoVNC web interface for remote access.
+
+Open a terminal and pull the Docker image:
+
+docker pull accetto/xubuntu-vnc-novnc
+
+
+

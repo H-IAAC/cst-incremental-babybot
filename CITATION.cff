@@ -1,0 +1,42 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: rl_CSR
+message: >-
+  Code for Special Issue on “Cognitive architectures for
+  Reinforcement Learning”, Cognitive Systems Research
+type: software
+authors:
+  - given-names: Leonardo
+    family-names: de Lellis Rossi
+    email: l261900@dac.unicamp.br
+    affiliation: Unicamp
+    orcid: 'https://orcid.org/0000-0003-4607-1624'
+  - given-names: 'Esther '
+    family-names: Luna Colombini
+    email: esther@ic.unicamp.br
+    affiliation: Unicamp
+    orcid: 'https://orcid.org/0000-0003-0467-3133'
+  - given-names: Ricardo
+    family-names: Ribeiro Gudwin
+    email: gudwin@unicamp.br
+    affiliation: Unicamp
+    orcid: 'https://orcid.org/0000-0002-9666-3954'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.14424260
+    description: Zenodo DOI
+repository-code: 'https://github.com/leolellisr/rl_CSR'
+repository-artifact: 'https://github.com/leolellisr/rl_CSR/releases/tag/v1.0.0'
+abstract: >-
+  Code for paper "Dual or Unified: Optimizing Drive-Based
+  Reinforcement Learning for Cognitive Autonomous Robots",
+  submitted to Special Issue on “Cognitive architectures for
+  Reinforcement Learning”, Cognitive Systems Research
+keywords:
+  - Intrinsic Motivation
+  - Reinforcement Learning
+  - Cognitive Architecture
+  - Autonomous Humanoid Robot
+license: MIT
