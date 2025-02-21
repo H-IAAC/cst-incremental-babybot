@@ -25,7 +25,7 @@ import static org.nd4j.linalg.ops.transforms.Transforms.*;
  *
  * @author leolellisr
  */
-public class RBFActivation extends BaseActivationFunction{
+public class RBFActivation_1 extends BaseActivationFunction{
 
     /*
         For the forward pass:

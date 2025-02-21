@@ -19,13 +19,13 @@ import java.util.Collection;
 /**
  * @author leolellisr
  */
-public class DQN_RBF<NN extends DQN_RBF> implements IDQN<NN> {
+public class DQN_RBF_1<NN extends DQN_RBF> implements IDQN<NN> {
 
     protected MultiLayerNetwork mln;
 
     int i = 0;
 
-    public DQN_RBF(MultiLayerNetwork mln) {
+    public DQN_RBF_1(MultiLayerNetwork mln) {
         this.mln = mln;
     }
 

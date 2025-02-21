@@ -12,7 +12,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
  * This neural net quantify the value of each action given a state
  *
  */
-public interface IDQN<NN extends IDQN> extends NeuralNet<NN> {
+public interface IDQN_1<NN extends IDQN> extends NeuralNet<NN> {
 
     boolean isRecurrent();
 

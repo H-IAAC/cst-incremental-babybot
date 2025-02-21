@@ -11,12 +11,12 @@ import org.nd4j.linalg.api.ndarray.INDArray;
  * @author leolellisr 17/12/22
  */
 @Value
-public class EnvState implements Encodable {
+public class EnvState_1 implements Encodable {
 
     private Observation data;
     private int step;
     
-    public EnvState(Observation i, int step_i){
+    public EnvState_1(Observation i, int step_i){
         data = i;
         step = step_i;
     }

@@ -29,7 +29,7 @@ import org.deeplearning4j.rl4j.observation.Observation;
  * Useful to debug.
  */
 @Slf4j
-public class EnvConstructive <OBSERVATION extends Encodable, A, AS extends ActionSpace<A>> implements MDP<OBSERVATION, A, AS> {
+public class EnvConstructive_1 <OBSERVATION extends Encodable, A, AS extends ActionSpace<A>> implements MDP<OBSERVATION, A, AS> {
 // implements MDP<EnvState, Integer, DiscreteSpace> 
     final private int maxStep;
     //@Getter
@@ -41,7 +41,7 @@ public class EnvConstructive <OBSERVATION extends Encodable, A, AS extends Actio
     @Setter
     private NeuralNetFetchable<IDQN> fetchable;
 
-    public EnvConstructive(int maxStep, int numActions) {
+    public EnvConstructive_1(int maxStep, int numActions) {
         this.maxStep = maxStep;
         this.actionSpace = new DiscreteSpace(numActions);
         this.envState = new EnvState(new Observation(Nd4j.zeros(1, 1)), 0);

@@ -314,14 +314,16 @@ public class VisionVrep implements SensorI{
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 		}*/
-      //System.out.println("End epoch R");
+      System.out.println("End epoch R");
         FloatWA position = new FloatWA(3);
 	vrep.simxGetObjectPosition(clientID, vision_handles.getValue(), -1, position,
         vrep.simx_opmode_streaming);
 	boolean m_act;
         m_act = lastLinei.get(4)>this.getMaxActions();
-        
-        return this.getEpoch() > 1 && (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act);
+        boolean ret = this.getEpoch() > 1 && (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act);
+        if(ret) System.out.println("End epoch R true");
+        else System.out.println("End epoch R false");
+        return ret;
     }
     
     @Override

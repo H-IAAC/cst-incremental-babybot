@@ -57,7 +57,7 @@ public class DataManagerTrainingListener implements TrainingListener {
         try {
             dataManager.appendStat(statEntry);
         } catch (Exception e) {
-            log.error("Training failed.", e);
+           System.out.println("Training failed."+e);
             return ListenerResponse.STOP;
         }
 

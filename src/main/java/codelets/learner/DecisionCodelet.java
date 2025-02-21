@@ -25,6 +25,8 @@ import java.util.Map;
 import outsideCommunication.OutsideCommunication;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteConstructive.QLStepReturn;
+import org.deeplearning4j.rl4j.observation.Observation;
 /**
  * @author L. L. Rossi (leolellisr)
  * Obs: This class represents the implementations present in the proposed scheme for: 
@@ -46,7 +48,7 @@ private MemoryObject neckMotorMO;
 private MemoryObject headMotorMO;
 private List<String> actionsList;
 private List<Integer> allStatesList;
-private List<QLearningSQL> qTableList;
+private List<QLStepReturn> qList;
 private List<Double>  rewardList;
 private OutsideCommunication oc;
 private final int timeWindow;
@@ -64,7 +66,7 @@ private String mode;
 
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
-private boolean debug = false, sdebug = false;
+private boolean debug = true, sdebug = false;
 private int num_tables, aux_crash = 0;
 private ArrayList<String> executedActions  = new ArrayList<>();
 private ArrayList<String> allActionsList;
@@ -127,8 +129,8 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
 
     MO = (MemoryObject) this.getInput("REWARDS");
             rewardList = (List) MO.getI();
-            MO = (MemoryObject) this.getInput("QTABLE");
-            qTableList = (List) MO.getI();
+            MO = (MemoryObject) this.getInput("DQN");
+            qList = (List) MO.getI();
     MO = (MemoryObject) this.getOutput("STATES");
         allStatesList = (List) MO.getI();
 
@@ -163,7 +165,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }   */  
-        QLearningSQL ql = null;
+        QLStepReturn<Observation> ql = null;
         
         if(motivationMO == null){
             if(sdebug) System.out.println("DECISION -----  motivationMO is null");
@@ -172,25 +174,25 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         
         
        if(debug) System.out.println("  Decision proc"); 
-       if(qTableList.isEmpty()){
+       if(qList.isEmpty()){
                 if(debug) System.out.println("  qtable empty"); 
                 return;
        }
-        ql = qTableList.get(qTableList.size()-1);
+        ql = qList.get(qList.size()-1);
         
         
        
         if(ql==null){
+            if(debug) System.out.println("  ql==null"); 
             return;
         }
         
-        if(debug) System.out.println("  post first qtable"); 
+        if(debug) System.out.println("  post first DQN"); 
         
         int state = -1;
         if(!saliencyMap.isEmpty() ) state = getStateFromSalMap();
         if(debug) System.out.println("  Decision state:"+state); 
-        String actionToTake = ql.getAction(state);
-        
+        int actionToTake = ql.getLastAction();
                 // Select best action to take
 
         
@@ -198,7 +200,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
                     actionsList.remove(0);
         } 
                 
-        actionsList.add(actionToTake);
+        actionsList.add(String.valueOf(actionToTake));
         
         if(allStatesList.size() == timeWindow){
                     allStatesList.remove(0);
@@ -206,18 +208,15 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         if(debug)  System.out.println("  Decision actionToTake:"+actionToTake);      
         allStatesList.add(state);
         action_number += 1;
-        oc.vision.addAction(actionToTake);
-        oc.vision.setLastAction(actionToTake);
+        oc.vision.addAction(String.valueOf(actionToTake));
+        oc.vision.setLastAction(String.valueOf(actionToTake));
     }
 	
 	
 
 	
-        // Discretization
-	// Normalize and transform a salience map into one state
-		// Normalized values between 0 and 1 can be mapped into 0, 1, 2, 3 or 4
-		// Them this values are computed into one respective state
-    public int getStateFromSalMap() {
+
+    public Observation getStateFromSalMap() {
         ArrayList<Float> mean_lastLine = new ArrayList<>();
         for(int i=0; i<16;i++) mean_lastLine.add(0f);
         
@@ -225,68 +224,6 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
 			// Getting just the last entry (current sal map)
 			lastLine = (ArrayList<Float>) saliencyMap.get(saliencyMap.size() -1);
 
-       /* try {
-            Thread.sleep(50);
-        } catch (Exception e) {
-            Thread.currentThread().interrupt();
-        } */
-                        
-        if (Collections.max(lastLine) == 0) aux_crash += 1;
-        else aux_crash = 0; 
-
-        if(action_number > 5 && aux_crash> 5 ){
-            crashed = true;
-            oc.vision.setIValues(2, 1);
-        }
-
-        if (Collections.max(lastLine) > 0){
-            ArrayList<Float> MeanValue = new ArrayList<>();
-            for(int n = 0;n<4;n++){
-            int ni = (int) (n*4);
-            int no = (int) (4+n*4);
-            for(int m = 0;m<4;m++){    
-                int mi = (int) (m*4);
-                int mo = (int) (4+m*4);
-                for (int y = ni; y < no; y++) {
-
-                    for (int x = mi; x < mo; x++) {
-                        int i = (y*16+x);
-
-                        float Fvalue_r = (float) lastLine.get(i);                         
-                        MeanValue.add(Fvalue_r);
-
-                    }
-                }
-                float correct_mean_r = Collections.max(MeanValue);
-
-                mean_lastLine.set(n*4+m, correct_mean_r);
-                MeanValue.clear();
-
-                }
-            }
-
-        }
-        // For normalizing readings between 0 and 1 before transforming to state 
-        Float max = Collections.max(mean_lastLine);
-        Float min = Collections.min(mean_lastLine);		
-        Integer discreteVal = 0;
-        Integer stateVal = 0;
-        for (int i=0; i < 16; i++) {
-            // Normalizing value
-            Float normVal; 
-            if(max>0) normVal = (mean_lastLine.get(i)-min)/(max-min);
-            else normVal = 0f;
-            // Getting discrete value
-            if (normVal <= 0.5) {
-                    discreteVal = 0;
-            }
-            else if (normVal > 0.5) {
-                    discreteVal = 1;
-            }
-
-            // Getting state from discrete value
-            stateVal += (int) Math.pow(2, i)*discreteVal;
-        }
         
         return stateVal;
     }
@@ -304,39 +241,5 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
 
         return sum / list.size();
     }
-/*
-    private void printToFile(Object object,String filename, int action_num){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
-        LocalDateTime now = LocalDateTime.now();
-        boolean exp_b = false;
-        Idea curI = (Idea) motivationMO.get(0);
-        Idea surI = (Idea) motivationMO.get(1);
-        boolean surB;
-        try{
-        surB = ((double) surI.getValue() > (double) Collections.max((List) curI.getValue())  && exp_s<MAX_ACTION_NUMBER) || exp_c>MAX_ACTION_NUMBER;
-        }
-        catch(Exception e){
-        surB = true;
-        }
-        if(num_tables == 1) exp_b = this.experiment_number < MAX_EXPERIMENTS_NUMBER;
-        else if(!surB) exp_b = this.exp_c < MAX_EXPERIMENTS_NUMBER;
-        else exp_b = this.exp_s < MAX_EXPERIMENTS_NUMBER;
-        
-        if ( exp_b) {
-            try(FileWriter fw = new FileWriter("profile/"+filename,true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw))
-            {
-                out.println(dtf.format(now)+" "+ object+" Exp:"+experiment_number+" ExpC:"+this.exp_c +" ExpS:"+this.exp_s +
-                        " Nact:"+action_num+" Type:"+motivationName);
 
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-*/
 }

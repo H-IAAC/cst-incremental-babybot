@@ -34,6 +34,9 @@ import org.nd4j.linalg.factory.Nd4j;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 import org.deeplearning4j.rl4j.mdp.EnvConstructive;
 import org.deeplearning4j.rl4j.space.Box;
 
@@ -76,6 +79,17 @@ public abstract class QLearningDiscreteConstructive<O extends Encodable> extends
         return mdp;
     }
 
+            @AllArgsConstructor
+    @Builder
+    @Value
+    public static class QLStepReturn<O> {
+        Double maxQ;
+        double score;
+        StepReply<O> stepReply;
+        int lastAction;
+
+    }
+            
     public QLearningDiscreteConstructive(EnvConstructive<O, Integer, DiscreteSpace> mdp, IDQN dqn, QLearningConfiguration conf, int epsilonNbStep) {
         this(mdp, dqn, conf, epsilonNbStep, Nd4j.getRandomFactory().getNewRandomInstance(conf.getSeed()));
     }
@@ -166,6 +180,13 @@ public abstract class QLearningDiscreteConstructive<O extends Encodable> extends
         super.setHistoryProcessor(historyProcessor.getConf());
         mdp.setHistoryProcessor(historyProcessor);
     }
+    
+      @Override
+     protected QLearning.QLStepReturn<Observation> trainStep(Observation obs) {
+         // Not used;
+         
+         return null;
+     }
 
     /**
      * Single step of training
@@ -173,7 +194,8 @@ public abstract class QLearningDiscreteConstructive<O extends Encodable> extends
      * @param obs last obs
      * @return relevant info for next step
      */
-    public QLearning.QLStepReturn<Observation> trainStep(Observation obs) {
+  
+    public QLStepReturn<Observation> trainSp(Observation obs) {
         mdp.setState(obs);
         boolean isHistoryProcessor = getHistoryProcessor() != null;
         int skipFrame = isHistoryProcessor ? getHistoryProcessor().getConf().getSkipFrame() : 1;
@@ -210,7 +232,9 @@ public abstract class QLearningDiscreteConstructive<O extends Encodable> extends
             }
         }
 
-        return new QLearning.QLStepReturn<>(maxQ, getQNetwork().getLatestScore(), stepReply);
+            return new QLStepReturn<Observation>(maxQ, getQNetwork().getLatestScore(), stepReply, lastAction);
+
+
     }
 
     protected DataSet setTarget(List<Transition<Integer>> transitions) {
@@ -228,6 +252,8 @@ public abstract class QLearningDiscreteConstructive<O extends Encodable> extends
     public void setReward(double reward){
         mdp.setReward(reward);
     }
+    
+
     
     //@Override
     //public QLearningConfiguration getConfiguration(){

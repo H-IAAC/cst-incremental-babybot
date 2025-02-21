@@ -77,7 +77,7 @@ public class RewardComputerCodelet extends Codelet
     private int[] fovea3 = {10, 11, 14, 15};
     private float yawPos = 0f, headPos = 0f;   
     private boolean crashed = false, nrewards = true;
-    private boolean debug = false, sdebug = false, m_i = true;
+    private boolean debug = true, sdebug = false, m_i = true;
     private int num_tables, aux_crash = 0;
     private ArrayList<String> allActionsList;
     private ArrayList<Float> lastLine, lastRed, lastGreen, lastBlue, lastDist;

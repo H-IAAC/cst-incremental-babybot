@@ -31,11 +31,11 @@ import org.deeplearning4j.rl4j.network.configuration.DQNDenseNetworkConfiguratio
  */
 
 @Value
-public class DQNFactoryStdDenseRBF implements DQNFactory {
+public class DQNFactoryStdDenseRBF_1 implements DQNFactory {
 
     DQNDenseNetworkConfiguration conf;
 
-    public DQNFactoryStdDenseRBF(DQNDenseNetworkConfiguration netConf) {
+    public DQNFactoryStdDenseRBF_1(DQNDenseNetworkConfiguration netConf) {
         conf = netConf;
     }
 

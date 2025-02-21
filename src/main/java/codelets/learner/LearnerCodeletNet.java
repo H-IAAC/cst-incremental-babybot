@@ -30,6 +30,7 @@ import org.deeplearning4j.rl4j.util.DataManager;
 import org.deeplearning4j.rl4j.policy.DQNPolicy;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
+import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteConstructive.QLStepReturn;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDenseRBF;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactory;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
@@ -61,7 +62,7 @@ public class LearnerCodeletNet extends Codelet
     private List statesList;
     private Idea motivationMO;
     private List<String> actionsList;
-    private List<QLearningSQL> qTableList;
+    private List<QLStepReturn<Observation>> qList;
     private List<Double>  rewardsList;
     private OutsideCommunication oc;
     private final int timeWindow;
@@ -72,7 +73,7 @@ public class LearnerCodeletNet extends Codelet
     private int experiment_number,exp_s, exp_c;;
     private int stage,convergenceCounter=0;
     private String mode;
-    private boolean debug = false;
+    private boolean debug = true;
     private ArrayList<String> allActionsList;
     private remoteApi vrep;
     private final int clientID;
@@ -145,33 +146,7 @@ public class LearnerCodeletNet extends Codelet
        int numStates; 
         experiment_number = oc.vision.getEpoch();
         this.stage = this.oc.vision.getStage();
-        
-        // QLearning initialization
-         
-        
-        if (mode.equals("learning") && oc.vision.getIValues(1) > 1 ){
-            
-            try {
-                    ql.recoverQ();
-                }
-            catch (Exception e) {
-                    System.out.println("ERROR LOADING QTABLE");
-                    System.exit(1);
-                }
-        }
-
-        // exploring mode ---> reloads Qtable 
-        else if (mode.equals("exploring")) {
-            try {
-                ql.recoverQ();
-                
-                ql.setE(0);
-            }
-            catch (Exception e) {
-                System.out.println("ERROR LOADING QTABLE");
-                System.exit(1);
-            }
-        }
+      
 
         int maxStep = 500;
                 
@@ -183,7 +158,7 @@ public class LearnerCodeletNet extends Codelet
                 
 		// learning mode ---> build DQN from scratch
 		if (mode.equals("learning") && this.stage == 1) {
-			dql = new QLearningDiscreteDenseRBF(mdp, (DQNFactory) MARTA_NET.toNetworkConfiguration(), MARTA_QL, manager);
+			dql = new QLearningDiscreteDenseRBF(mdp, MARTA_NET, MARTA_QL, manager);
         
 		} else if (mode.equals("learning") && this.stage > 1){
                     try {
@@ -243,7 +218,7 @@ if(debug) System.out.println("init learner");
         statesList = (List) MO.getI();
 
         MO = (MemoryObject) this.getOutput(output);
-        qTableList = (List) MO.getI();
+        qList = (List) MO.getI();
 
 
     }
@@ -268,45 +243,54 @@ if(debug) System.out.println("init learner");
     
     @Override
     public void proc() {
-        if (mode.equals("learning") && oc.vision.endEpochR()) {
-
+        System.out.println("Learner proc");
+        QLStepReturn<Observation> obsStep = null;
+        if (mode.equals("learning") && !oc.vision.endEpochR()) {
+            
 
             try {
                 Observation lastState = (Observation) statesList.get(statesList.size() - 1);
                 float reward = oc.vision.getFValues(0) ;
                  dql.setReward(reward);
-                 dql.trainStep(lastState);
+                 obsStep = dql.trainSp(lastState);
+                 
                 // Update Q-values and track Q-value changes
                 
                 
 
-                ql.storeQ();
             } catch (Exception e) {
                 System.out.println("No state to update: " + e.getMessage());
             }
 
             
 
-           
+           System.out.println("trainSp");
 
             if (end_all) {
                 dql.postEpoch();
                         dql.incrementEpoch();
                         
                         DQNPolicy<Box> pol = dql.getPolicy();
-                        
-                        pol.save(currentDir+path_model);
-                        if (experiment_number > MAX_EXPERIMENTS_NUMBER) {
-                            
-                            System.exit(0);
+                        try {
+                            pol.save(currentDir+path_model);
+                            if (experiment_number > MAX_EXPERIMENTS_NUMBER) {
+
+                                System.exit(0);
+                            }
                         }
+                        catch (Exception e) {
+                            System.out.println("ERROR "+e+" SAVING MODEL");
+                            System.exit(1);
+			}
             }
+            
+            System.out.println("post step");
         }
-        
-        if(qTableList.size() == timeWindow){
-                qTableList.remove(0);
+        System.out.println("end learner proc");
+        if(qList.size() == timeWindow){
+                qList.remove(0);
             }
-        qTableList.add(ql);
+        qList.add(obsStep);
         
     }
 

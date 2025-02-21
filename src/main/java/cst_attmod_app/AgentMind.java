@@ -35,6 +35,7 @@ import java.util.List;
 import outsideCommunication.OutsideCommunication;
 import codelets.learner.RewardComputerCodelet;
 import codelets.learner.LearnerCodelet;
+import codelets.learner.LearnerCodeletNet;
 import codelets.learner.QLearningL;
 import codelets.sensors.CFM;
 import codelets.sensors.BU_FM_Color;
@@ -200,7 +201,7 @@ private long seed;
         
         //QTables
         List qtableList = Collections.synchronizedList(new ArrayList<QLearningL>());
-        MemoryObject qtableMO = createMemoryObject("QTABLE", qtableList);
+        MemoryObject qtableMO = createMemoryObject("DQN", qtableList);
         
         
         //REWARDS
@@ -359,8 +360,8 @@ private long seed;
             insertCodelet(reward_cod);
             
             
-            Codelet learner_cod = new LearnerCodelet(oc.vrep, oc.clientID, oc, Buffersize, mode, motivation,
-                    "", "QTABLE", num_tables,this.seed );
+            Codelet learner_cod = new LearnerCodeletNet(oc.vrep, oc.clientID, oc, Buffersize, mode, motivation,
+                    "", "DQN", num_tables,this.seed );
             learner_cod.addInput(salMapMO);
             learner_cod.addInput(rewardsMO);
             learner_cod.addInput(actionsMO);
