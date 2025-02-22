@@ -197,8 +197,10 @@ public class ActionExecCodelet extends Codelet
             }
             return;
         }
-        String actionToTake = actionsList.get(actionsList.size() - 1);
-         if(sdebug) System.out.println("ACT_EXEC -----  Exp: "+ experiment_number 
+        String actionToTk = actionsList.get(actionsList.size() - 1);
+        int actionToTakeI = Integer.parseInt(actionToTk);
+        String actionToTake = allActionsList.get(actionToTakeI);
+        if(sdebug) System.out.println("ACT_EXEC -----  Exp: "+ experiment_number 
                 +" ----- Act: "+ actionToTake+" ----- N_act: "+oc.vision.getIValues(4)+" Curiosity_lv: "
                 +curiosity_lv+" Red: "+red_c+" Green: "+green_c+" Blue: "+blue_c);
         
@@ -368,6 +370,8 @@ public class ActionExecCodelet extends Codelet
                 desired_feat_reg_t.add(8);
                 
             }
+            
+            oc.vision.setIValues(2, fovea);
             
             if(aux_reset!=-1){
                 if(aux_reset==0){

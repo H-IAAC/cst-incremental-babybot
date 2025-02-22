@@ -36,6 +36,7 @@ import org.deeplearning4j.rl4j.network.dqn.DQNFactory;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
 import org.deeplearning4j.rl4j.network.dqn.IDQN;
 import org.deeplearning4j.rl4j.observation.Observation;
+import org.nd4j.linalg.factory.Nd4j;
 
 
 /**
@@ -243,13 +244,26 @@ if(debug) System.out.println("init learner");
     
     @Override
     public void proc() {
-        System.out.println("Learner proc");
+        if(debug) System.out.println("Learner proc");
         QLStepReturn<Observation> obsStep = null;
+        
+        Observation lastState; 
+        if(!statesList.isEmpty()) {
+            lastState = (Observation) statesList.get(statesList.size() - 1);
+            if(debug) System.out.println("state list is NOT empty");
+        }
+        else{
+            float[] initialStateArray = new float[272];
+            lastState = new Observation(Nd4j.create(new float[][]{initialStateArray}));
+
+            if(debug) System.out.println("state list is empty");
+        }
         if (mode.equals("learning") && !oc.vision.endEpochR()) {
             
 
             try {
-                Observation lastState = (Observation) statesList.get(statesList.size() - 1);
+               if(debug) System.out.println("Learner try");
+                
                 float reward = oc.vision.getFValues(0) ;
                  dql.setReward(reward);
                  obsStep = dql.trainSp(lastState);
@@ -264,7 +278,7 @@ if(debug) System.out.println("init learner");
 
             
 
-           System.out.println("trainSp");
+           if(debug) System.out.println("trainSp");
 
             if (end_all) {
                 dql.postEpoch();
@@ -284,9 +298,9 @@ if(debug) System.out.println("init learner");
 			}
             }
             
-            System.out.println("post step");
+            if(debug) System.out.println("post step");
         }
-        System.out.println("end learner proc");
+        if(debug) System.out.println("end learner proc. obsStep:"+obsStep);
         if(qList.size() == timeWindow){
                 qList.remove(0);
             }

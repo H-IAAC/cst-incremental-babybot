@@ -63,6 +63,7 @@ public class VisionVrep implements SensorI{
     private ArrayList<String> executedActions;
     private String mtype, lastAction;
     private String runId="";
+    private ArrayList<float[]> colorObjs = new ArrayList<>();
     public VisionVrep(remoteApi vrep, int clientid, IntW vision_handles, int max_epochs, int num_tables, 
             int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER) {
         this.time_graph = 0;
@@ -85,13 +86,19 @@ public class VisionVrep implements SensorI{
         this.res = res;
         this.max_time_graph = max_time_graph;
         // Float Global_Reward, _, _, CurV, CurD, Instant_Reward
-        // Int n_tables, exp, _, _, act_n, _
+        // Int n_tables, exp, Fovea, _, act_n, _
         
         for(int i=0;i<8;i++){
             lastLinef.add(0f);
             lastLinei.add(0);
         }
-
+        
+        float[] color = {255.0f, 0f, 0f};
+        colorObjs.add(color);
+        color[0] = 0f;
+        color[2] = 255.0f;
+        colorObjs.add(color);
+        
         lastLinei.set(1, num_epoch);
         next_act = true;
         next_actR = true;
@@ -108,6 +115,23 @@ public class VisionVrep implements SensorI{
         }
         }
     }}
+    
+    @Override
+    public float[] getPosition(String s){
+        IntW obj_handle = new IntW(-1);
+        FloatWA position = new FloatWA(3);
+	vrep.simxGetObjectHandle(clientID, s, obj_handle, remoteApi.simx_opmode_blocking);
+	if (obj_handle.getValue() == -1) System.out.println("Error on connecting to "+s);
+		
+        vrep.simxGetObjectPosition(clientID, obj_handle.getValue(), -1, position, vrep.simx_opmode_blocking);
+        
+        return position.getArray();
+    }
+    
+    @Override
+    public float[] getColor(int i){
+        return this.colorObjs.get(i);
+    }
     
     @Override
     public boolean getNextActR(){

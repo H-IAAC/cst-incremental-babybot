@@ -35,7 +35,7 @@ public class EnvConstructive <OBSERVATION extends Encodable, A, AS extends Actio
     //@Getter
     private DiscreteSpace actionSpace;
     @Getter
-    private ObservationSpace<OBSERVATION> observationSpace = (ObservationSpace<OBSERVATION>) new ArrayObservationSpace<Box>(new int[] {1,256});
+    private ObservationSpace<OBSERVATION> observationSpace = (ObservationSpace<OBSERVATION>) new ArrayObservationSpace<Box>(new int[] {1,272});
     private EnvState envState;
     private double reward;
     @Setter

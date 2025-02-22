@@ -46,4 +46,6 @@ public int getAux();
 public int getnAct();
 public void setnAct(int a);
     public void setStage(int stage);
+    public float[] getPosition(String s);
+    public float[] getColor(int i);
 }

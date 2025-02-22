@@ -213,13 +213,15 @@ public class RewardComputerCodelet extends Codelet
         Thread.currentThread().interrupt();
         }       */
 
-        if(debug) System.out.println(
-                " motivationValues - C: "+motivationMO.getValue());
-
         if(motivationMO == null){
               if(debug) System.out.println("Rewardcomputer motivationMO is null");
             return;
         }
+        
+        if(debug) System.out.println(
+                " motivationValues - C: "+motivationMO.getValue());
+
+
         if(actionsList.isEmpty()){
             System.out.println("actionsList.isEmpty()");
             return;
@@ -431,11 +433,10 @@ public class RewardComputerCodelet extends Codelet
 
         
        
-        
         if(sdebug) System.out.println("~End~ REWARD -  QTables:"+num_tables+" Exp: "+ experiment_number +
                     " - N_act: "+action_number+ " - Winner: "+winnerIndex+
                     " - W_Fovea: "+winnerFovea+
-                        " CurV:"+cur_drive+" dCurV:"+cur_delta+" Ri:"+reward_i);
+                        " CurV:"+cur_drive+" dCurV:"+cur_delta+" Ri:"+reward_i+" Gi:"+global_reward);
         
                         }
                        

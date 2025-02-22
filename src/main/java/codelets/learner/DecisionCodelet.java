@@ -27,6 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteConstructive.QLStepReturn;
 import org.deeplearning4j.rl4j.observation.Observation;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
 /**
  * @author L. L. Rossi (leolellisr)
  * Obs: This class represents the implementations present in the proposed scheme for: 
@@ -47,7 +49,7 @@ private MemoryObject motorActionMO, reward_stringMO, action_stringMO;
 private MemoryObject neckMotorMO;
 private MemoryObject headMotorMO;
 private List<String> actionsList;
-private List<Integer> allStatesList;
+private List<Observation> allStatesList;
 private List<QLStepReturn> qList;
 private List<Double>  rewardList;
 private OutsideCommunication oc;
@@ -66,7 +68,7 @@ private String mode;
 
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
-private boolean debug = true, sdebug = false;
+private boolean debug = false, sdebug = false;
 private int num_tables, aux_crash = 0;
 private ArrayList<String> executedActions  = new ArrayList<>();
 private ArrayList<String> allActionsList;
@@ -187,9 +189,9 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
             return;
         }
         
-        if(debug) System.out.println("  post first DQN"); 
+        if(debug) System.out.println(" ql not null"); 
         
-        int state = -1;
+        Observation state = null;
         if(!saliencyMap.isEmpty() ) state = getStateFromSalMap();
         if(debug) System.out.println("  Decision state:"+state); 
         int actionToTake = ql.getLastAction();
@@ -217,17 +219,69 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
 	
 
     public Observation getStateFromSalMap() {
-        ArrayList<Float> mean_lastLine = new ArrayList<>();
-        for(int i=0; i<16;i++) mean_lastLine.add(0f);
-        
+        lastLine = (ArrayList<Float>) saliencyMap.get(saliencyMap.size() -1);
 
-			// Getting just the last entry (current sal map)
-			lastLine = (ArrayList<Float>) saliencyMap.get(saliencyMap.size() -1);
-
+        // Drive Curiosidade
+        float driveValueFloat = (float) oc.vision.getFValues(3);
         
-        return stateVal;
+        if(debug) System.out.println("  \nDecision driveValueFloat:"+driveValueFloat);      
+        // Posição da fóvea 
+        float foveaPositionFloat = (float) oc.vision.getIValues(2);
+        float[] lastLineArray = new float[lastLine.size()];
+        
+        if(debug) System.out.println("  \nDecision foveaPositionFloat:"+foveaPositionFloat);
+        
+        if(debug) System.out.println("  \nDecision (\"Pioneer1\"):"+oc.vision.getPosition("Pioneer1").length);
+        if(debug) System.out.println("  \nDecision (\"Pioneer2\"):"+oc.vision.getPosition("Pioneer2").length);
+        if(debug) System.out.println("  \nDecision (\"HeadPitch\"):"+oc.vision.getPosition("HeadPitch").length);
+        if(debug) System.out.println("  \nDecision (\"NeckYaw\"):"+oc.vision.getPosition("NeckYaw").length);
+        if(debug) System.out.println("  \nDecision (\"Color 0\"):"+oc.vision.getColor(0).length);
+        if(debug) System.out.println("  \nDecision (\"Color 1\"):"+oc.vision.getColor(0).length);
+        if(debug) System.out.println("  \nDecision lastLineArray:"+lastLineArray.length);
+        
+        // Converter ArrayList<Float> para float[]
+        
+        for (int i = 0; i < lastLine.size(); i++) {
+            lastLineArray[i] = lastLine.get(i);
+        }
+
+        // Concatenar todos os elementos em um único array
+        float[] stateArray = concatenateArrays(
+            new float[]{driveValueFloat}, 
+            oc.vision.getPosition("Pioneer1"), 
+            oc.vision.getPosition("Pioneer2"), 
+            oc.vision.getColor(0), 
+            oc.vision.getColor(1),
+            new float[]{oc.HeadPitch_m.getSpeed()},
+            new float[]{oc.NeckYaw_m.getSpeed()},
+            new float[]{foveaPositionFloat}, 
+            lastLineArray
+        );
+
+        // Criar um INDArray a partir do array de floats
+        INDArray observationData = Nd4j.create(new float[][]{stateArray});
+        
+        // Criar e retornar a Observation
+        return new Observation(observationData);
     }
-		
+
+    private static float[] concatenateArrays(float[]... arrays) {
+        int totalLength = 0;
+        for (float[] array : arrays) {
+            totalLength += array.length;
+        }
+
+        float[] result = new float[totalLength];
+        int currentIndex = 0;
+
+        for (float[] array : arrays) {
+            System.arraycopy(array, 0, result, currentIndex, array.length);
+            currentIndex += array.length;
+        }
+
+        return result;
+    }
+    
 	
     public static float calculateMean(ArrayList<Float> list) {
         if (list.isEmpty()) {
