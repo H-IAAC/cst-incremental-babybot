@@ -208,7 +208,9 @@ public class BU_FM_Color extends FeatMapCodelet {
            
             vision_blueFM_t.set(j, vision_mean_blue.get(j));
         }
-     //   printToFile(vision_blueFM_t, "vision_blue_FM.txt");
+        printToFile(vision_blueFM_t, "vision_blue_FM.txt");
+       printToFile(vision_greenFM_t, "vision_green_FM.txt");
+       printToFile(vision_redFM_t, "vision_red_FM.txt");
        
        vision_redFM.set(t, vision_redFM_t);
        vision_greenFM.set(t, vision_greenFM_t);
@@ -234,23 +236,25 @@ public class BU_FM_Color extends FeatMapCodelet {
         if(debug) System.out.println("vision_FM end: "+vision_FM.size());
     }
     
-    /*private void printToFile(ArrayList<Float> arr, String title){
-        if(this.vision.getExp() == 1 || this.vision.getExp()%print_step == 0){
-             //if(time_graph%2 == 0 ){
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
-            LocalDateTime now = LocalDateTime.now(); 
-            try(FileWriter fw = new FileWriter("profile/"+title, true);
+     private void printToFile(Object object,String filename    ){
+        if(this.vision.getEpoch() %print_step == 0){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
+        LocalDateTime now = LocalDateTime.now();
+        if(this.vision.getIValues(1)%5 == 0 ){
+            try(FileWriter fw = new FileWriter("profile/"+filename,true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw))
             {
-                out.println(dtf.format(now)+"_"+this.vision.getExp()+"_"+time_graph+" "+ arr);
+                out.println(dtf.format(now)+"_"+this.vision.getIValues(1)+"_"+this.vision.getIValues(4) +time_graph+" "+ object);
+                //if(time_graph == max_time_graph-1) System.out.println(filename+": "+time_graph);          
                 time_graph++;
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }*/
+        }
+    }
     
           public static float calculateMean(ArrayList<Float> list) {
             if (list.isEmpty()) {

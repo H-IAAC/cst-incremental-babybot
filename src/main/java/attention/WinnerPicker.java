@@ -45,6 +45,7 @@ public class WinnerPicker extends Codelet{
     private String attentionalMapName;
     private int timeWindow, print_step;
     private int sensorDimension;
+    private boolean debug;
     private final int max_time_graph=100;
     
     private static final double GUASSIAN_WIDTH_EXOGENOUS_SONAR = 0.5;
@@ -144,7 +145,7 @@ public class WinnerPicker extends Codelet{
 //                    t_max,
                     type, fireTime));
         }
-//        printToFile(max_index, "winners.txt");
+        printToFile(max_index, "winners.txt");
         
         int i,j,w;
         double deltaj, deltai;
@@ -161,11 +162,14 @@ public class WinnerPicker extends Codelet{
             attMap_sizeMinus1 = (ArrayList < Float >)attentionalMap.get(attentionalMap.size()-1);
             attMap_sizeMinus1.add(1F);
         }
-        
+        if(debug) System.out.println("winnersList "+winnersList.size());
+                
+                
         for (w = 0; w < winnersList.size(); w++) {
             Long timeCourse = System.currentTimeMillis();
             Winner winner_w = (Winner) winnersList.get(w);
           
+                if(debug) System.out.println("winner_w "+winner_w);
                 
             j = winner_w.featureJ;
 
@@ -224,11 +228,11 @@ public class WinnerPicker extends Codelet{
                 }
                                 
             }
-            
+           if(debug)  System.out.println("winner_w "+winner_w.featureJ);
         }
         
                
-       // printToFile(attMap_sizeMinus1, "attMap.txt");
+       printToFile(attMap_sizeMinus1, "attMap.txt");
     }
 
     private double exponentialGrowDecayBottomUp(double pre, double ts, double tm, float t) {
@@ -246,24 +250,27 @@ public class WinnerPicker extends Codelet{
     private double gaussian(double height, double width, int posCenter, int position) {        
         return (height*Math.exp(-1*((Math.pow((float)position-posCenter,2))/(2*Math.pow(width,2)))));
     }
-    
-   /* private void printToFile(Object object,String filename){
-        if(this.vision.getExp() == 1 || this.vision.getExp()%print_step == 0){
+   
+     private void printToFile(Object object,String filename    ){
+        if(this.vision.getEpoch() %print_step == 0){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
         LocalDateTime now = LocalDateTime.now();
+        if(this.vision.getIValues(1)%5 == 0 ){
             try(FileWriter fw = new FileWriter("profile/"+filename,true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw))
             {
-                out.println(dtf.format(now)+"_"+vision.getExp()+"_"+time_graph+" "+ object);
+                out.println(dtf.format(now)+"_"+this.vision.getIValues(1)+"_"+this.vision.getIValues(4) +time_graph+" "+ object);
+                //if(time_graph == max_time_graph-1) System.out.println(filename+": "+time_graph);          
                 time_graph++;
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        }
     }
-    
+/*    
     private void printToFileComplet(long t, Object winner, long fireTime, long timeCourse, float attAntWinner, float attAftWinner, double delta, int winnersListSize, String fase, String filename){
         
         if(time_graph < max_time_graph*2){

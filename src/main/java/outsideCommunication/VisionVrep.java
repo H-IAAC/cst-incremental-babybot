@@ -40,6 +40,11 @@ import java.time.LocalDateTime;
 import java.lang.management.ManagementFactory;
 import com.sun.management.OperatingSystemMXBean;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -52,25 +57,28 @@ public class VisionVrep implements SensorI{
     private final int clientID; 
     private  int time_graph;
     private List<Float> vision_data;   
-    private int stage, num_epoch, nact;    
+    private int stage, num_epoch, nact,num_pioneer;    
     private int res = 256;
     private int max_time_graph=100;
     private int MAX_ACTION_NUMBER = 500;
-	private boolean mlf = false, debug = true, aux_a=false, next_act = true, next_actR = true;
+	private boolean mlf = false, debug = false, aux_a=false, next_act = true, next_actR = true;
     private int max_epochs;
     private ArrayList<Float> lastLinef;
     private ArrayList<Integer> lastLinei;
     private ArrayList<String> executedActions;
+    private float[][] positions = new float[2][];
     private String mtype, lastAction;
     private String runId="";
     private ArrayList<float[]> colorObjs = new ArrayList<>();
+    private boolean crash;
     public VisionVrep(remoteApi vrep, int clientid, IntW vision_handles, int max_epochs, int num_tables, 
-            int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER) {
+            int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, int num_pioneer) {
         this.time_graph = 0;
         
         vision_data = Collections.synchronizedList(new ArrayList<>(res*res*3));
         this.vrep = vrep;
         this.stage =stage;
+        this.num_pioneer = num_pioneer;
        this.num_epoch = exp;
        if(mlf) this.runId = runId;
         this.nact = 0;
@@ -85,8 +93,8 @@ public class VisionVrep implements SensorI{
         executedActions = new ArrayList();
         this.res = res;
         this.max_time_graph = max_time_graph;
-        // Float Global_Reward, _, _, CurV, CurD, Instant_Reward
-        // Int n_tables, exp, Fovea, _, act_n, _
+        // Float Global_Reward, HeadPitch, NeckYaw, CurV, CurD, Instant_Reward, _, _
+        // Int n_tables, exp, Fovea, _, act_n, _, _, _
         
         for(int i=0;i<8;i++){
             lastLinef.add(0f);
@@ -124,8 +132,22 @@ public class VisionVrep implements SensorI{
 	if (obj_handle.getValue() == -1) System.out.println("Error on connecting to "+s);
 		
         vrep.simxGetObjectPosition(clientID, obj_handle.getValue(), -1, position, vrep.simx_opmode_blocking);
-        
+        if(s.equals("Pioneer1")){
+            positions[0] = position.getArray();
+        } else if(s.equals("Pioneer2")){
+            positions[1] = position.getArray();
+        }
         return position.getArray();
+    }
+    
+    @Override
+    public boolean getCrash(){
+        return this.crash;
+    }
+    
+    @Override
+    public void setCrash(boolean cr){
+        this.crash = cr;
     }
     
     @Override
@@ -252,7 +274,7 @@ public class VisionVrep implements SensorI{
         
 //	printToFile(position.getArray()[2], "positions.txt");
         //if(debug) System.out.println("Marta on exp "+this.getEpoch()+" with z = "+position.getArray()[2]);        
-        if (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act || lastLinei.get(2)==1) {
+        if (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act || crash ) {
             
             if(mlf){
              MLflowLogger.logMetric(runId, "Total_Actions", lastLinei.get(4), lastLinei.get(1));
@@ -278,6 +300,8 @@ public class VisionVrep implements SensorI{
 
             }
             System.out.println("Marta crashed on exp "+this.getEpoch()+" with z = "+position.getArray()[2]+
+                    " with x = "+position.getArray()[0]+
+                    " with m_act = "+m_act+
                     " Act:"+lastLinei.get(4));
                             
             printToFile("rewards.txt",true);
@@ -295,7 +319,8 @@ public class VisionVrep implements SensorI{
 		}  */
             
             lastLinei.set(1, lastLinei.get(1)+1);
-            
+            num_epoch = lastLinei.get(1);
+            this.setEpoch(num_epoch);
             lastLinef.set(0,(float) 0);
             lastLinef.set(1,(float) 0);
             lastLinef.set(2,(float) 0);
@@ -304,11 +329,10 @@ public class VisionVrep implements SensorI{
             lastLinef.set(5,(float) 0);
             lastLinef.set(6,(float) 0);
             lastLinef.set(7,(float) 0);
-            
+            crash = false;
             lastLinei.set(4,0);
             //lastLinei.set(5,100);
             lastLinei.set(6,0);
-            lastLinei.set(7,0);
             lastLinei.set(2,0);
             executedActions.clear();
             this.setNextAct(true);
@@ -324,7 +348,7 @@ public class VisionVrep implements SensorI{
             return true;
         }
            
-             printToFile("nrewards.txt",false);
+             printToFile("nrewards.txt",true);
              this.setNextAct(true);
             this.setNextActR(true);
            
@@ -338,15 +362,18 @@ public class VisionVrep implements SensorI{
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 		}*/
-      System.out.println("End epoch R");
+     if(debug) System.out.println("End epoch R");
         FloatWA position = new FloatWA(3);
 	vrep.simxGetObjectPosition(clientID, vision_handles.getValue(), -1, position,
         vrep.simx_opmode_streaming);
 	boolean m_act;
         m_act = lastLinei.get(4)>this.getMaxActions();
-        boolean ret = this.getEpoch() > 1 && (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act);
-        if(ret) System.out.println("End epoch R true");
-        else System.out.println("End epoch R false");
+        boolean ret = this.getEpoch() > 1 && (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act || crash);
+        if(debug){
+            if(ret) System.out.println("End epoch R true");
+            else System.out.println("End epoch R false");
+        }
+        
         return ret;
     }
     
@@ -500,7 +527,7 @@ public class VisionVrep implements SensorI{
         
         // SYNC
 
-       // printToFile(vision_data);        
+          
         return  vision_data;
     }
     
@@ -517,37 +544,104 @@ public class VisionVrep implements SensorI{
     }
     
     private void printToFile(String filename, boolean debugp){
-    
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
+        LocalDateTime now = LocalDateTime.now();
         
         try(FileWriter fw = new FileWriter("profile/"+filename,true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw))
             {
-                String s = " QTables:"+lastLinei.get(0)+
-                        " Exp:"+lastLinei.get(1)+
-                        " Nact:"+lastLinei.get(4)+ 
-                        " Ri:"+lastLinef.get(5)+
-                        " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
-                        " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
-                        " LastAct: "+lastAction;
-                out.println(s);
-                
-                s = " QTables:"+lastLinei.get(0)+
-                        " Exp:"+lastLinei.get(1)+
-                        " Nact:"+lastLinei.get(4)+ 
-                        " Ri:"+lastLinef.get(5)+
-                        " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
-                        " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
-                        " LastAct: "+lastAction;
-                
+                String s = "";
+                if(num_pioneer==2){
+                     s = " QTables:"+lastLinei.get(0)+
+                            " Exp:"+lastLinei.get(1)+
+                            " Nact:"+lastLinei.get(4)+ 
+                            " fov:"+lastLinei.get(2)+
+                            " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
+                            " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
+                            " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
+                            " LastAct: "+lastAction+ " color1:"+colorObjs.get(0).toString()+" color2:"+ colorObjs.get(1).toString()+
+                            " Pos1:"+positions[0].toString()+" Pos2:"+positions[1].toString();
+                    out.println(s);
+
+                    s = " QTables:"+lastLinei.get(0)+
+                            " Exp:"+lastLinei.get(1)+
+                            " Nact:"+lastLinei.get(4)+ 
+                            " fov:"+lastLinei.get(2)+
+                            " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
+                            " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
+                            " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
+                            " LastAct: "+lastAction+ " color1:"+colorObjs.get(0).toString()+" color2:"+ colorObjs.get(1).toString()+
+                            " Pos1:"+positions[0].toString()+" Pos2:"+positions[1].toString();
+                }else{
+                                        s = " QTables:"+lastLinei.get(0)+
+                            " Exp:"+lastLinei.get(1)+
+                            " Nact:"+lastLinei.get(4)+ 
+                            " fov:"+lastLinei.get(2)+
+                            " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
+                            " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
+                            " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
+                            " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+
+                            " Pos1:"+Arrays.toString(positions[0]);
+                    out.println(s);
+
+                    s = " QTables:"+lastLinei.get(0)+
+                            " Exp:"+lastLinei.get(1)+
+                            " Nact:"+lastLinei.get(4)+ 
+                            " fov:"+lastLinei.get(2)+
+                            " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
+                            " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
+                            " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
+                            " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+
+                            " Pos1:"+Arrays.toString(positions[0]);
+                }
                 if(debugp) System.out.println(s);
                 
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        if(lastLinei.get(1)%5 == 0) saveImage(vision_data, res, dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_rgb.png", dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_gsc.png");
         
-      
     }
+    
+    public static void saveImage(List<Float> vision_data, int res, String colorFilename, String grayscaleFilename) {
+        BufferedImage colorImage = new BufferedImage(res, res, BufferedImage.TYPE_INT_RGB);
+        BufferedImage grayscaleImage = new BufferedImage(res, res, BufferedImage.TYPE_BYTE_GRAY);
+
+        for (int y = 0; y < res; y++) {
+            for (int x = 0; x < res; x++) {
+                int index = (y * res + x) * 3; // Cada pixel tem 3 valores (R, G, B)
+
+                int r = Math.round(vision_data.get(index));
+                int g = Math.round(vision_data.get(index + 1));
+                int b = Math.round(vision_data.get(index + 2));
+
+                // Garantindo que os valores estejam no intervalo válido (0-255)
+                r = Math.min(255, Math.max(0, r));
+                g = Math.min(255, Math.max(0, g));
+                b = Math.min(255, Math.max(0, b));
+
+                int rgb = (r << 16) | (g << 8) | b;
+                colorImage.setRGB(x, y, rgb);
+
+                // Converter para escala de cinza (usando luminância perceptual)
+                int gray = (int) (0.299 * r + 0.587 * g + 0.114 * b);
+                grayscaleImage.setRGB(x, y, (gray << 16) | (gray << 8) | gray);
+            }
+        }
+
+        try {
+            ImageIO.write(colorImage, "png", new File("data/"+colorFilename));
+            ImageIO.write(grayscaleImage, "png", new File("data/"+grayscaleFilename));
+           
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar a imagem: " + e.getMessage());
+        }
+    }
+    
+
+      
+    
     
 }

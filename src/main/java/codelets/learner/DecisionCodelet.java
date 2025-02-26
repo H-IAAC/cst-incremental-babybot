@@ -69,19 +69,20 @@ private String mode;
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
 private boolean debug = false, sdebug = false;
-private int num_tables, aux_crash = 0;
+private int num_tables, aux_crash = 0, num_pioneer;
 private ArrayList<String> executedActions  = new ArrayList<>();
 private ArrayList<String> allActionsList;
 private Map<String, ArrayList<Integer>> proceduralMemory = new HashMap<String, ArrayList<Integer>>();
 private String output, motivation, stringOutput = "";
 private ArrayList<Float> lastLine;
 private String motivationName;
-public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, String mode, String motivation, int num_tables) {
+public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, String mode, String motivation, int num_tables, int num_pioneer) {
 
     super();
     time_graph = 0;
 
     this.num_tables = num_tables;
+    this.num_pioneer= num_pioneer;
     this.motivation = motivation;
     // allActions: am0: focus; am1: neck left; am2: neck right; am3: head up; am4: head down; 
     // am5: fovea 0; am6: fovea 1; am7: fovea 2; am8: fovea 3; am9: fovea 4; 
@@ -232,11 +233,11 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         if(debug) System.out.println("  \nDecision foveaPositionFloat:"+foveaPositionFloat);
         
         if(debug) System.out.println("  \nDecision (\"Pioneer1\"):"+oc.vision.getPosition("Pioneer1").length);
-        if(debug) System.out.println("  \nDecision (\"Pioneer2\"):"+oc.vision.getPosition("Pioneer2").length);
+        if(debug && num_pioneer>1) System.out.println("  \nDecision (\"Pioneer2\"):"+oc.vision.getPosition("Pioneer2").length);
         if(debug) System.out.println("  \nDecision (\"HeadPitch\"):"+oc.vision.getPosition("HeadPitch").length);
         if(debug) System.out.println("  \nDecision (\"NeckYaw\"):"+oc.vision.getPosition("NeckYaw").length);
         if(debug) System.out.println("  \nDecision (\"Color 0\"):"+oc.vision.getColor(0).length);
-        if(debug) System.out.println("  \nDecision (\"Color 1\"):"+oc.vision.getColor(0).length);
+        if(debug&& num_pioneer>1) System.out.println("  \nDecision (\"Color 1\"):"+oc.vision.getColor(0).length);
         if(debug) System.out.println("  \nDecision lastLineArray:"+lastLineArray.length);
         
         // Converter ArrayList<Float> para float[]
@@ -245,8 +246,20 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
             lastLineArray[i] = lastLine.get(i);
         }
 
+        if(Collections.max(lastLine)==0){
+            aux_crash += 1;
+        } else{
+             aux_crash = 0;
+        }
+        
+        if(aux_crash > 5){
+            oc.vision.setCrash(true);
+            aux_crash = 0;
+        }
+        float[] stateArray;
+        if(num_pioneer>1){
         // Concatenar todos os elementos em um único array
-        float[] stateArray = concatenateArrays(
+        stateArray = padOrTrimArray(concatenateArrays(
             new float[]{driveValueFloat}, 
             oc.vision.getPosition("Pioneer1"), 
             oc.vision.getPosition("Pioneer2"), 
@@ -256,8 +269,20 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
             new float[]{oc.NeckYaw_m.getSpeed()},
             new float[]{foveaPositionFloat}, 
             lastLineArray
-        );
-
+        ),272);
+        }else{
+            stateArray = padOrTrimArray(concatenateArrays(
+            new float[]{driveValueFloat}, 
+            oc.vision.getPosition("Pioneer1"), 
+            new float[]{0, 0, 0},
+            oc.vision.getColor(0), 
+            new float[]{0, 0, 0},
+            new float[]{oc.HeadPitch_m.getSpeed()},
+            new float[]{oc.NeckYaw_m.getSpeed()},
+            new float[]{foveaPositionFloat}, 
+            lastLineArray
+        ),272);
+        }
         // Criar um INDArray a partir do array de floats
         INDArray observationData = Nd4j.create(new float[][]{stateArray});
         
@@ -282,6 +307,14 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         return result;
     }
     
+        private float[] padOrTrimArray(float[] array, int targetSize) {
+        float[] newArray = new float[targetSize];
+        for (int i = 0; i < targetSize; i++) {
+            newArray[i] = (i < array.length) ? array[i] : 0.0f; // Preenche com zeros se necessário
+        }
+        return newArray;
+    }
+
 	
     public static float calculateMean(ArrayList<Float> list) {
         if (list.isEmpty()) {

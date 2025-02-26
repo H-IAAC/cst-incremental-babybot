@@ -61,16 +61,16 @@ public class AgentMind extends Mind {
     public static final int Sensor_dimension = 256;
     public static final boolean debug = true;
     public static final boolean saverCodelet = false;
-    private int index_hunger, index_curiosity, print_step;
+    private int index_hunger, index_curiosity, print_step, num_pioneer;
         private String stringOutputac = "", stringOutputreS = "", stringOutputreC = "";
 private long seed;
     public AgentMind(OutsideCommunication oc, String mode, String motivation, 
-            int num_tables, int print_step,long seed) throws IOException{
+            int num_tables, int print_step,long seed, int num_pioneer) throws IOException{
         super();
         oc.vision.setIValues(0, num_tables);
         this.print_step = print_step;
         this.seed = seed;
-        
+        this.num_pioneer = num_pioneer;
         //System.out.println("AgentMind");
         //////////////////////////////////////////////
         //Declare Memory Objects
@@ -375,7 +375,7 @@ private long seed;
             
         
         
-        Codelet decision_cod = new DecisionCodelet(oc, Buffersize, Sensor_dimension, mode, motivation, num_tables);
+        Codelet decision_cod = new DecisionCodelet(oc, Buffersize, Sensor_dimension, mode, motivation, num_tables, num_pioneer);
          decision_cod.addInput(salMapMO);
         if(motivation.equals("drives")) decision_cod.addInput(motivationMC);
         decision_cod.addInput(qtableMO);

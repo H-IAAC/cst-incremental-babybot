@@ -74,7 +74,7 @@ public class LearnerCodeletNet extends Codelet
     private int experiment_number,exp_s, exp_c;;
     private int stage,convergenceCounter=0;
     private String mode;
-    private boolean debug = true;
+    private boolean debug = false;
     private ArrayList<String> allActionsList;
     private remoteApi vrep;
     private final int clientID;
@@ -280,10 +280,10 @@ if(debug) System.out.println("init learner");
 
            if(debug) System.out.println("trainSp");
 
-            if (end_all) {
+            if (oc.vision.endEpochR()) {
                 dql.postEpoch();
                         dql.incrementEpoch();
-                        
+                        System.out.println("end epoch before save model");
                         DQNPolicy<Box> pol = dql.getPolicy();
                         try {
                             pol.save(currentDir+path_model);
@@ -296,11 +296,12 @@ if(debug) System.out.println("init learner");
                             System.out.println("ERROR "+e+" SAVING MODEL");
                             System.exit(1);
 			}
+                        System.out.println("end epoch after save model");
             }
             
             if(debug) System.out.println("post step");
         }
-        if(debug) System.out.println("end learner proc. obsStep:"+obsStep);
+        System.out.println("end learner proc. obsStep:"+obsStep);
         if(qList.size() == timeWindow){
                 qList.remove(0);
             }

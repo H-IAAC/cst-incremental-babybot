@@ -22,8 +22,7 @@ public class Winner {
     public int origin;
     public long fireTime;
     
-    public Winner(int featJ, 
-            int orig, long fireT){
+    public Winner(int featJ, int orig, long fireT){
         featureJ = featJ;
         origin = orig;
         fireTime = fireT;

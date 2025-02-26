@@ -139,24 +139,27 @@ private boolean debug = false;
            
             depthFM_t.set(j, depth_mean_red.get(j));
         }   
-        //printToFile(depthFM_t);
+        printToFile(depthFM_t,"depthFM.txt");
     }
-   /* private void printToFile(ArrayList<Float> arr){
-        if(this.vision.getExp() == 1 || this.vision.getExp()%print_step == 0){
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
-            LocalDateTime now = LocalDateTime.now(); 
-            try(FileWriter fw = new FileWriter("profile/depth_FM.txt", true);
+   private void printToFile(Object object,String filename    ){
+        if(this.vision.getEpoch() %print_step == 0){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
+        LocalDateTime now = LocalDateTime.now();
+        if(this.vision.getIValues(1)%5 == 0 ){
+            try(FileWriter fw = new FileWriter("profile/"+filename,true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw))
             {
-                out.println(dtf.format(now)+"_"+this.vision.getExp()+"_"+time_graph+" "+ arr);
+                out.println(dtf.format(now)+"_"+this.vision.getIValues(1)+"_"+this.vision.getIValues(4) +time_graph+" "+ object);
+                //if(time_graph == max_time_graph-1) System.out.println(filename+": "+time_graph);          
                 time_graph++;
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }*/
+        }
+    }
 }
     
 

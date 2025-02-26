@@ -179,34 +179,46 @@ public class ActionExecCodelet extends Codelet
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
+        if(debug) System.out.println("proc actEx");
         crashed = false;
         yawPos = oc.NeckYaw_m.getSpeed();
         headPos = oc.HeadPitch_m.getSpeed(); 
-        //System.out.println("yawPos: "+yawPos+" headPos: "+headPos);
+        oc.vision.setFValues(1, headPos);
+        oc.vision.setFValues(2, yawPos);
+        
+        if(debug) System.out.println("yawPos: "+yawPos+" headPos: "+headPos);
         /*try {
             Thread.sleep(50);
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }    */   
         
-        if(actionsList.size()<1 || winnersList.size()<1 ){
-            if(debug){
+        if(actionsList.size()<1 ){
+           
             System.out.println("ACT_EXEC----- actionsList.size():"+actionsList.size());
 
-            System.out.println("ACT_EXEC----- winnersList.size():"+winnersList.size());
-            }
             return;
+        
         }
+        
+        Winner lastWinner;
+       if( winnersList.size()<1){
+                if(debug) System.out.println("ACT_EXEC----- winnersList.size():"+winnersList.size());
+            lastWinner = new Winner(64,0,0);
+       }else{
+           lastWinner = (Winner) winnersList.get(winnersList.size() - 1);
+       }
+                
         String actionToTk = actionsList.get(actionsList.size() - 1);
         int actionToTakeI = Integer.parseInt(actionToTk);
         String actionToTake = allActionsList.get(actionToTakeI);
-        if(sdebug) System.out.println("ACT_EXEC -----  Exp: "+ experiment_number 
+        if(debug) System.out.println("ACT_EXEC -----  Exp: "+ experiment_number 
                 +" ----- Act: "+ actionToTake+" ----- N_act: "+oc.vision.getIValues(4)+" Curiosity_lv: "
-                +curiosity_lv+" Red: "+red_c+" Green: "+green_c+" Blue: "+blue_c);
+                +curiosity_lv+" yawPos: "+yawPos+" headPos: "+headPos);
         
-        Winner lastWinner = (Winner) winnersList.get(winnersList.size() - 1);
+        
         winnerIndex = lastWinner.featureJ;
-       
+       experiment_number = oc.vision.getEpoch();
         
         //oc.vision.setIValues(4, (int) (oc.vision.getIValues(4)+1));
         
@@ -394,11 +406,9 @@ public class ActionExecCodelet extends Codelet
             //printToFile("object_count.txt");
     } 
 
-    
-
-	
-	
-	
+    /**
+     *
+     */
     public void check_stop_experiment() {
 
         /*if(yawPos>1.4f || yawPos<-1.4f || headPos>0.6f || headPos<-0.4f ){
@@ -411,6 +421,7 @@ public class ActionExecCodelet extends Codelet
              
         } else{
             this.oc.vision.setIValues(4, (int) (this.oc.vision.getIValues(4)+1));
+            crashed = false;
         }
         
 /*        try {
