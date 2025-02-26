@@ -17,15 +17,12 @@ new_res_1_2 = (res/slices)
 winner = -1
 
 # 1 Q-Table
-file1 = "../results/Train/1QTable/profile/"
+file1 = "../results/profile/"
 
 
-# 2 Q-Tables
-file2 = "../results/Train/2QTables/profile/"
 output_folder = "../results/"
 # Paths
-path_imgs1 = '../results/Train/1QTable/data/'
-path_imgs2 = '../results/Train/2QTables/data/'
+path_imgs1 = '../results/data/gsc/'
 path_res = "../results/" 
 
 m_i = False
@@ -276,15 +273,12 @@ strings_to_remove = [
     "Exp:", "Nact:", "Type:"
 ]
 
-files = ["vision_red.txt", 
-"vision_green.txt", 
-"vision_blue.txt", 
-#"depth.txt", 
+files = [
 "vision_red_FM.txt", 
 "vision_green_FM.txt", 
 "vision_blue_FM.txt", 
-#"depth_FM.txt", 
-"vision_top_color_FM.txt", 
+"depthFM.txt", 
+"top_down_color.txt", 
 "region_top_FM.txt",
 #"depth_top_FM.txt",  
 "CFM.txt", 
@@ -299,28 +293,28 @@ if clean:
 
 
 # ID inputs - Format "YYYY_MM_DD_HH_MM_SS_step"
-goal_time_img = "2024_10_19_14_35_22_30_344" # t = 1
-goal_time_red = "2024_10_19_14_35_22_30_1884" # t = 3
-goal_time_redFM = "2024_10_19_14_35_22_30_1893" # t = 3
+goal_time_img = "2025_02_25_22_25_55_190_269_gsc" # t = 1
+goal_time_red = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
+goal_time_redFM = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
 
-goal_time_green = "2024_10_19_14_35_22_30_1884" # t = 3
-goal_time_greenFM = "2024_10_19_14_35_22_30_1893"
+goal_time_green = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
+goal_time_greenFM = "2025_02_25_22_25_55_190.0_269.01118"
 
-goal_time_blue = "2024_10_19_14_35_22_30_1884" # t = 3
-goal_time_blueFM = "2024_10_19_14_35_22_30_1893"
+goal_time_blue = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
+goal_time_blueFM = "2025_02_25_22_25_55_190.0_269.01118"
 
-goal_time_topColor = "2024_10_19_14_35_22_30_1893" # t = 3
+goal_time_topColor = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
 
 #goal_time_depth = "2024_10_10_05_16_02_20_1004" # t = 2
 #goal_time_depthFM = "2024_10_19_14_35_22_30_1893" # t = 3
 #goal_time_topdepthFM = "2024_10_10_05_16_02_20_1004" # t = 3
 
-goal_time_cfm =  "2024_10_19_14_35_22_30_1893" # t = 3
+goal_time_cfm =  "2025_02_25_22_27_37_200.0_1.018" # t = 3
  
-goal_time_sal =  "2024_10_19_14_35_22_30_1893" # t = 3
-goal_time_att =  "2024_10_19_14_35_22_30_1893" # t = 3
-goal_time_win =  "2024_10_19_14_35_22_30_1893" # t = 3 
-goal_time_winT =  "2024_10_19_14_35_22_30_1893" # t = 3 
+goal_time_sal =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3
+goal_time_att =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3
+goal_time_win =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3 
+goal_time_winT =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3 
 
 if debug: print("begin")
 # Open grayscaled img 
@@ -331,7 +325,7 @@ with os.scandir(path_imgs1) as entries:
         id_array = id_array.split('_')
         if debugmap: 
             print(f"len name img: {len(id_array)}")
-        if len(id_array) == 8:
+        if len(id_array) == 9:
                     # last_id = last_id_a[6]
             goal_time_img = goal_time_img.replace('.jpg', '')
             
@@ -351,11 +345,7 @@ with os.scandir(path_imgs1) as entries:
 # Map images
 if aux_img > 0:
     path_res = file1
-    if debug: print("sensors")
-    map_data("sensor", path_res+"vision_red.txt", goal_time_red, goal_time_img, img)
-    map_data("sensor", path_res+"vision_green.txt", goal_time_green, goal_time_img, img)
-    map_data("sensor", path_res+"vision_blue.txt", goal_time_blue, goal_time_img, img)
-    #map_data("sensor", path_res+"depth.txt", goal_time_depth, goal_time_img, img)
+
     
     if debug: print("fms")
 
@@ -366,7 +356,7 @@ if aux_img > 0:
     
     if debug: print("color td")
     
-    map_data("fm",path_res+"vision_top_color_FM.txt", goal_time_topColor, goal_time_img, img)
+    map_data("fm",path_res+"top_down_color.txt", goal_time_topColor, goal_time_img, img)
     
     #if debug: print("region td")
 
