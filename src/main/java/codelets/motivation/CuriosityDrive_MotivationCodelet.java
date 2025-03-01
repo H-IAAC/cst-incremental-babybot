@@ -64,10 +64,11 @@ private List<String> allStatesList;
         exp_c = oc.vision.getEpoch();
          if(stage == 1 || stage == 2){
             nActions = 10;
-            allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13", "aa0", "am14", "am15", "am16")); //"aa1", "aa2", 
+            allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13")); //"aa1", "aa2", 
         }else if(stage == 3){
             nActions = 20;
-            allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13", "aa0", "am14", "am15", "am16")); //"aa1", "aa2", 
+            allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13",
+                    "aa0", "aa1", "aa2")); //, 
         }
         //curiosity_motivation_list = new ArrayList<>(Collections.nCopies(nActions, 0.0));
 
