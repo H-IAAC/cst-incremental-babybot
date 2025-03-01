@@ -310,10 +310,10 @@ plots1 = get_mean_n_std(mean_ticks, results1)
 # X Axis for Means     
 #exp1 = [ep/2 for ep in exp1]
 cut2 = -9
-y_rewards = 40
-ticks_rewards = 5
-y_actions = 250
-ticks_actions = 25
+y_rewards = 140
+ticks_rewards = 20
+y_actions = 505
+ticks_actions = 50
 
 exp1 = [i for i in range(0,mean_ticks+1)]
 exp1 = [int(em*len(results1[0])/mean_ticks) for em in exp1]

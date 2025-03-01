@@ -234,7 +234,7 @@ public class TD_FM_Depth extends FeatMapCodelet {
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw))
             {
-                out.println(dtf.format(now)+"_"+this.vision.getIValues(1)+"_"+this.vision.getIValues(4) +time_graph+" "+ object);
+                out.println(dtf.format(now)+"_"+(int) this.vision.getIValues(1)+"_"+(int) this.vision.getIValues(4) +"_"+time_graph+" "+ object);
                 //if(time_graph == max_time_graph-1) System.out.println(filename+": "+time_graph);          
                 time_graph++;
                 out.close();

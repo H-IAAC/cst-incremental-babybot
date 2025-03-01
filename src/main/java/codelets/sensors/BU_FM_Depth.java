@@ -145,12 +145,12 @@ private boolean debug = false;
         if(this.vision.getEpoch() %print_step == 0){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
         LocalDateTime now = LocalDateTime.now();
-        if(this.vision.getIValues(1)%5 == 0 ){
+      
             try(FileWriter fw = new FileWriter("profile/"+filename,true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw))
             {
-                out.println(dtf.format(now)+"_"+this.vision.getIValues(1)+"_"+this.vision.getIValues(4) +time_graph+" "+ object);
+                out.println(dtf.format(now)+"_"+(int) this.vision.getIValues(1)+"_"+(int)this.vision.getIValues(4) +"_"+time_graph+" "+ object);
                 //if(time_graph == max_time_graph-1) System.out.println(filename+": "+time_graph);          
                 time_graph++;
                 out.close();
@@ -158,7 +158,7 @@ private boolean debug = false;
                 e.printStackTrace();
             }
         }
-        }
+        
     }
 }
     

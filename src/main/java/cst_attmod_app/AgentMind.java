@@ -67,6 +67,7 @@ private long seed;
     public AgentMind(OutsideCommunication oc, String mode, String motivation, 
             int num_tables, int print_step,long seed, int num_pioneer) throws IOException{
         super();
+        oc.vision.setIValues(3, print_step);
         oc.vision.setIValues(0, num_tables);
         this.print_step = print_step;
         this.seed = seed;

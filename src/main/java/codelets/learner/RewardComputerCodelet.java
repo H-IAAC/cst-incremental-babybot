@@ -414,7 +414,7 @@ public class RewardComputerCodelet extends Codelet
         
                 if(this.oc.vision.endEpochR()){
             // System.out.println("MORREU");
-                    reward_i -= 100;
+                    if(oc.vision.getIValues(4)<MAX_ACTION_NUMBER) reward_i -= 100;
                     lcur_drive=0;
                     oc.vision.setFValues(4, cur_delta);
             }

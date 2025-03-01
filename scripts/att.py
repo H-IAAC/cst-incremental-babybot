@@ -7,7 +7,7 @@ import os
 import cv2
 
 debug = True
-debugmap = True
+debugmap = False
 saving_mode = True
 printing_mode = False
 clean = False 
@@ -22,7 +22,7 @@ file1 = "../results/profile/"
 
 output_folder = "../results/"
 # Paths
-path_imgs1 = '../results/data/gsc/'
+path_imgs1 = '../results/data/'
 path_res = "../results/" 
 
 m_i = False
@@ -47,7 +47,7 @@ def map_data(mode, file, goal_time, goal_timeimg, img):
             id_array = id.split('_')
             goal_array = goal_time.split('_')
             if debug and debugmap: print(f"Array len: {len(id_array)}")
-            if len(id_array) == 8 and goal_array[0] == id_array[0] and goal_array[1] == id_array[1] and goal_array[2] == id_array[2] and goal_array[3] == id_array[3] and goal_array[4] == id_array[4] and goal_array[5] == id_array[5]: # and goal_array[7] == id_array[7]:                    
+            if len(id_array) == 9 and goal_array[0] == id_array[0] and goal_array[1] == id_array[1] and goal_array[2] == id_array[2] and goal_array[3] == id_array[3] and goal_array[4] == id_array[4] and goal_array[5] == id_array[5]: # and goal_array[7] == id_array[7]:                    
                 new_line = re.sub('[^a-zA-Z0-9 \n\.]','',line)
                 col = new_line.split(' ')    
                 col_sem_id = col[1:]
@@ -59,9 +59,9 @@ def map_data(mode, file, goal_time, goal_timeimg, img):
                         #print(col_sem_id_np_fl)
                     col_sem_id_np_max = max(col_sem_id_np_fl)                
                     if(col_sem_id_np_max>0): col_sem_id_np_fl = col_sem_id_np_fl/col_sem_id_np_max
-                
-                break
                 if(debug): print(f"got array {last_name} array len: {len(col_sem_id_np_fl)}")
+                break
+                
 
             #print(col_sem_id_np_fl)
 
@@ -100,7 +100,9 @@ def map_data(mode, file, goal_time, goal_timeimg, img):
         cv2.imshow('colormap'+last_name, fm_array)
         cv2.waitKey(0)
         print("printed colormap"+last_name)
-
+    print(f"img shape: {img.shape}")
+    print(f"fm_array shape: {fm_array.shape}")
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     result = cv2.addWeighted(img, 0.3, fm_array, 0.7, 0)
     fliped = cv2.flip(result, 0)            
 
@@ -133,7 +135,7 @@ def map_winner(mode, file, fileType, goal_time, goal_time_w, img):
             id_arrayType = idType.split('_')
             goal_array_w = goal_time_w.split('_')
             if debug and debugmap: print(f"Array len: {len(id_arrayType)}")
-            if len(id_arrayType) == 8 and goal_array_w[0] == id_arrayType[0] and goal_array_w[1] == id_arrayType[1] and goal_array_w[2] == id_arrayType[2] and goal_array_w[3] == id_arrayType[3] and goal_array_w[4] == id_arrayType[4] and goal_array_w[5] == id_arrayType[5] and goal_array_w[7] == id_arrayType[7]:                    
+            if len(id_arrayType) == 9 and goal_array_w[0] == id_arrayType[0] and goal_array_w[1] == id_arrayType[1] and goal_array_w[2] == id_arrayType[2] and goal_array_w[3] == id_arrayType[3] and goal_array_w[4] == id_arrayType[4] and goal_array_w[5] == id_arrayType[5] and goal_array_w[7] == id_arrayType[7]:                    
                 new_lineType = re.sub('[^a-zA-Z0-9 \n\.]','',lineType)
                 colType = new_lineType.split(' ')    
                 col_sem_idType = colType[1:]
@@ -157,7 +159,7 @@ def map_winner(mode, file, fileType, goal_time, goal_time_w, img):
             goal_array = goal_time.split('_')
             
             if debug and debugmap: print(f"Array len: {len(id_array)}")
-            if len(id_array) == 8 and goal_array[0] == id_array[0] and goal_array[1] == id_array[1] and goal_array[2] == id_array[2] and goal_array[3] == id_array[3] and goal_array[4] == id_array[4] and goal_array[5] == id_array[5] and goal_array[7] == id_array[7]:                    
+            if len(id_array) == 9 and goal_array[0] == id_array[0] and goal_array[1] == id_array[1] and goal_array[2] == id_array[2] and goal_array[3] == id_array[3] and goal_array[4] == id_array[4] and goal_array[5] == id_array[5] and goal_array[7] == id_array[7]:                    
                 new_line = re.sub('[^a-zA-Z0-9 \n\.]','',line)
                 print(new_line)
                 
@@ -289,32 +291,31 @@ files = [
 if clean:
     for file in files:
         remove_strings_from_file(file1+file, strings_to_remove)
-        remove_strings_from_file(file2+file, strings_to_remove)
 
 
 # ID inputs - Format "YYYY_MM_DD_HH_MM_SS_step"
-goal_time_img = "2025_02_25_22_25_55_190_269_gsc" # t = 1
-goal_time_red = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
-goal_time_redFM = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
+goal_time_img = "2025_02_28_13_53_14_105_31_rgb" # t = 1
+goal_time_red = "2025_02_28_13_53_14_105_31_rgb" # t = 3
+goal_time_redFM = "2025_02_28_13_53_14_105_31_rgb" # t = 3
 
-goal_time_green = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
-goal_time_greenFM = "2025_02_25_22_25_55_190.0_269.01118"
+goal_time_green = "2025_02_28_13_53_14_105_31_rgb" # t = 3
+goal_time_greenFM = "2025_02_28_13_53_14_105_31_rgb"
 
-goal_time_blue = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
-goal_time_blueFM = "2025_02_25_22_25_55_190.0_269.01118"
+goal_time_blue = "2025_02_28_13_53_14_105_31_rgb" # t = 3
+goal_time_blueFM = "2025_02_28_13_53_14_105_31_rgb"
 
-goal_time_topColor = "2025_02_25_22_25_55_190.0_269.01118" # t = 3
+goal_time_topColor = "2025_02_28_13_53_14_105_31_rgb" # t = 3
 
 #goal_time_depth = "2024_10_10_05_16_02_20_1004" # t = 2
 #goal_time_depthFM = "2024_10_19_14_35_22_30_1893" # t = 3
 #goal_time_topdepthFM = "2024_10_10_05_16_02_20_1004" # t = 3
 
-goal_time_cfm =  "2025_02_25_22_27_37_200.0_1.018" # t = 3
+goal_time_cfm =  "2025_02_28_13_53_14_105_34_36" # t = 3
  
-goal_time_sal =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3
-goal_time_att =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3
-goal_time_win =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3 
-goal_time_winT =  "2025_02_25_22_25_55_190.0_269.01118" # t = 3 
+goal_time_sal =  "2025_02_28_13_53_14_105_34_36" # t = 3
+goal_time_att =  "2025_02_28_13_53_14_105_31_rgb" # t = 3
+goal_time_win =  "2025_02_28_13_53_14_105_31_rgb" # t = 3 
+goal_time_winT =  "2025_02_28_13_53_14_105_31_rgb" # t = 3 
 
 if debug: print("begin")
 # Open grayscaled img 
@@ -338,8 +339,15 @@ with os.scandir(path_imgs1) as entries:
             if goal_array[0] == id_array[0] and goal_array[1] == id_array[1] and goal_array[2] == id_array[2] and goal_array[3] == id_array[3] and goal_array[4] == id_array[4] and goal_array[5] == id_array[5]:
                 img_path = path_imgs1+entry.name
                 img = cv2.imread(img_path)
+                # Inverter verticalmente
+                img_flipped = cv2.flip(img, 0)  # 0 significa flip vertical
+
+# Salvar a imagem invertida
+                cv2.imwrite(output_folder+goal_time_img+"_flipped.jpg", img_flipped)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Converte para grayscale
                 aux_img += 1
                 if debugmap: print(f"img shape: {img.shape}")
+                
                 break
 
 # Map images

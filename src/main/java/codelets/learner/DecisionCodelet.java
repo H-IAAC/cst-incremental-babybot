@@ -69,7 +69,7 @@ private String mode;
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
 private boolean debug = false, sdebug = false;
-private int num_tables, aux_crash = 0, num_pioneer;
+private int num_tables, aux_crash = 0,  aux_mt = 0, num_pioneer;
 private ArrayList<String> executedActions  = new ArrayList<>();
 private ArrayList<String> allActionsList;
 private Map<String, ArrayList<Integer>> proceduralMemory = new HashMap<String, ArrayList<Integer>>();
@@ -168,6 +168,11 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }   */  
+        
+        if(experiment_number!=oc.vision.getIValues(1)){
+            aux_crash = 0;
+            aux_mt = 0;
+        }
         QLStepReturn<Observation> ql = null;
         
         if(motivationMO == null){
@@ -246,15 +251,36 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
             lastLineArray[i] = lastLine.get(i);
         }
 
+        
+        if(Math.abs(oc.HeadPitch_m.getSpeed()) < 0.001 && Math.abs(oc.NeckYaw_m.getSpeed()) < 0.001){
+            aux_mt += 1;
+        } else{
+             aux_mt = 0;
+        }
+        oc.vision.setFValues(6, Collections.max(lastLine));
         if(Collections.max(lastLine)==0){
             aux_crash += 1;
         } else{
              aux_crash = 0;
         }
         
-        if(aux_crash > 5){
+        if(aux_mt>20) {
+                System.out.println("  \nSync failed");
+                oc.vision.setCrash(true);
+                aux_mt = 0;
+                oc.vision.setIValues(5, 1);
+            }else{
+             oc.vision.setIValues(5, 0);
+        }
+        
+        if(aux_crash > 10){
+            System.out.println("  \n no salicence");
             oc.vision.setCrash(true);
             aux_crash = 0;
+            
+          oc.vision.setIValues(5, 1);
+            }else{
+             oc.vision.setIValues(5, 0);
         }
         float[] stateArray;
         if(num_pioneer>1){

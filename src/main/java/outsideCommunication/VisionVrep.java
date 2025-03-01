@@ -93,8 +93,8 @@ public class VisionVrep implements SensorI{
         executedActions = new ArrayList();
         this.res = res;
         this.max_time_graph = max_time_graph;
-        // Float Global_Reward, HeadPitch, NeckYaw, CurV, CurD, Instant_Reward, _, _
-        // Int n_tables, exp, Fovea, _, act_n, _, _, _
+        // Float Global_Reward, HeadPitch, NeckYaw, CurV, CurD, Instant_Reward, maxSalValue, _
+        // Int n_tables, exp, Fovea, printStep, act_n, _, _, _
         
         for(int i=0;i<8;i++){
             lastLinef.add(0f);
@@ -289,7 +289,7 @@ public class VisionVrep implements SensorI{
         double processCpuLoad = osBean.getProcessCpuLoad() * 100;
         long freeMemory = osBean.getFreePhysicalMemorySize(); // Free memory in bytes
         long totalMemory = osBean.getTotalPhysicalMemorySize();
-
+        lastLinef.set(6, (float) freeMemory);
            
 
  // Log metrics to MLflow
@@ -299,19 +299,38 @@ public class VisionVrep implements SensorI{
         MLflowLogger.logMetric(runId, "total_memory", totalMemory / (1024 * 1024), lastLinei.get(1)); // Convert to MB
 
             }
+            
+            printToFile("rewards.txt",true);
+            printToFile("nrewards.txt",false);
+            
+            
+            if(position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2 || lastLinei.get(5)==1){
             System.out.println("Marta crashed on exp "+this.getEpoch()+" with z = "+position.getArray()[2]+
                     " with x = "+position.getArray()[0]+
                     " with m_act = "+m_act+
-                    " Act:"+lastLinei.get(4));
-                            
-            printToFile("rewards.txt",true);
-            printToFile("nrewards.txt",false);
+                    " Act:"+lastLinei.get(4)+" Sync:"+lastLinei.get(5));
+            
+             vrep.simxPauseCommunication(clientID, true);
+            vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait);
+            
+            vrep.simxPauseCommunication(clientID, false);
+            vrep.simxStartSimulation(clientID, remoteApi.simx_opmode_oneshot_wait);
+            
+            
+            }
+            
+            /*
+            Pause simualtion to restart
+            
             
             vrep.simxPauseCommunication(clientID, true);
             vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait);
             
             vrep.simxPauseCommunication(clientID, false);
             vrep.simxStartSimulation(clientID, remoteApi.simx_opmode_oneshot_wait);
+            
+            */
+                    
             /*try {
 			Thread.sleep(20);
 		} catch (Exception e) {
@@ -332,8 +351,9 @@ public class VisionVrep implements SensorI{
             crash = false;
             lastLinei.set(4,0);
             //lastLinei.set(5,100);
-            lastLinei.set(6,0);
+            //lastLinei.set(6,0);
             lastLinei.set(2,0);
+            if(lastLinei.get(6)>0) lastLinei.set(5, 0);
             executedActions.clear();
             this.setNextAct(true);
             this.setNextActR(true);
@@ -560,8 +580,9 @@ public class VisionVrep implements SensorI{
                             " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
                             " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
-                            " LastAct: "+lastAction+ " color1:"+colorObjs.get(0).toString()+" color2:"+ colorObjs.get(1).toString()+
-                            " Pos1:"+positions[0].toString()+" Pos2:"+positions[1].toString();
+                            " LastAct: "+lastAction+ " color1:"+colorObjs.get(0).toString()+" color2:"+ Arrays.toString(colorObjs.get(1))+
+                            " Pos1:"+Arrays.toString(positions[0])+" Pos2:"+Arrays.toString(positions[1])+" MaxSalValue:"+lastLinef.get(6)+
+                             " Memory:"+lastLinef.get(6);
                     out.println(s);
 
                     s = " QTables:"+lastLinei.get(0)+
@@ -571,8 +592,9 @@ public class VisionVrep implements SensorI{
                             " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
                             " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
-                            " LastAct: "+lastAction+ " color1:"+colorObjs.get(0).toString()+" color2:"+ colorObjs.get(1).toString()+
-                            " Pos1:"+positions[0].toString()+" Pos2:"+positions[1].toString();
+                            " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+" color2:"+ Arrays.toString(colorObjs.get(1))+
+                            " Pos1:"+Arrays.toString(positions[0])+" Pos2:"+Arrays.toString(positions[1])+" MaxSalValue:"+lastLinef.get(6)+
+                            " Memory:"+lastLinef.get(6);
                 }else{
                                         s = " QTables:"+lastLinei.get(0)+
                             " Exp:"+lastLinei.get(1)+
@@ -582,18 +604,20 @@ public class VisionVrep implements SensorI{
                             " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+
-                            " Pos1:"+Arrays.toString(positions[0]);
+                            " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+
+                            " Memory:"+lastLinef.get(6);
                     out.println(s);
 
-                    s = " QTables:"+lastLinei.get(0)+
+                    s = " \nQTables:"+lastLinei.get(0)+
                             " Exp:"+lastLinei.get(1)+
                             " Nact:"+lastLinei.get(4)+ 
-                            " fov:"+lastLinei.get(2)+
+                            " \nfov:"+lastLinei.get(2)+
                             " G_Reward:"+lastLinef.get(0)+" Ri:"+lastLinef.get(5)+
                             " CurV:"+lastLinef.get(3)+" dCurV:"+lastLinef.get(4)+
-                            " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
-                            " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+
-                            " Pos1:"+Arrays.toString(positions[0]);
+                            " \nHeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
+                            " LastAct: "+lastAction+ "\n color1:"+Arrays.toString(colorObjs.get(0))+
+                            " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+"\n"+
+                            " Memory:"+lastLinef.get(6);
                 }
                 if(debugp) System.out.println(s);
                 
@@ -601,13 +625,14 @@ public class VisionVrep implements SensorI{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        if(lastLinei.get(1)%5 == 0) saveImage(vision_data, res, dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_rgb.png", dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_gsc.png");
+        if(lastLinei.get(1)%5 == 0) saveImage(vision_data, res, dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_rgb.png",
+                dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_gsc.png");
         
     }
     
     public static void saveImage(List<Float> vision_data, int res, String colorFilename, String grayscaleFilename) {
         BufferedImage colorImage = new BufferedImage(res, res, BufferedImage.TYPE_INT_RGB);
-        BufferedImage grayscaleImage = new BufferedImage(res, res, BufferedImage.TYPE_BYTE_GRAY);
+        //BufferedImage grayscaleImage = new BufferedImage(res, res, BufferedImage.TYPE_BYTE_GRAY);
 
         for (int y = 0; y < res; y++) {
             for (int x = 0; x < res; x++) {
@@ -626,14 +651,14 @@ public class VisionVrep implements SensorI{
                 colorImage.setRGB(x, y, rgb);
 
                 // Converter para escala de cinza (usando luminância perceptual)
-                int gray = (int) (0.299 * r + 0.587 * g + 0.114 * b);
-                grayscaleImage.setRGB(x, y, (gray << 16) | (gray << 8) | gray);
+                /*int gray = (int) (0.299 * r + 0.587 * g + 0.114 * b);
+                grayscaleImage.setRGB(x, y, (gray << 16) | (gray << 8) | gray);*/
             }
         }
 
         try {
             ImageIO.write(colorImage, "png", new File("data/"+colorFilename));
-            ImageIO.write(grayscaleImage, "png", new File("data/"+grayscaleFilename));
+           // ImageIO.write(grayscaleImage, "png", new File("data/"+grayscaleFilename));
            
         } catch (IOException e) {
             System.err.println("Erro ao salvar a imagem: " + e.getMessage());

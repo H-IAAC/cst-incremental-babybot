@@ -158,10 +158,10 @@ public class LearnerCodeletNet extends Codelet
                 
                 
 		// learning mode ---> build DQN from scratch
-		if (mode.equals("learning") && this.stage == 1) {
+		if (mode.equals("learning") && this.stage == 1 && experiment_number == 1) {
 			dql = new QLearningDiscreteDenseRBF(mdp, MARTA_NET, MARTA_QL, manager);
         
-		} else if (mode.equals("learning") && this.stage > 1){
+		} else if (mode.equals("learning") && this.stage > 1  && experiment_number > 1){
                     try {
                         dql = new QLearningDiscreteDenseRBF(mdp, DQNPolicy.load(currentDir+path_model).getNeuralNet(), MARTA_QL,
                     manager);
@@ -245,6 +245,8 @@ if(debug) System.out.println("init learner");
     @Override
     public void proc() {
         if(debug) System.out.println("Learner proc");
+        
+        if(oc.vision.getIValues(5)==0){
         QLStepReturn<Observation> obsStep = null;
         
         Observation lastState; 
@@ -276,11 +278,11 @@ if(debug) System.out.println("init learner");
                 System.out.println("No state to update: " + e.getMessage());
             }
 
-            
+        }
 
            if(debug) System.out.println("trainSp");
 
-            if (oc.vision.endEpochR()) {
+            if (mode.equals("learning") && oc.vision.endEpochR()) {
                 dql.postEpoch();
                         dql.incrementEpoch();
                         System.out.println("end epoch before save model");
@@ -300,13 +302,13 @@ if(debug) System.out.println("init learner");
             }
             
             if(debug) System.out.println("post step");
-        }
-        System.out.println("end learner proc. obsStep:"+obsStep);
+        
+        if(debug) System.out.println("obsStep:"+obsStep);
         if(qList.size() == timeWindow){
                 qList.remove(0);
             }
         qList.add(obsStep);
-        
+        }
     }
 
 

@@ -63,14 +63,17 @@ public class DepthVrep implements SensorI {
         this.stage = newstage;
     }
 
-    @Override
-    public Object getData() {
-/*        try {
-            Thread.sleep(200);
-        } catch (Exception e) {
-            Thread.currentThread().interrupt();
-        }*/
-        IntWA resolution = new IntWA(2);
+    private final Object lock = new Object();
+
+@Override
+public Object getData() {
+    synchronized (lock) {
+        return getDepthDataInternal();
+    }
+}
+
+private Object getDepthDataInternal() {
+    IntWA resolution = new IntWA(2);
         FloatWA auxValues_WA = new FloatWA(res * res);
         float[] temp_dep;
 
@@ -85,6 +88,17 @@ public class DepthVrep implements SensorI {
                         System.err.println("Depth Invalid clientID or vision handle. Exiting...");
                         return depth_data; // Exit if critical values are uninitialized
                     }
+
+                    if (resolution.getArray().length < 2 || auxValues_WA.getArray().length == 0) {
+                        System.err.println("Erro: Variáveis não inicializadas corretamente!");
+                        return depth_data;
+                    }
+                    
+                    if (vrep == null) {
+                        System.err.println("Erro: API remota não inicializada corretamente!");
+                        return depth_data;
+                    }
+
 
                     read_depth = vrep.simxGetVisionSensorDepthBuffer(clientID, vision_handles.getValue(), resolution, auxValues_WA, vrep.simx_opmode_streaming);
                     if (read_depth == remoteApi.simx_return_ok) {
@@ -119,7 +133,10 @@ public class DepthVrep implements SensorI {
             }
         }
         return depth_data;
-    }
+}
+
+
+  
 
     private void processDepthData(float[] temp_dep, float[] depth_or) {
         int count_aux = 0;

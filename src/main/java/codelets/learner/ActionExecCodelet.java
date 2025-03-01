@@ -418,6 +418,8 @@ public class ActionExecCodelet extends Codelet
         if(this.oc.vision.endEpoch() ){
              crashed = true;
              this.oc.vision.setIValues(4, (int) 0);
+             neckMotorMO.setI(0f);
+             headMotorMO.setI(0f);
              
         } else{
             this.oc.vision.setIValues(4, (int) (this.oc.vision.getIValues(4)+1));

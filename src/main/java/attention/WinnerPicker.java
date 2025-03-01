@@ -255,12 +255,12 @@ public class WinnerPicker extends Codelet{
         if(this.vision.getEpoch() %print_step == 0){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
         LocalDateTime now = LocalDateTime.now();
-        if(this.vision.getIValues(1)%5 == 0 ){
+        
             try(FileWriter fw = new FileWriter("profile/"+filename,true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw))
             {
-                out.println(dtf.format(now)+"_"+this.vision.getIValues(1)+"_"+this.vision.getIValues(4) +time_graph+" "+ object);
+                out.println(dtf.format(now)+"_"+(int) this.vision.getIValues(1)+"_"+(int) this.vision.getIValues(4) +"_"+time_graph+" "+ object);
                 //if(time_graph == max_time_graph-1) System.out.println(filename+": "+time_graph);          
                 time_graph++;
                 out.close();
@@ -268,7 +268,7 @@ public class WinnerPicker extends Codelet{
                 e.printStackTrace();
             }
         }
-        }
+        
     }
 /*    
     private void printToFileComplet(long t, Object winner, long fireTime, long timeCourse, float attAntWinner, float attAftWinner, double delta, int winnersListSize, String fase, String filename){
