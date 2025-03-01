@@ -42,7 +42,7 @@ public class CuriosityDrive_MotivationCodelet extends MotivationalCodelet
     private int stage, nActions;
     private ArrayList<String> allActionsList;
     private double activation;
-    private boolean debug = false;
+    private boolean debug = true;
     private int index = -1;
     private MemoryContainer motivationMC;
     private ArrayList<Double> curiosity_motivation_list;
@@ -63,10 +63,10 @@ private List<String> allStatesList;
         this.num_tables = num_tables;
         exp_c = oc.vision.getEpoch();
          if(stage == 1 || stage == 2){
-            nActions = 10;
+            nActions = 14;
             allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13")); //"aa1", "aa2", 
         }else if(stage == 3){
-            nActions = 20;
+            nActions = 17;
             allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13",
                     "aa0", "aa1", "aa2")); //, 
         }
@@ -197,8 +197,8 @@ private List<String> allStatesList;
         else{
             int count_cur = 0;
             ArrayList<String> getExecutedAct = oc.vision.getExecutedAct();
-            for(String action : allActionsList){
-                if(!getExecutedAct.contains(action)) count_cur+=1;
+            for(int action=0; action < allActionsList.size(); action++){
+                if(!getExecutedAct.contains(String.valueOf(action))) count_cur+=1;
             }
         activation = (double) count_cur/allActionsList.size();
         activation = (double) Math.ceil(activation / 0.2) * 0.2;
