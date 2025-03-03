@@ -42,7 +42,7 @@ public class CuriosityDrive_MotivationCodelet extends MotivationalCodelet
     private int stage, nActions;
     private ArrayList<String> allActionsList;
     private double activation;
-    private boolean debug = true;
+    private boolean debug = false;
     private int index = -1;
     private MemoryContainer motivationMC;
     private ArrayList<Double> curiosity_motivation_list;

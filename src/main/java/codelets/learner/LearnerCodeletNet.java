@@ -162,7 +162,7 @@ public class LearnerCodeletNet extends Codelet
 		if (mode.equals("learning") && this.stage == 1 && experiment_number == 1) {
 			dql = new QLearningDiscreteDenseRBF(mdp, MARTA_NET, MARTA_QL, manager);
         
-		} else if (mode.equals("learning") && this.stage > 1  && experiment_number > 1){
+		} else if (mode.equals("learning") && (this.stage > 1  || experiment_number > 1)){
                     try {
                         dql = new QLearningDiscreteDenseRBF(mdp, DQNPolicy.load(currentDir+path_model).getNeuralNet(), MARTA_QL,
                     manager);

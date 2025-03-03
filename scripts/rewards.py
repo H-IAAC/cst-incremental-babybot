@@ -6,8 +6,8 @@ import os
 import cv2
 import math
 import statistics
-debug = False
-m_i = True
+debug = True
+m_i = False
 from matplotlib.ticker import PercentFormatter
 
 
@@ -187,7 +187,7 @@ def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, pri
     Y_ticks_act = [i for i in range(min_r,max_ticks, step_ticks)]
 
     plt.figure(figsize=(40,20))
-
+    print("before subplot")
     fig, ax1 = plt.subplots(figsize=(40, 20))
     ax1.set_ylim([min_r, max_ticks])
     color = 'tab:blue'
@@ -197,11 +197,14 @@ def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, pri
     ax1.set_xticks(expx)
     ax1.tick_params(axis='y') # , labelcolor=color
     ax1.set_ylabel(title)  # we already handled the x-label with ax1
+    print("before plot")
     ax1.plot(exp, mean1, '^b:', label="Rewards") #color=color
+    print("before fill")
     plt.fill_between(exp,np.array(mean1)-np.array(dv1)/2,np.array(mean1)+np.array(dv1)/2,alpha=.1, color=color)
 
     
     plt.legend(loc="upper left")
+    print("before save")
     plt.savefig(output_folder+title+'.pdf')  
 
 def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks):
@@ -312,7 +315,7 @@ plots1 = get_mean_n_std(mean_ticks, results1)
 cut2 = -9
 y_rewards = 140
 ticks_rewards = 20
-y_actions = 505
+y_actions = 550
 ticks_actions = 50
 
 exp1 = [i for i in range(0,mean_ticks+1)]
@@ -325,15 +328,18 @@ exp1[0] = 1
 
 plots1[0][0]=-2
 
-
+print("before plot")
 plot_graphs_mean_dv("Rewards", plots1[0], plots1[1],  plots1[4], exp1, y_rewards, ticks_rewards, False)
 #plots1[2][7]=40
 #plots1[2][19] = 160
 #plots2s[2][17] = 160
+
+print("before plot aC")
 plot_graphs_mean_dv_act("Number of Actions Performed", plots1[2], plots1[3], plots1[4], exp1, 
                         y_actions, ticks_actions)
 
 
+print("before replace")
 def replace(results):
     aux = []
     for element in results:
@@ -354,7 +360,7 @@ results1[0] = results1[3]
 #plots2s = get_mean_n_std(mean_ticks, results2s)
 
 
-y_rewards = 500
+y_rewards = 510
 ticks_rewards = 10
 
 
