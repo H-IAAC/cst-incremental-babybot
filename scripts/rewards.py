@@ -15,15 +15,19 @@ from matplotlib.ticker import PercentFormatter
 #width_space = 2.0
 
 
-# 1 Q-Table
-file1 = "../results/profile/nrewards.txt"
-file1a = "../results/profile/nrewards.txt"
+# 1 substage
+file1 = "../results/1st/profile/nrewards.txt"
+file1a = "../results/1st/profile/nrewards.txt"
 
 
-# 2 Q-Tables
-#file2c = "../results/2QTables/profile/nrewards.txt"
-#file2s = "../results/2QTables/profile/nrewards.txt"
-#file2a = "../results/2QTables/profile/nrewards.txt"
+# 2 substage
+file2 = "../results/2nd/profile/nrewards.txt"
+file2a = "../results/2nd/profile/nrewards.txt"
+
+# 3 substage
+file3 = "../results/3rd/profile/nrewards.txt"
+file3a = "../results/3rd/profile/nrewards.txt"
+
 
 output_folder = "../results/"
 
@@ -58,7 +62,7 @@ def get_data(filer, filea, n_exps):
         if len(rewards[j])==0: rewards[j] = 0
         else: 
             #if debug: print("j: "+str(j))
-            rewards[j] = np.mean(rewards[j])   
+            rewards[j] = np.max(rewards[j])   
 
         if len(dr_c[j])==0: dr_c[j] = 0
         else: 
@@ -179,10 +183,12 @@ def get_mean_n_std(step, results):
 
 plt.rcParams['font.size'] = '42'
 
-def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, print_all):
+def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, print_all, mean2, dv2, mean3, dv3):
     
-    min_r1 = min(mean1)
-    min_r = int(min_r1)-1
+    min_r1 = min(mean1, mean2, mean3)
+    min_r = min(min_r1)
+    min_r = int(min_r)-1
+
     Y_ticks = [i for i in range(min_r,max_ticks+4, step_ticks)]
     Y_ticks_act = [i for i in range(min_r,max_ticks, step_ticks)]
 
@@ -190,27 +196,40 @@ def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, pri
     print("before subplot")
     fig, ax1 = plt.subplots(figsize=(40, 20))
     ax1.set_ylim([min_r, max_ticks])
-    color = 'tab:blue'
     ax1.set_xlabel('Epoch')
-    
     ax1.set_yticks(Y_ticks)
     ax1.set_xticks(expx)
     ax1.tick_params(axis='y') # , labelcolor=color
     ax1.set_ylabel(title)  # we already handled the x-label with ax1
-    print("before plot")
-    ax1.plot(exp, mean1, '^b:', label="Rewards") #color=color
-    print("before fill")
+    print("before plot 1")
+    
+    color = 'tab:blue'
+    ax1.plot(exp, mean1, '^b:', label="1st Substage") #color=color
     plt.fill_between(exp,np.array(mean1)-np.array(dv1)/2,np.array(mean1)+np.array(dv1)/2,alpha=.1, color=color)
 
-    
-    plt.legend(loc="upper left")
+    #ax2 = ax1.twinx()
+    color = 'tab:red'
+    #ax2.tick_params(axis='y')
+    ax1.plot(exp, mean2, '^r:', label="2nd Substage") #color=color
+    plt.fill_between(exp,np.array(mean2)-np.array(dv2)/2,np.array(mean2)+np.array(dv2)/2,alpha=.1, color=color)
+
+    #ax3 = ax1.twinx()
+    color = 'tab:orange'
+    #ax3.tick_params(axis='y')
+    ax1.plot(exp, mean3, '^y:', label="3rd Substage") #color=color
+    plt.fill_between(exp,np.array(mean3)-np.array(dv3)/2,np.array(mean3)+np.array(dv3)/2,alpha=.1, color=color)
+
+    plt.legend(loc="lower right")
     print("before save")
+
+    fig.tight_layout()
+
     plt.savefig(output_folder+title+'.pdf')  
 
-def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks):
+def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks, mean2, dv2, mean3, dv3):
     
-    min_r = min(mean1)
-    
+    min_r = min(mean1, mean2, mean3)
+    min_r = min(min_r)
     Y_ticks = [i for i in range(min_r,max_ticks, step_ticks)]
     Y_ticks_act = [i for i in range(0,max_ticks, step_ticks)]
 
@@ -225,10 +244,23 @@ def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks)
     ax1.set_xticks(expx)
     ax1.tick_params(axis='y') # , labelcolor=color
     ax1.set_ylabel(title)  # we already handled the x-label with ax1
-    ax1.plot(exp, mean1, '^b:', label="1 Q-Table") #color=color
+    ax1.plot(exp, mean1, '^b:', label="1st Substage") #color=color
     plt.fill_between(exp,np.array(mean1)-np.array(dv1)/2,np.array(mean1)+np.array(dv1)/2,alpha=.1, color=color)
 
-    plt.legend(loc="upper left")
+    #ax2 = ax1.twinx()
+    color = 'tab:red'
+    #ax2.tick_params(axis='y')
+    ax1.plot(exp, mean2, '^r:', label="2nd Substage") #color=color
+    plt.fill_between(exp,np.array(mean2)-np.array(dv2)/2,np.array(mean2)+np.array(dv2)/2,alpha=.1, color=color)
+
+    #ax3 = ax1.twinx()
+    color = 'tab:orange'
+    #ax3.tick_params(axis='y')
+    ax1.plot(exp, mean3, '^y:', label="3rd Substage") #color=color
+    plt.fill_between(exp,np.array(mean3)-np.array(dv3)/2,np.array(mean3)+np.array(dv3)/2,alpha=.1, color=color)
+    plt.legend(loc="lower right")
+    fig.tight_layout()
+
     plt.savefig(output_folder+title+'.pdf')  
 
 
@@ -263,7 +295,7 @@ def plot_graphs(title, mean1, exp, mean2, max_ticks, step_ticks):
     else:
         ax1.plot(exp, mean2, 'sr:', label="Drives") #color=color
         
-    plt.legend(loc="upper left")
+    plt.legend(loc="lower right")
 
     plt.savefig(output_folder+title+'.pdf')  
     #plt.show()
@@ -291,31 +323,51 @@ strings_to_remove = [
 remove_strings_from_file(file1, strings_to_remove)
 remove_strings_from_file(file1a, strings_to_remove)
 
+remove_strings_from_file(file2, strings_to_remove)
+remove_strings_from_file(file2a, strings_to_remove)
+
+remove_strings_from_file(file3, strings_to_remove)
+remove_strings_from_file(file3a, strings_to_remove)
 
 exps = 301
 ## Get data
 lenght= 11
 lenghta=12
 results1 = get_data(file1,file1a, exps)
+results2 = get_data(file2,file2a, exps)
+results3 = get_data(file3,file2a, exps)
 
 
 # rewards, exps, actions, batery, curiosity, r, g, b
-print(f"num Exps: {len(results1[1])}")
-
+print(f"1st Substage -- num Exps: {len(results1[1])}")
 print(f"Mean rewards 1: {statistics.mean(results1[0])}. Stdv: +- {statistics.stdev(results1[0])} ")
-
 print(f"Mean actions 1: {statistics.mean(results1[2])}. Stdv: +- {statistics.stdev(results1[2])} ")
-
 mean_ticks = 15
-print("1 Q-Table------------- Rewards")
+print("1 Substage------------- Rewards")
 plots1 = get_mean_n_std(mean_ticks, results1)
+
+
+print(f"2nd Substage -- num Exps: {len(results2[1])}")
+print(f"Mean rewards 2: {statistics.mean(results2[0])}. Stdv: +- {statistics.stdev(results2[0])} ")
+print(f"Mean actions 2: {statistics.mean(results2[2])}. Stdv: +- {statistics.stdev(results2[2])} ")
+print("2 Substage------------- Rewards")
+plots2 = get_mean_n_std(mean_ticks, results2)
+
+
+
+print(f"3rd Substage -- num Exps: {len(results3[1])}")
+print(f"Mean rewards 3: {statistics.mean(results3[0])}. Stdv: +- {statistics.stdev(results3[0])} ")
+print(f"Mean actions 3: {statistics.mean(results3[2])}. Stdv: +- {statistics.stdev(results3[2])} ")
+print("3 Substage------------- Rewards")
+plots3 = get_mean_n_std(mean_ticks, results3)
+
 
 # X Axis for Means     
 #exp1 = [ep/2 for ep in exp1]
 cut2 = -9
-y_rewards = 140
-ticks_rewards = 20
-y_actions = 550
+y_rewards = 500
+ticks_rewards = 50
+y_actions = 580
 ticks_actions = 50
 
 exp1 = [i for i in range(0,mean_ticks+1)]
@@ -327,16 +379,19 @@ exp1[0] = 1
 # dv_g, mean_b, dv_b, exps_s
 
 plots1[0][0]=-2
+plots2[0][0]=-2
+plots3[0][0]=-2
+
 
 print("before plot")
-plot_graphs_mean_dv("Rewards", plots1[0], plots1[1],  plots1[4], exp1, y_rewards, ticks_rewards, False)
+plot_graphs_mean_dv("Rewards", plots1[0], plots1[1],  plots1[4], exp1, y_rewards, ticks_rewards, False, plots2[0],  plots2[1], plots3[0],  plots3[1])
 #plots1[2][7]=40
 #plots1[2][19] = 160
 #plots2s[2][17] = 160
 
 print("before plot aC")
 plot_graphs_mean_dv_act("Number of Actions Performed", plots1[2], plots1[3], plots1[4], exp1, 
-                        y_actions, ticks_actions)
+                        y_actions, ticks_actions, plots2[2],  plots2[3], plots3[2],  plots3[3])
 
 
 print("before replace")
