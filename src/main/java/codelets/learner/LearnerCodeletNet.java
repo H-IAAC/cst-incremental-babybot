@@ -261,15 +261,18 @@ if(debug) System.out.println("init learner");
 
             if(debug) System.out.println("state list is empty");
         }
-        if (mode.equals("learning") && !oc.vision.endEpochR()) {
+        if (!oc.vision.endEpochR()) {
             
 
             try {
                if(debug) System.out.println("Learner try");
                 
+                if(mode.equals("learning")){
                 float reward = oc.vision.getFValues(0) ;
+            
                  dql.setReward(reward);
-                 obsStep = dql.trainSp(lastState);
+                }
+               obsStep = dql.trainSp(lastState);
                  
                 // Update Q-values and track Q-value changes
                 
