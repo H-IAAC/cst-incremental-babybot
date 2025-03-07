@@ -162,7 +162,8 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
-                //System.out.println("yawPos: "+yawPos+" headPos: "+headPos);
+        if(debug) System.out.println("  Decision proc"); 
+                System.out.println(" Decision proc yawPos: "+yawPos+" headPos: "+headPos);
 	/*try {
             Thread.sleep(50);
         } catch (Exception e) {
@@ -176,14 +177,14 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         QLStepReturn<Observation> ql = null;
         
         if(motivationMO == null){
-            if(sdebug) System.out.println("DECISION -----  motivationMO is null");
+            if(debug) System.out.println("DECISION -----  motivationMO is null");
                 return;
             }
         
         
-       if(debug) System.out.println("  Decision proc"); 
+       
        if(qList.isEmpty()){
-                if(debug) System.out.println("  qtable empty"); 
+                if(debug) System.out.println(" Decision qtable empty"); 
                 return;
        }
         ql = qList.get(qList.size()-1);
@@ -191,11 +192,11 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         
        
         if(ql==null){
-            if(debug) System.out.println("  ql==null"); 
+            if(debug) System.out.println(" Decision ql==null"); 
             return;
         }
         
-        if(debug) System.out.println(" ql not null"); 
+        if(debug) System.out.println("Decision ql not null"); 
         
         Observation state = null;
         if(!saliencyMap.isEmpty() ) state = getStateFromSalMap();
@@ -226,7 +227,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
 
     public Observation getStateFromSalMap() {
         lastLine = (ArrayList<Float>) saliencyMap.get(saliencyMap.size() -1);
-
+       
         // Drive Curiosidade
         float driveValueFloat = (float) oc.vision.getFValues(3);
         
@@ -258,7 +259,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
              aux_mt = 0;
         }
         oc.vision.setFValues(6, Collections.max(lastLine));
-        if(Collections.max(lastLine)==0){
+        if(Collections.max(lastLine)<0.00001){
             aux_crash += 1;
         } else{
              aux_crash = 0;

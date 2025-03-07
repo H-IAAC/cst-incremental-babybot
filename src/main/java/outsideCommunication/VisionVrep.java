@@ -43,6 +43,7 @@ import com.sun.management.OperatingSystemMXBean;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 
@@ -132,10 +133,21 @@ public class VisionVrep implements SensorI{
 	if (obj_handle.getValue() == -1) System.out.println("Error on connecting to "+s);
 		
         vrep.simxGetObjectPosition(clientID, obj_handle.getValue(), -1, position, vrep.simx_opmode_blocking);
+        float[] positionf = position.getArray();
+        if(Math.abs(positionf[0])>0.0001 && Math.abs(positionf[1])>0.0001){
         if(s.equals("Pioneer1")){
             positions[0] = position.getArray();
         } else if(s.equals("Pioneer2")){
             positions[1] = position.getArray();
+        }
+        }else{
+            if(positions[0]!=null){
+                System.out.println(positions[0]);
+            positionf[0] = positions[0][0];
+            positionf[1] = positions[0][1];
+            positionf[2] = positions[0][2];
+            }
+            return positionf;
         }
         return position.getArray();
     }

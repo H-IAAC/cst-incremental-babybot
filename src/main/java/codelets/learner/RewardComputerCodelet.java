@@ -202,7 +202,7 @@ public class RewardComputerCodelet extends Codelet
         try {
             yawPos = oc.NeckYaw_m.getSpeed();
             headPos = oc.HeadPitch_m.getSpeed(); 
-                //System.out.println("yawPos: "+yawPos+" headPos: "+headPos);
+                System.out.println("Rewards - yawPos: "+yawPos+" headPos: "+headPos);
         } catch (Exception e) {
              if(debug) System.out.println("getSpeed null ");
             return;
@@ -219,11 +219,11 @@ public class RewardComputerCodelet extends Codelet
         }
         
         if(debug) System.out.println(
-                " motivationValues - C: "+motivationMO.getValue());
+                "Rewards -  motivationValues - C: "+motivationMO.getValue());
 
 
         if(actionsList.isEmpty()){
-            System.out.println("actionsList.isEmpty()");
+            System.out.println("Rewards -  actionsList.isEmpty()");
             return;
         } 
         

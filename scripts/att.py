@@ -294,28 +294,28 @@ if clean:
 
 
 # ID inputs - Format "YYYY_MM_DD_HH_MM_SS_step"
-goal_time_img = "2025_02_28_13_53_14_105_31_rgb" # t = 1
-goal_time_red = "2025_02_28_13_53_14_105_31_rgb" # t = 3
-goal_time_redFM = "2025_02_28_13_53_14_105_31_rgb" # t = 3
+goal_time_img = "2025_03_07_17_04_05_30_223_rgb" # t = 1
+#3goal_time_red = "2025_03_07_16_44_34_15_428_rgb" # t = 3
+#goal_time_redFM = "2025_03_07_16_44_34_15_428_rgb" # t = 3
 
-goal_time_green = "2025_02_28_13_53_14_105_31_rgb" # t = 3
-goal_time_greenFM = "2025_02_28_13_53_14_105_31_rgb"
+#goal_time_green = "2025_03_07_16_44_34_15_428_rgb" # t = 3
+#goal_time_greenFM = "2025_03_07_16_44_34_15_428_rgb"
 
-goal_time_blue = "2025_02_28_13_53_14_105_31_rgb" # t = 3
-goal_time_blueFM = "2025_02_28_13_53_14_105_31_rgb"
+#goal_time_blue = "2025_03_07_16_44_34_15_428_rgb" # t = 3
+#goal_time_blueFM = "2025_03_07_16_44_34_15_428_rgb"
 
-goal_time_topColor = "2025_02_28_13_53_14_105_31_rgb" # t = 3
+#goal_time_topColor = "2025_03_07_16_44_34_15_428_rgb" # t = 3
 
 #goal_time_depth = "2024_10_10_05_16_02_20_1004" # t = 2
 #goal_time_depthFM = "2024_10_19_14_35_22_30_1893" # t = 3
 #goal_time_topdepthFM = "2024_10_10_05_16_02_20_1004" # t = 3
 
-goal_time_cfm =  "2025_02_28_13_53_14_105_34_36" # t = 3
+#goal_time_cfm =  "2025_03_07_16_43_28_15_187_rgb" # t = 3
  
-goal_time_sal =  "2025_02_28_13_53_14_105_34_36" # t = 3
-goal_time_att =  "2025_02_28_13_53_14_105_31_rgb" # t = 3
-goal_time_win =  "2025_02_28_13_53_14_105_31_rgb" # t = 3 
-goal_time_winT =  "2025_02_28_13_53_14_105_31_rgb" # t = 3 
+goal_time_sal =  "2025_03_07_17_04_05_30_223_rgb" # t = 3
+goal_time_att =  "2025_03_07_17_04_05_30_223_rgb" # t = 3
+#goal_time_win =  "2025_03_07_16_44_34_15_428_rgb" # t = 3 
+#goal_time_winT =  "2025_03_07_16_44_34_15_428_rgb" # t = 3 
 
 if debug: print("begin")
 # Open grayscaled img 
@@ -357,14 +357,14 @@ if aux_img > 0:
     
     if debug: print("fms")
 
-    map_data("fm", path_res+"vision_red_FM.txt", goal_time_redFM, goal_time_img, img)
-    map_data("fm", path_res+"vision_green_FM.txt", goal_time_greenFM, goal_time_img, img)
-    map_data("fm", path_res+"vision_blue_FM.txt", goal_time_blueFM, goal_time_img, img)
+ #   map_data("fm", path_res+"vision_red_FM.txt", goal_time_redFM, goal_time_img, img)
+ #   map_data("fm", path_res+"vision_green_FM.txt", goal_time_greenFM, goal_time_img, img)
+ #   map_data("fm", path_res+"vision_blue_FM.txt", goal_time_blueFM, goal_time_img, img)
     #map_data("fm", path_res+"depth_FM.txt", goal_time_depthFM, goal_time_img, img)
     
     if debug: print("color td")
     
-    map_data("fm",path_res+"top_down_color.txt", goal_time_topColor, goal_time_img, img)
+  #  map_data("fm",path_res+"top_down_color.txt", goal_time_topColor, goal_time_img, img)
     
     #if debug: print("region td")
 
@@ -376,7 +376,7 @@ if aux_img > 0:
     
     if debug: print("att")
 
-    map_data("fm", path_res+"CFM.txt", goal_time_cfm, goal_time_img, img)
+   # map_data("fm", path_res+"CFM.txt", goal_time_cfm, goal_time_img, img)
     map_data("fm", path_res+"salMap.txt", goal_time_sal, goal_time_img, img)
     map_data("fm", path_res+"attMap.txt", goal_time_att, goal_time_img, img)
     #map_winner("fm", path_res+"winners.txt", path_res+"winnerType.txt", goal_time_win, goal_time_winT, img)
