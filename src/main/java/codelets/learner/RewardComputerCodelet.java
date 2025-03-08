@@ -360,7 +360,7 @@ public class RewardComputerCodelet extends Codelet
             }
 
             // just Stage 3
-             else if (lastAction.equals("am10") && this.stage == 3) {
+             else if (lastAction.equals("am10") && this.stage > 2) {
                 if(fovea == 0 || fovea == 2){
                     yawPos = yawPos-angle_step;
                    //  neckMotorMO.setI(yawPos);
@@ -371,7 +371,7 @@ public class RewardComputerCodelet extends Codelet
                 }
                 if(nrewards) reward_i += 1;
              }
-             else if (lastAction.equals("am11") && this.stage == 3) {
+             else if (lastAction.equals("am11") && this.stage > 2) {
                 if(fovea == 0 || fovea == 2){
                     yawPos = yawPos+angle_step;
                    //  neckMotorMO.setI(yawPos);
@@ -382,7 +382,7 @@ public class RewardComputerCodelet extends Codelet
                 }
                 if(nrewards) reward_i += 1;
              }
-             else if (lastAction.equals("am12") && this.stage == 3) {
+             else if (lastAction.equals("am12") && this.stage > 2) {
                 if(fovea == 3 || fovea == 2){
                     headPos = headPos-angle_step;
                    //  headMotorMO.setI(headPos);
@@ -393,7 +393,7 @@ public class RewardComputerCodelet extends Codelet
                 }
                 if(nrewards) reward_i += 1;
              }
-             else if (lastAction.equals("am13") && this.stage == 3) {
+             else if (lastAction.equals("am13") && this.stage > 2) {
                 if(fovea == 3 || fovea == 2){
                     headPos = headPos+angle_step;
                    //  headMotorMO.setI(headPos);

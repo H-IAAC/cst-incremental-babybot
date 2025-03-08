@@ -238,7 +238,7 @@ public class BU_FM_Color extends FeatMapCodelet {
        
         featureMap.setI(vision_FM);
         if(debug) System.out.println("vision_FM end: "+vision_FM.size());
-        if(aux > 10){
+        if(aux > 20){
             System.out.println("  \n no red or blue");
             oc.vision.setCrash(true);
             aux = 0;

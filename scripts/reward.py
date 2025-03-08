@@ -196,7 +196,7 @@ def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, pri
     print("before plot 1")
     
     color = 'tab:blue'
-    ax1.plot(exp, mean1, '^b:', label="1st Substage") #color=color
+    ax1.plot(exp, mean1, '^b:', label="2nd Substage") #color=color
     plt.fill_between(exp,np.array(mean1)-np.array(dv1)/2,np.array(mean1)+np.array(dv1)/2,alpha=.1, color=color)
 
    
@@ -226,7 +226,7 @@ def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks)
     ax1.set_xticks(expx)
     ax1.tick_params(axis='y') # , labelcolor=color
     ax1.set_ylabel(title)  # we already handled the x-label with ax1
-    ax1.plot(exp, mean1, '^b:', label="1st Substage") #color=color
+    ax1.plot(exp, mean1, '^b:', label="2nd Substage") #color=color
     plt.fill_between(exp,np.array(mean1)-np.array(dv1)/2,np.array(mean1)+np.array(dv1)/2,alpha=.1, color=color)
 
  
@@ -308,7 +308,7 @@ results1 = get_data(file1,file1a, exps)
 print(f" num Exps: {len(results1[1])}")
 print(f"Mean rewards 1: {statistics.mean(results1[0])}. Stdv: +- {statistics.stdev(results1[0])} ")
 print(f"Mean actions 1: {statistics.mean(results1[2])}. Stdv: +- {statistics.stdev(results1[2])} ")
-mean_ticks = 15
+mean_ticks = 10
 print(" Rewards")
 plots1 = get_mean_n_std(mean_ticks, results1)
 

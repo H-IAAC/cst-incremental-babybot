@@ -113,7 +113,7 @@ public class TD_FM_Color extends FeatMapCodelet {
             vision_color_FM_t.add(new Float(0));
         }
         
-        if(this.stage==3){
+        if(this.stage>2){
             MemoryObject visionDataMO;
 
             if(visionData_buffer.size() < 1){

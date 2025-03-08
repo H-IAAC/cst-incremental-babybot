@@ -285,7 +285,7 @@ public class ActionExecCodelet extends Codelet
             
             // AM10 - Neck to focus
             // just Stage 3
-             else if (actionToTake.equals("am10") && this.stage == 3) {
+             else if (actionToTake.equals("am10") && this.stage > 2) {
                 if(fovea == 0 || fovea == 2){
                     yawPos = yawPos-angle_step;
                     neckMotorMO.setI(yawPos);
@@ -297,7 +297,7 @@ public class ActionExecCodelet extends Codelet
              }
              
              // AM11 - Head to focus
-             else if (actionToTake.equals("am11") && this.stage == 3) {
+             else if (actionToTake.equals("am11") && this.stage > 2) {
                 if(fovea == 0 || fovea == 2){
                     yawPos = yawPos+angle_step;
                     neckMotorMO.setI(yawPos);
@@ -309,7 +309,7 @@ public class ActionExecCodelet extends Codelet
              }
              
              // AM12 - Neck away focus
-             else if (actionToTake.equals("am12") && this.stage == 3) {
+             else if (actionToTake.equals("am12") && this.stage > 2) {
                 if(fovea == 3 || fovea == 2){
                     headPos = headPos-angle_step;
                     headMotorMO.setI(headPos);
@@ -321,7 +321,7 @@ public class ActionExecCodelet extends Codelet
              }
              
              // AM13 - Head away focus
-             else if (actionToTake.equals("am13") && this.stage == 3) {
+             else if (actionToTake.equals("am13") && this.stage > 2) {
                 if(fovea == 3 || fovea == 2){
                     headPos = headPos+angle_step;
                     headMotorMO.setI(headPos);
@@ -337,7 +337,7 @@ public class ActionExecCodelet extends Codelet
              // attentional actions
 
             // AA0 - Define desired color
-            else if (actionToTake.equals("aa0") && this.stage == 3) {
+            else if (actionToTake.equals("aa0") && this.stage > 2) {
                 List desired_feat_color = (List) desFC.getI();        
                 if(desired_feat_color.size() == timeWindow){
                     desired_feat_color.remove(0);
@@ -362,7 +362,7 @@ public class ActionExecCodelet extends Codelet
             } 
 
             // AA1 - Define desired distance
-            else if (actionToTake.equals("aa1") && this.stage == 3) {
+            else if (actionToTake.equals("aa1") && this.stage > 2) {
                    List desired_feat_dist = (List) desFD.getI();        
                 if(desired_feat_dist.size() == timeWindow){
                     desired_feat_dist.remove(0);
@@ -371,7 +371,7 @@ public class ActionExecCodelet extends Codelet
               }
             
             // AA2 - Define desired region
-            else if (actionToTake.equals("aa2") && this.stage == 3) {
+            else if (actionToTake.equals("aa2") && this.stage > 2) {
                   List desired_feat_reg = (List) desFR.getI();        
                 if(desired_feat_reg.size() == timeWindow){
                     desired_feat_reg.remove(0);

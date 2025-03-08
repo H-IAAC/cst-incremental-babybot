@@ -526,7 +526,7 @@ public class VisionVrep implements SensorI{
                         count_aux += 1;
                     } 
                 }
-                if(stage==3){
+                if(stage>2){
                     int pixel_len = 3;
                     int cont_pix = 0;
                     for(int i =0; i < res*res; i++){

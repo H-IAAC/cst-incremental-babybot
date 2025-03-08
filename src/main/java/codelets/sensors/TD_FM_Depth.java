@@ -154,7 +154,7 @@ public class TD_FM_Depth extends FeatMapCodelet {
             depthFM_t.add(new Float(0));
             regionTD_t.add(new Float(0));
         }
-        if(this.stage==3){        
+        if(this.stage>2){        
             MemoryObject depthDataMO;
             if(depthData_buffer.size() < 1){
                 return;

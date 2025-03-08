@@ -140,7 +140,7 @@ OutsideCommunication oc;
                 weight_val = (Float) weight_values.get(k);
                 ctj += weight_val*fmkt_val;
                 
-                if(stage==3) {
+                if(stage>2) {
                     if(k>=2) sum_top += weight_val*fmkt_val;
                     else sum_bottom += weight_val*fmkt_val;
                 }   

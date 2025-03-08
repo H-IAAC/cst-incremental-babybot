@@ -65,7 +65,7 @@ private List<String> allStatesList;
          if(stage == 1 || stage == 2){
             nActions = 14;
             allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13")); //"aa1", "aa2", 
-        }else if(stage == 3){
+        }else if(stage > 2){
             nActions = 17;
             allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13",
                     "aa0", "aa1", "aa2")); //, 

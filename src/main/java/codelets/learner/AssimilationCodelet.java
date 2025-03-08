@@ -78,7 +78,7 @@ public class AssimilationCodelet extends Codelet
 	
         if(stage == 1 || stage == 2){
             nActions = 10;
-        }else if(stage == 3){
+        }else if(stage > 2){
             nActions = 17;
         }
 	/*try {
