@@ -28,6 +28,9 @@ file2a = "../results/2nd/profile/nrewards.txt"
 file3 = "../results/3rd/profile/nrewards.txt"
 file3a = "../results/3rd/profile/nrewards.txt"
 
+# 4 substage
+file4 = "../results/4th/profile/nrewards.txt"
+file4a = "../results/4th/profile/nrewards.txt"
 
 output_folder = "../results/"
 
@@ -183,9 +186,9 @@ def get_mean_n_std(step, results):
 
 plt.rcParams['font.size'] = '42'
 
-def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, print_all, mean2, dv2, mean3, dv3):
+def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, print_all, mean2, dv2, mean3, dv3, mean4, dv4):
     
-    min_r1 = min(mean1, mean2, mean3)
+    min_r1 = min(mean1, mean2, mean3, mean4)
     min_r = min(min_r1)
     min_r = int(min_r)-1
 
@@ -219,6 +222,11 @@ def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, pri
     ax1.plot(exp, mean3, '^y:', label="3rd Substage") #color=color
     plt.fill_between(exp,np.array(mean3)-np.array(dv3)/2,np.array(mean3)+np.array(dv3)/2,alpha=.1, color=color)
 
+    color = 'tab:green'
+    #ax3.tick_params(axis='y')
+    ax1.plot(exp, mean4, '^y:', label="4th Substage") #color=color
+    plt.fill_between(exp,np.array(mean4)-np.array(dv4)/2,np.array(mean4)+np.array(dv4)/2,alpha=.1, color=color)
+
     plt.legend(loc="lower right")
     print("before save")
 
@@ -226,7 +234,7 @@ def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, pri
 
     plt.savefig(output_folder+title+'.pdf')  
 
-def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks, mean2, dv2, mean3, dv3):
+def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks, mean2, dv2, mean3, dv3, mean4, dv4):
     
     min_r = min(mean1, mean2, mean3)
     min_r = min(min_r)
@@ -258,6 +266,13 @@ def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks,
     #ax3.tick_params(axis='y')
     ax1.plot(exp, mean3, '^y:', label="3rd Substage") #color=color
     plt.fill_between(exp,np.array(mean3)-np.array(dv3)/2,np.array(mean3)+np.array(dv3)/2,alpha=.1, color=color)
+
+    color = 'tab:green'
+    #ax3.tick_params(axis='y')
+    ax1.plot(exp, mean4, '^y:', label="4th Substage") #color=color
+    plt.fill_between(exp,np.array(mean4)-np.array(dv4)/2,np.array(mean4)+np.array(dv4)/2,alpha=.1, color=color)
+
+
     plt.legend(loc="lower right")
     fig.tight_layout()
 
@@ -329,14 +344,17 @@ remove_strings_from_file(file2a, strings_to_remove)
 remove_strings_from_file(file3, strings_to_remove)
 remove_strings_from_file(file3a, strings_to_remove)
 
+remove_strings_from_file(file4, strings_to_remove)
+remove_strings_from_file(file4a, strings_to_remove)
+
 exps = 301
 ## Get data
 lenght= 11
 lenghta=12
 results1 = get_data(file1,file1a, exps)
 results2 = get_data(file2,file2a, exps)
-results3 = get_data(file3,file2a, exps)
-
+results3 = get_data(file3,file3a, exps)
+results4 = get_data(file4,file4a, exps)
 
 # rewards, exps, actions, batery, curiosity, r, g, b
 print(f"1st Substage -- num Exps: {len(results1[1])}")
@@ -361,6 +379,11 @@ print(f"Mean actions 3: {statistics.mean(results3[2])}. Stdv: +- {statistics.std
 print("3 Substage------------- Rewards")
 plots3 = get_mean_n_std(mean_ticks, results3)
 
+print(f"4th Substage -- num Exps: {len(results4[1])}")
+print(f"Mean rewards 4: {statistics.mean(results4[0])}. Stdv: +- {statistics.stdev(results4[0])} ")
+print(f"Mean actions 4: {statistics.mean(results4[2])}. Stdv: +- {statistics.stdev(results4[2])} ")
+print("4 Substage------------- Rewards")
+plots4 = get_mean_n_std(mean_ticks, results4)
 
 # X Axis for Means     
 #exp1 = [ep/2 for ep in exp1]
@@ -381,17 +404,19 @@ exp1[0] = 1
 plots1[0][0]=-2
 plots2[0][0]=-2
 plots3[0][0]=-2
-
+plots4[0][0]=-2
 
 print("before plot")
-plot_graphs_mean_dv("Rewards", plots1[0], plots1[1],  plots1[4], exp1, y_rewards, ticks_rewards, False, plots2[0],  plots2[1], plots3[0],  plots3[1])
+plot_graphs_mean_dv("Rewards", plots1[0], plots1[1],  plots1[4], exp1, y_rewards, ticks_rewards, False, 
+                    plots2[0],  plots2[1], plots3[0],  plots3[1], plots4[0],  plots4[1])
 #plots1[2][7]=40
 #plots1[2][19] = 160
 #plots2s[2][17] = 160
 
 print("before plot aC")
 plot_graphs_mean_dv_act("Number of Actions Performed", plots1[2], plots1[3], plots1[4], exp1, 
-                        y_actions, ticks_actions, plots2[2],  plots2[3], plots3[2],  plots3[3])
+                        y_actions, ticks_actions, plots2[2],  plots2[3], plots3[2],  plots3[3],
+                        plots4[2],  plots4[3])
 
 
 print("before replace")

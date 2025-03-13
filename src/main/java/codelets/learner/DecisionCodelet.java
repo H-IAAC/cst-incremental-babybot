@@ -68,7 +68,7 @@ private String mode;
 
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
-private boolean debug = true, sdebug = false;
+private boolean debug = false, sdebug = false;
 private int num_tables, aux_crash = 0,  aux_mt = 0, num_pioneer;
 private ArrayList<String> executedActions  = new ArrayList<>();
 private ArrayList<String> allActionsList;
@@ -162,9 +162,12 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
-        if(debug) System.out.println("  Decision proc"); 
+        if(debug) {
+            System.out.println("  Decision proc");
+        
                 System.out.println(" Decision proc yawPos: "+yawPos+" headPos: "+headPos);
-	/*try {
+        }
+                /*try {
             Thread.sleep(50);
         } catch (Exception e) {
             Thread.currentThread().interrupt();
@@ -219,7 +222,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         action_number += 1;
         oc.vision.addAction(String.valueOf(actionToTake));
         oc.vision.setLastAction(String.valueOf(actionToTake));
-        System.out.println("  \n end decision");
+        if(debug) System.out.println("  \n end decision");
     }
 	
 	
@@ -255,21 +258,21 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
 
         
         if(Math.abs(oc.HeadPitch_m.getSpeed()) < 0.001 && Math.abs(oc.NeckYaw_m.getSpeed()) < 0.001){
-            System.out.println("  \n Motor stopped");
+           if(debug) System.out.println("  \n Motor stopped");
             aux_mt += 1;
         } else{
              aux_mt = 0;
         }
         oc.vision.setFValues(6, Collections.max(lastLine));
         if(Collections.max(lastLine)<0.00001){
-         System.out.println("  \n No salMap");
+        if(debug) System.out.println("  \n No salMap");
             aux_crash += 1;
         } else{
              aux_crash = 0;
         }
         
         if(aux_mt>20) {
-                System.out.println("  \nSync failed 20");
+                if(debug) System.out.println("  \nSync failed 20");
                 oc.vision.setCrash(true);
                 aux_mt = 0;
                 oc.vision.setIValues(5, 1);
@@ -278,7 +281,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         }
         
         if(aux_crash > 10){
-            System.out.println("  \n no salicence 10");
+            if(debug) System.out.println("  \n no salicence 10");
             oc.vision.setCrash(true);
             aux_crash = 0;
             
@@ -315,7 +318,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         }
         // Criar um INDArray a partir do array de floats
         INDArray observationData = Nd4j.create(new float[][]{stateArray});
-        System.out.println("  \n return ObservationData");
+        if(debug) System.out.println("  \n return ObservationData");
         // Criar e retornar a Observation
         return new Observation(observationData);
     }

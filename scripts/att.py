@@ -47,15 +47,18 @@ def map_data(mode, file, goal_time, goal_timeimg, img):
             id_array = id.split('_')
             goal_array = goal_time.split('_')
             if debug and debugmap: print(f"Array len: {len(id_array)}")
-            if len(id_array) == 9 and goal_array[0] == id_array[0] and goal_array[1] == id_array[1] and goal_array[2] == id_array[2] and goal_array[3] == id_array[3] and goal_array[4] == id_array[4] and goal_array[5] == id_array[5]: # and goal_array[7] == id_array[7]:                    
+            if len(id_array) == 9 and goal_array[0] == id_array[0] and goal_array[1] == id_array[1] and goal_array[2] == id_array[2] and goal_array[3] == id_array[3] and goal_array[4] == id_array[4] and goal_array[5] == id_array[5] and goal_array[6] == id_array[6] and goal_array[7] == id_array[7]: # and goal_array[7] == id_array[7]:                    
                 new_line = re.sub('[^a-zA-Z0-9 \n\.]','',line)
                 col = new_line.split(' ')    
                 col_sem_id = col[1:]
                 col_sem_id_np_st = np.array(col_sem_id)
                 col_sem_id_np_fl = col_sem_id_np_st.astype(np.float64)
+                col_sem_id_np_fl = [ x for x in col_sem_id_np_fl]
                 if last_name == "attMap": 
                     #col_sem_id_np_fl = col_sem_id_np_fl / np.sqrt(np.sum(col_sem_id_np_fl**2))
-                    col_sem_id_np_fl = [ x-1 for x in col_sem_id_np_fl]
+
+                    col_sem_id_np_fl_m = min(col_sem_id_np_fl)
+                    col_sem_id_np_fl = [ x-col_sem_id_np_fl_m for x in col_sem_id_np_fl]
                         #print(col_sem_id_np_fl)
                     col_sem_id_np_max = max(col_sem_id_np_fl)                
                     if(col_sem_id_np_max>0): col_sem_id_np_fl = col_sem_id_np_fl/col_sem_id_np_max
@@ -294,7 +297,7 @@ if clean:
 
 
 # ID inputs - Format "YYYY_MM_DD_HH_MM_SS_step"
-goal_time_img = "2025_03_08_16_13_34_5_461_rgb" # t = 1
+goal_time_img = "2025_03_11_21_14_07_5_150_rgb" # t = 1
 #3goal_time_red = "2025_03_07_16_44_34_15_428_rgb" # t = 3
 #goal_time_redFM = "2025_03_07_16_44_34_15_428_rgb" # t = 3
 
@@ -312,8 +315,8 @@ goal_time_img = "2025_03_08_16_13_34_5_461_rgb" # t = 1
 
 #goal_time_cfm =  "2025_03_07_16_43_28_15_187_rgb" # t = 3
  
-goal_time_sal =  "2025_03_08_16_13_34_5_461_rgb" # t = 3
-goal_time_att =  goal_time_sal # t = 3
+goal_time_sal =  "2025_03_11_21_14_32_5_243_259" # t = 3
+goal_time_att =  "2025_03_11_21_14_24_5_212_226" # t = 3
 #goal_time_win =  "2025_03_07_16_44_34_15_428_rgb" # t = 3 
 #goal_time_winT =  "2025_03_07_16_44_34_15_428_rgb" # t = 3 
 

@@ -308,7 +308,7 @@ results1 = get_data(file1,file1a, exps)
 print(f" num Exps: {len(results1[1])}")
 print(f"Mean rewards 1: {statistics.mean(results1[0])}. Stdv: +- {statistics.stdev(results1[0])} ")
 print(f"Mean actions 1: {statistics.mean(results1[2])}. Stdv: +- {statistics.stdev(results1[2])} ")
-mean_ticks = 10
+mean_ticks = 5
 print(" Rewards")
 plots1 = get_mean_n_std(mean_ticks, results1)
 
