@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.Dictionary;
 
-import attention.Winner;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;

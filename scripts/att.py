@@ -297,7 +297,7 @@ if clean:
 
 
 # ID inputs - Format "YYYY_MM_DD_HH_MM_SS_step"
-goal_time_img = "2025_03_11_21_14_07_5_150_rgb" # t = 1
+goal_time_img = "2025_03_18_19_50_13_20_439_rgb" # t = 1
 #3goal_time_red = "2025_03_07_16_44_34_15_428_rgb" # t = 3
 #goal_time_redFM = "2025_03_07_16_44_34_15_428_rgb" # t = 3
 
@@ -315,8 +315,8 @@ goal_time_img = "2025_03_11_21_14_07_5_150_rgb" # t = 1
 
 #goal_time_cfm =  "2025_03_07_16_43_28_15_187_rgb" # t = 3
  
-goal_time_sal =  "2025_03_11_21_14_32_5_243_259" # t = 3
-goal_time_att =  "2025_03_11_21_14_24_5_212_226" # t = 3
+goal_time_sal =  "2025_03_18_20_22_41_45_70_74" # t = 3
+goal_time_att =  "2025_03_18_19_50_19_20_460_1111" # t = 3
 #goal_time_win =  "2025_03_07_16_44_34_15_428_rgb" # t = 3 
 #goal_time_winT =  "2025_03_07_16_44_34_15_428_rgb" # t = 3 
 

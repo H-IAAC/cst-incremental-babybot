@@ -23,7 +23,9 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  *
@@ -117,35 +119,45 @@ public class WinnerPicker extends Codelet{
         long fireTime = 0;
 
 
+            // Seleciona os N maiores valores do mapa de saliência
+        int numWinners = (int) vision.getIValues(7);
+        PriorityQueue<Winner> topWinners = new PriorityQueue<>(numWinners, Comparator.comparingDouble(w -> -w.featureJ));
 
-        for(int t = 0; t < saliencyMap.size();t++){
-            ArrayList<Float> line;
-            line = (ArrayList<Float>) saliencyMap.get(t);
+        for (int t = 0; t < saliencyMap.size(); t++) {
+            ArrayList<Float> line = (ArrayList<Float>) saliencyMap.get(t);
             for (int j = 0; j < line.size(); j++) {
-            	
-                if(line.get(j) > max){
-                    max = line.get(j);
-                    max_index = j;
-                    fireTime = System.currentTimeMillis();
-//                    t_max = t;
+                float value = line.get(j);
+                if (value > 0) {
+                    int type = (int) winnerType.get(winnerType.size() - 1) == TOP_DOWN ? TOP_DOWN : BOTTOM_UP;
+                    topWinners.offer(new Winner((int) value, type, System.currentTimeMillis() ));
+                    if (topWinners.size() > numWinners) {
+                        topWinners.poll();
+                    }
                 }
             }
         }
+
+        ArrayList<Winner> winners = new ArrayList<>(topWinners);
+        winners.sort(Comparator.comparingDouble(w -> -w.featureJ)); // Ordena do maior para o menor
+        ArrayList<Float> weights =   new ArrayList<>();
+        for(int i = 1; i<numWinners; i++){
+            weights.add((float) i/numWinners);
+        }
+        for(Winner last_winner : winners){
+        
         int last_winner_index = -1;
-        if (!winnersList.isEmpty()) {
-        	Winner last_winner = (Winner) winnersList.get(winnersList.size()-1);
-        	last_winner_index = last_winner.featureJ;
-        } 
+        winnersList.add(last_winner);
         
         int type = BOTTOM_UP;
-        ArrayList<Integer> linewinner = (ArrayList<Integer>) winnerType.get(winnerType.size()-1);
+        /*ArrayList<Integer> linewinner = (ArrayList<Integer>) winnerType.get(winnerType.size()-1);
         if(max != 0 && last_winner_index  != max_index){
             if(linewinner.get(max_index) == TOP_DOWN) type = TOP_DOWN;
             winnersList.add(new Winner(max_index, 
 //                    t_max,
                     type, fireTime));
+        }*/
         }
-        printToFile(max_index, "winners.txt");
+        printToFile(winners, "winners.txt");
         
         int i,j,w;
         double deltaj, deltai;
@@ -165,9 +177,9 @@ public class WinnerPicker extends Codelet{
         if(debug) System.out.println("winnersList "+winnersList.size());
                 
                 
-        for (w = 0; w < winnersList.size(); w++) {
+        for (w = 0; w < winners.size(); w++) {
             Long timeCourse = System.currentTimeMillis();
-            Winner winner_w = (Winner) winnersList.get(w);
+            Winner winner_w = (Winner) winners.get(w);
           
                 if(debug) System.out.println("winner_w "+winner_w);
                 
@@ -180,7 +192,7 @@ public class WinnerPicker extends Codelet{
 
             // The course is in excitatory phase
             else if((winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME >= timeCourse) && (winner_w.fireTime+BOTTOM_UP_PRE_TIME <= timeCourse)){
-                t = timeCourse - winner_w.fireTime;
+                t = (long) ((timeCourse - winner_w.fireTime)*(weights.get(w)));
                 
                 
                 float auxAttWinnerAnt;
@@ -206,7 +218,7 @@ public class WinnerPicker extends Codelet{
             
             // The course is in inhibitory phase
             else if(((winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME+BOTTOM_UP_INHIBITORY_TIME) >= timeCourse) && ((winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME) <= timeCourse) && winner_w.origin == BOTTOM_UP){
-                t = timeCourse - winner_w.fireTime;
+                t = (long) (timeCourse - winner_w.fireTime*(weights.get(w)));
                 //System.out.println("inhib "+winner_w);
                 
                 float auxAttWinnerAnt;

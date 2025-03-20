@@ -63,8 +63,9 @@ public class RewardComputerCodelet extends Codelet
     private int stage;
     int fovea; 
     private String mode;
-    private Integer winnerIndex;
-    private Integer winnerFovea = -1, winnerGreen = -1, winnerBlue = -1, winnerRed = -1, winnerDist = -1;
+    private ArrayList<Integer> winnerFovea;
+    private ArrayList<Winner> topWinnersList;
+    private Integer winnerGreen = -1, winnerBlue = -1, winnerRed = -1, winnerDist = -1;
     private int[] posLeft = {0, 4, 8, 12};
     private int[] posRight = {3, 7, 11, 15};
     private int[] posUp = {12, 13, 14, 15};
@@ -77,7 +78,7 @@ public class RewardComputerCodelet extends Codelet
     private int[] fovea3 = {10, 11, 14, 15};
     private float yawPos = 0f, headPos = 0f;   
     private boolean crashed = false, nrewards = true;
-    private boolean debug = false, sdebug = false, m_i = true;
+    private boolean debug = true, sdebug = false, m_i = true;
     private int num_tables, aux_crash = 0;
     private ArrayList<String> allActionsList;
     private ArrayList<Float> lastLine, lastRed, lastGreen, lastBlue, lastDist;
@@ -230,8 +231,8 @@ public class RewardComputerCodelet extends Codelet
         
         if (!saliencyMap.isEmpty() && !winnersList.isEmpty()) {
 
-            Winner lastWinner = (Winner) winnersList.get(winnersList.size() - 1);
-            winnerIndex = lastWinner.featureJ;
+            topWinnersList = (ArrayList<Winner>) winnersList.get(winnersList.size() - 1);
+           
 
                         // Find reward of the current state, given previous  winner 
 
@@ -292,17 +293,18 @@ public class RewardComputerCodelet extends Codelet
             }
             
 
-             int winner =   getStateFromSalMap();
+             ArrayList<Integer> winner =   getStateFromSalMap();
 
 //    
       if(sdebug)    System.out.println("~End~ REWARD -  QTables:"+num_tables+" Exp: "+ experiment_number +
-                    " - Act: "+lastAction + " - N_act: "+action_number+" - Winner: "+winnerIndex+
+                    " - Act: "+lastAction + " - N_act: "+action_number+" - Winner: "+topWinnersList+
                     " - W_Fovea: "+winnerFovea+"\n Type:"+
                         " CurV:"+cur_drive+" dCurV:"+cur_delta+" Ri:"+reward_i);
             if (lastAction.equals("am1")) {
                 yawPos = yawPos-angle_step;
                          //neckMotorMO.setI(yawPos);
-                if(winnerFovea !=-1 && IntStream.of(posLeft).anyMatch(x -> x == winnerFovea) && stage > 1){
+                if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(posLeft).anyMatch(x -> x == w)) && stage > 1){
+
                     if(nrewards) reward_i += 1;
                 }
             }
@@ -310,51 +312,58 @@ public class RewardComputerCodelet extends Codelet
             else if (lastAction.equals("am2")) {
                 yawPos = yawPos+angle_step;
                          //neckMotorMO.setI(yawPos);
-                if(winnerFovea !=-1 && IntStream.of(posRight).anyMatch(x -> x == winnerFovea)){
+                 if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(posRight).anyMatch(x -> x == w))) {
                     if(nrewards) reward_i += 1;
                     }
             }
             else if (lastAction.equals("am3")) {
                     headPos = headPos-angle_step;
                      // headMotorMO.setI(headPos);
-                    if(winnerFovea !=-1 && IntStream.of(posUp).anyMatch(x -> x == winnerFovea)) {
+                   if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(posUp).anyMatch(x -> x == w))) {
+
                         if(nrewards) reward_i += 1;
                     } 
             }
             else if (lastAction.equals("am4")) {
                     headPos = headPos+angle_step;
                     //headMotorMO.setI(headPos);
-                    if(winnerFovea !=-1 && IntStream.of(posDown).anyMatch(x -> x == winnerFovea)){
+                    if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(posDown).anyMatch(x -> x == w))) {
+
                         if(nrewards) reward_i += 1;
                     } 
             }
             else if (lastAction.equals("am5")) {
                 fovea = 0;
-                if(winnerFovea !=-1 && IntStream.of(fovea0).anyMatch(x -> x == winnerFovea)){
+                if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(fovea0).anyMatch(x -> x == w))) {
+
                         if(nrewards) reward_i += 1;
                     } 
             }
             else if (lastAction.equals("am6")) {
                 fovea = 1;
-                if(winnerFovea !=-1 && IntStream.of(fovea1).anyMatch(x -> x == winnerFovea)){
+                if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(fovea1).anyMatch(x -> x == w))) {
+
                         if(nrewards) reward_i += 1;
                     } 
             }
             else if (lastAction.equals("am7")) {
                 fovea = 2;
-                if(winnerFovea !=-1 && IntStream.of(fovea2).anyMatch(x -> x == winnerFovea)){
+                if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(fovea2).anyMatch(x -> x == w))) {
+
                         if(nrewards) reward_i += 1;
                     } 
             }
             else if (lastAction.equals("am8")) {
                 fovea = 3;
-                if(winnerFovea !=-1 && IntStream.of(fovea3).anyMatch(x -> x == winnerFovea)){
+                if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(fovea3).anyMatch(x -> x == w))) {
+
                         if(nrewards) reward_i += 1;
                     } 
             }
             else if (lastAction.equals("am9")) {
                 fovea = 4;
-                if(winnerFovea !=-1 && IntStream.of(posCenter).anyMatch(x -> x == winnerFovea)){
+                if (!winnerFovea.isEmpty() && winnerFovea.stream().anyMatch(w -> IntStream.of(posCenter).anyMatch(x -> x == w))) {
+
                         if(nrewards) reward_i += 1;
                     } 
             }
@@ -434,7 +443,7 @@ public class RewardComputerCodelet extends Codelet
         
        
         if(sdebug) System.out.println("~End~ REWARD -  QTables:"+num_tables+" Exp: "+ experiment_number +
-                    " - N_act: "+action_number+ " - Winner: "+winnerIndex+
+                    " - N_act: "+action_number+ " - Winner: "+topWinnersList+
                     " - W_Fovea: "+winnerFovea+
                         " CurV:"+cur_drive+" dCurV:"+cur_delta+" Ri:"+reward_i+" Gi:"+global_reward);
         
@@ -449,7 +458,7 @@ public class RewardComputerCodelet extends Codelet
     // Normalize and transform a salience map into one state
     // Normalized values between 0 and 1 can be mapped into 0, 1, 2, 3 or 4
     // Them this values are computed into one respective state
-    public Integer getStateFromSalMap() {
+    public ArrayList<Integer> getStateFromSalMap() {
 
 
         // Getting just the last entry (current sal map)
@@ -474,7 +483,10 @@ public class RewardComputerCodelet extends Codelet
 
                     for (int x = mi; x < mo; x++) {
                         int i = (y*16+x);
-                        if(i == winnerIndex) winnerFovea = n*4+m;
+                        for(Winner w : topWinnersList){
+                           if(i == w.featureJ) winnerFovea.add(n*4+m); 
+                        }
+                        
                     }
                 }
             }
