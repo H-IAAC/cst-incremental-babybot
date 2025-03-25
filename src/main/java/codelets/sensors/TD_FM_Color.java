@@ -42,7 +42,6 @@ public class TD_FM_Color extends FeatMapCodelet {
     private int stage;
     private MemoryObject desired_feature;
     private Float red_goal, green_goal, blue_goal;  
-    private Winner lastWinner; 
     public TD_FM_Color(SensorI vision, int nsensors, ArrayList<String> sens_names, 
             String featmapname,int timeWin, int mapDim, int print_step) {
         super(nsensors, sens_names, featmapname,timeWin,mapDim);
@@ -100,7 +99,6 @@ public class TD_FM_Color extends FeatMapCodelet {
         visionData_buffer = (List) vision_bufferMO.getI();
         List winnerList = (List) winners.getI();
         
-        if(!winnerList.isEmpty())  lastWinner = (Winner) winnerList.get(winnerList.size()-1);
         
         List vision_color_FM = (List) featureMap.getI();        
         if(vision_color_FM.size() == timeWindow){

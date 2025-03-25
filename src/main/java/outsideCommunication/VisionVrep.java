@@ -109,6 +109,7 @@ public class VisionVrep implements SensorI{
         colorObjs.add(color);
         
         lastLinei.set(1, num_epoch);
+        lastLinei.set(7, 5);
         next_act = true;
         next_actR = true;
         
@@ -142,7 +143,7 @@ public class VisionVrep implements SensorI{
         }
         }else{
             if(positions[0]!=null){
-                System.out.println(positions[0]);
+               // System.out.println(positions[0]);
             positionf[0] = positions[0][0];
             positionf[1] = positions[0][1];
             positionf[2] = positions[0][2];

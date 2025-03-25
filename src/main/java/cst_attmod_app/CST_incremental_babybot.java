@@ -36,11 +36,11 @@ public class CST_incremental_babybot {
     			f.delete();
     		}
     	}
-        String mode = "learning";
+        String mode = "exploring";
         int n_tables = 1;
         String runId=""; 
         int num_pioneer = 2;
-        int stage = 5, exp = 1, res = 256, max_time_graph=100, MAX_ACTION_NUMBER = 500;
+        int stage = 5, exp = 46, res = 256, max_time_graph=100, MAX_ACTION_NUMBER = 500;
         long seed = 1234;
         OutsideCommunication oc = new OutsideCommunication(50,mode,n_tables,seed, stage, 
                 exp, "", res, max_time_graph, MAX_ACTION_NUMBER, num_pioneer);

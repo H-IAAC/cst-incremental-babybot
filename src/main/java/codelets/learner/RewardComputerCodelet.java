@@ -63,7 +63,7 @@ public class RewardComputerCodelet extends Codelet
     private int stage;
     int fovea; 
     private String mode;
-    private ArrayList<Integer> winnerFovea;
+    private ArrayList<Integer> winnerFovea = new ArrayList<>();
     private ArrayList<Winner> topWinnersList;
     private Integer winnerGreen = -1, winnerBlue = -1, winnerRed = -1, winnerDist = -1;
     private int[] posLeft = {0, 4, 8, 12};
@@ -78,7 +78,7 @@ public class RewardComputerCodelet extends Codelet
     private int[] fovea3 = {10, 11, 14, 15};
     private float yawPos = 0f, headPos = 0f;   
     private boolean crashed = false, nrewards = true;
-    private boolean debug = true, sdebug = false, m_i = true;
+    private boolean debug = false, sdebug = false, m_i = true;
     private int num_tables, aux_crash = 0;
     private ArrayList<String> allActionsList;
     private ArrayList<Float> lastLine, lastRed, lastGreen, lastBlue, lastDist;
@@ -203,9 +203,9 @@ public class RewardComputerCodelet extends Codelet
         try {
             yawPos = oc.NeckYaw_m.getSpeed();
             headPos = oc.HeadPitch_m.getSpeed(); 
-                System.out.println("Rewards - yawPos: "+yawPos+" headPos: "+headPos);
+                if(sdebug) System.out.println("Rewards - yawPos: "+yawPos+" headPos: "+headPos+" - Winner: "+topWinnersList);
         } catch (Exception e) {
-             if(debug) System.out.println("getSpeed null ");
+             if(sdebug) System.out.println("getSpeed null ");
             return;
         }
       /*  try {
@@ -215,11 +215,11 @@ public class RewardComputerCodelet extends Codelet
         }       */
 
         if(motivationMO == null){
-              if(debug) System.out.println("Rewardcomputer motivationMO is null");
+              if(sdebug) System.out.println("Rewardcomputer motivationMO is null");
             return;
         }
         
-        if(debug) System.out.println(
+        if(sdebug) System.out.println(
                 "Rewards -  motivationValues - C: "+motivationMO.getValue());
 
 
@@ -281,10 +281,10 @@ public class RewardComputerCodelet extends Codelet
                 
                 lcur_drive=cur_drive;
                 
- if(sdebug) System.out.println("~~ REWARD - QTables:"+num_tables+
+ if(debug) System.out.println("~~ REWARD - QTables:"+num_tables+
                         
                         " CurV:"+cur_drive+" LCurV:"+lcur_drive+" dCurV:"+cur_delta
-                        +" Ri:"+reward_i);
+                        +" Ri:"+reward_i+" - Winner: "+topWinnersList);
                 
                     
                     
@@ -292,11 +292,11 @@ public class RewardComputerCodelet extends Codelet
                     oc.vision.setNextActR(false);
             }
             
-
+            winnerFovea.clear();
              ArrayList<Integer> winner =   getStateFromSalMap();
 
 //    
-      if(sdebug)    System.out.println("~End~ REWARD -  QTables:"+num_tables+" Exp: "+ experiment_number +
+      if(debug)    System.out.println("~End~ REWARD -  QTables:"+num_tables+" Exp: "+ experiment_number +
                     " - Act: "+lastAction + " - N_act: "+action_number+" - Winner: "+topWinnersList+
                     " - W_Fovea: "+winnerFovea+"\n Type:"+
                         " CurV:"+cur_drive+" dCurV:"+cur_delta+" Ri:"+reward_i);

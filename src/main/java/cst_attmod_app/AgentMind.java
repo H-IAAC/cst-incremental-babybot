@@ -184,7 +184,7 @@ private long seed;
         MemoryObject attMapMO = createMemoryObject("ATTENTIONAL_MAP",att_mapList);
         
         //WINNERS
-        List winnersList = Collections.synchronizedList(new ArrayList<Winner>());
+        List winnersList = Collections.synchronizedList(new ArrayList<ArrayList<Winner>>());
         MemoryObject winnersMO = createMemoryObject("WINNERS",winnersList);
         
         //SALIENCY MAP

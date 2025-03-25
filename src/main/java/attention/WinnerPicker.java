@@ -24,8 +24,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  *
@@ -47,7 +49,7 @@ public class WinnerPicker extends Codelet{
     private String attentionalMapName;
     private int timeWindow, print_step;
     private int sensorDimension;
-    private boolean debug;
+    private boolean debug = false;
     private final int max_time_graph=100;
     
     private static final double GUASSIAN_WIDTH_EXOGENOUS_SONAR = 0.5;
@@ -119,34 +121,55 @@ public class WinnerPicker extends Codelet{
         long fireTime = 0;
 
 
-            // Seleciona os N maiores valores do mapa de saliência
         int numWinners = (int) vision.getIValues(7);
-        PriorityQueue<Winner> topWinners = new PriorityQueue<>(numWinners, Comparator.comparingDouble(w -> -w.featureJ));
+        PriorityQueue<Winner> topWinners = new PriorityQueue<>(numWinners, Comparator.comparingInt(w -> w.featureJ));
+        Set<Integer> selectedFeatures = new HashSet<>(); // Para evitar duplicatas
 
-        for (int t = 0; t < saliencyMap.size(); t++) {
-            ArrayList<Float> line = (ArrayList<Float>) saliencyMap.get(t);
+        // Lista de candidatos para armazenar j, type e value temporariamente
+        List<int[]> candidates = new ArrayList<>();
+        List<Long> firetimes = new ArrayList<>();
+        for (int z = 0; z < saliencyMap.size(); z++) {
+            ArrayList<Float> line = (ArrayList<Float>) saliencyMap.get(z);
             for (int j = 0; j < line.size(); j++) {
                 float value = line.get(j);
-                if (value > 0) {
-                    int type = (int) winnerType.get(winnerType.size() - 1) == TOP_DOWN ? TOP_DOWN : BOTTOM_UP;
-                    topWinners.offer(new Winner((int) value, type, System.currentTimeMillis() ));
-                    if (topWinners.size() > numWinners) {
-                        topWinners.poll();
+                if (value > 0 && !winnerType.isEmpty()) {
+                    ArrayList<Integer> winnerTypea = (ArrayList<Integer>) winnerType.get(winnerType.size() - 1);
+                    if (winnerTypea.isEmpty() || j >= winnerTypea.size()) continue; // Evita erro de índice
+
+                    int type = (winnerTypea.get(j) == TOP_DOWN) ? TOP_DOWN : BOTTOM_UP;
+
+                    if (!selectedFeatures.contains(j)) { // Evita repetição de featureJ
+                        candidates.add(new int[]{j, type, (int) (value * 100000)}); // Multiplica para ordenação
+                        firetimes.add( System.currentTimeMillis());
                     }
                 }
             }
         }
 
-        ArrayList<Winner> winners = new ArrayList<>(topWinners);
-        winners.sort(Comparator.comparingDouble(w -> -w.featureJ)); // Ordena do maior para o menor
-        ArrayList<Float> weights =   new ArrayList<>();
-        for(int i = 1; i<numWinners; i++){
-            weights.add((float) i/numWinners);
+        // Ordenar candidatos pelo maior valor de ativação
+        candidates.sort((a, b) -> Integer.compare(b[2], a[2])); // Compara pelo value convertido
+
+        // Adicionar os `numWinners` melhores ao topWinners
+        for (int i = 0; i < Math.min(numWinners, candidates.size()); i++) {
+            int[] winnerData = candidates.get(i);
+            long fire = firetimes.get(i);
+            Winner winner = new Winner(winnerData[0], winnerData[1], fire);
+            topWinners.offer(winner);
+            selectedFeatures.add(winner.featureJ);
         }
-        for(Winner last_winner : winners){
-        
-        int last_winner_index = -1;
-        winnersList.add(last_winner);
+
+        // Converter para lista ordenada
+        ArrayList<Winner> winners = new ArrayList<>(topWinners);
+
+        // Calcular os pesos dos winners
+        ArrayList<Float> weights = new ArrayList<>();
+        for (int i = 0; i < numWinners; i++) {
+            weights.add((float) (numWinners - i) / numWinners);
+        }
+
+        // Adicionar a lista de winners ao winnersList
+        winnersList.add(winners);
+
         
         int type = BOTTOM_UP;
         /*ArrayList<Integer> linewinner = (ArrayList<Integer>) winnerType.get(winnerType.size()-1);
@@ -156,10 +179,10 @@ public class WinnerPicker extends Codelet{
 //                    t_max,
                     type, fireTime));
         }*/
-        }
+        
         printToFile(winners, "winners.txt");
         
-        int i,j,w;
+        int i,j,w,wl;
         double deltaj, deltai;
         long t;
 
@@ -174,75 +197,106 @@ public class WinnerPicker extends Codelet{
             attMap_sizeMinus1 = (ArrayList < Float >)attentionalMap.get(attentionalMap.size()-1);
             attMap_sizeMinus1.add(1F);
         }
-        if(debug) System.out.println("winnersList "+winnersList.size());
+        if(debug) System.out.println("winners "+winners.size());
                 
-                
-        for (w = 0; w < winners.size(); w++) {
-            Long timeCourse = System.currentTimeMillis();
-            Winner winner_w = (Winner) winners.get(w);
+         for (wl = 0; wl <   winnersList.size(); wl++){
+             ArrayList<Winner> winnerl = (ArrayList<Winner>) winnersList.get(wl);
+             Long timeCourse = System.currentTimeMillis(); 
+        for (w = 0; w < winnerl.size(); w++) {
+               
+            Winner winner_w = (Winner) winnerl.get(w);
           
-                if(debug) System.out.println("winner_w "+winner_w);
+               if(debug)  System.out.println("winner_w "+winner_w);
                 
             j = winner_w.featureJ;
-
+            if(debug) {System.out.println("\nFiretime:"+(double)(winner_w.fireTime));
+            System.out.println("\nFiretime over to this feature :"+(double)(winner_w.fireTime + BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME+BOTTOM_UP_INHIBITORY_TIME));
+             
+            System.out.println("timeCourse:"+timeCourse);
+             
+            System.out.println("Firetime<timeCourse");
+            
+             System.out.println("\nFiretime excitatory 1:"+(double)(winner_w.fireTime + BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME));
+            
+             System.out.println("timeCourse:"+timeCourse);
+            
+             System.out.println("Firetime excitatory 2:"+(double)(winner_w.fireTime+BOTTOM_UP_PRE_TIME));
+             
+              System.out.println("BOTTOM_UP_PRE_TIME:"+BOTTOM_UP_PRE_TIME);
+              
+              System.out.println("BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME:"+(double)(BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME));
+              
+             System.out.println("excitatory 1 > timeCourse && excitatory 2 < timeCourse");
+            }            
             // The course is over to this feature -> remove it from the list
-            if((winner_w.fireTime + BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME+BOTTOM_UP_INHIBITORY_TIME) < timeCourse){
-                winnersList.remove(w);
+            if((double)(winner_w.fireTime + BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME+BOTTOM_UP_INHIBITORY_TIME) < timeCourse){
+                winners.remove(w);
+                if(debug) System.out.println("over to this feature ");
             }
-
+            
             // The course is in excitatory phase
-            else if((winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME >= timeCourse) && (winner_w.fireTime+BOTTOM_UP_PRE_TIME <= timeCourse)){
-                t = (long) ((timeCourse - winner_w.fireTime)*(weights.get(w)));
-                
+            else if(((double)(winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME) >= timeCourse) && ((double)(winner_w.fireTime+BOTTOM_UP_PRE_TIME) <= timeCourse)){
+                t = (long) (timeCourse - (double)winner_w.fireTime);
+                if(debug) System.out.println(" excitatory phas ");
                 
                 float auxAttWinnerAnt;
+                deltai = 0;
                 auxAttWinnerAnt = attMap_sizeMinus1.get(j);
                 
                 // Calculate the activation level for the most central neuron based on the time
                 deltaj = exponentialGrowDecayBottomUp(BOTTOM_UP_PRE_TIME, TS, TM, t);
-                attMap_sizeMinus1.set(j, attMap_sizeMinus1.get(j)+(float)deltaj);
+                 if(debug) System.out.println(" attMap_sizeMinus1 size:"+attMap_sizeMinus1.size());
+                 if(debug) System.out.println(" weights size:"+weights.size());
+                attMap_sizeMinus1.set(j, attMap_sizeMinus1.get(j)+(float)deltaj*(weights.get(w)));
+                if(debug) System.out.println(" excitatory BOTTOM_UP_PRE_TIME "+(float)deltaj*(weights.get(w)));
                             
                 // Calculate the activation level for the neighbours
                 for(i=0; i < j; i++){
                     deltai = gaussian(deltaj, GUASSIAN_WIDTH_EXOGENOUS_SONAR, j, i);
-                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)+(float)deltai);
+                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)+(float)deltai*(weights.get(w)));
                 }
-
+                if(debug) System.out.println(" excitatory GUASSIAN_WIDTH_EXOGENOUS_SONAR "+(float)deltai*(weights.get(w)));
+                
                 for(i=j+1; i < sensorDimension; i++){
                     deltai = gaussian(deltaj, GUASSIAN_WIDTH_EXOGENOUS_SONAR, j, i);
-                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)+(float)deltai);
+                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)+(float)deltai*(weights.get(w)));
                 }
+                if(debug) System.out.println(" excitatory GUASSIAN_WIDTH_EXOGENOUS_SONAR "+(float)deltai*(weights.get(w)));
                 
                 
             }
             
             // The course is in inhibitory phase
-            else if(((winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME+BOTTOM_UP_INHIBITORY_TIME) >= timeCourse) && ((winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME) <= timeCourse) && winner_w.origin == BOTTOM_UP){
-                t = (long) (timeCourse - winner_w.fireTime*(weights.get(w)));
+            else if(((double)(winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME+BOTTOM_UP_INHIBITORY_TIME) >= timeCourse) && ((double)(winner_w.fireTime+BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME) <= timeCourse) && winner_w.origin == BOTTOM_UP){
+                t = (long) (timeCourse - winner_w.fireTime);
                 //System.out.println("inhib "+winner_w);
-                
+                if(debug) System.out.println(" inhibitory phas ");
+                deltai = 0;
                 float auxAttWinnerAnt;
                 auxAttWinnerAnt = attMap_sizeMinus1.get(j);
                 
                 deltaj = exponentialGrowDecayBottomUp(BOTTOM_UP_PRE_TIME+BOTTOM_UP_EXCITATORY_TIME, TS, TM, t);
                 //System.out.println("inhib "+deltaj);
-                attMap_sizeMinus1.set(j, attMap_sizeMinus1.get(j)-(float)deltaj);
-
+                attMap_sizeMinus1.set(j, attMap_sizeMinus1.get(j)-(float)deltaj*(weights.get(w)));
+                if(debug) System.out.println(" inhibitory BOTTOM_UP_PRE_TIME "+(float)deltaj*(weights.get(w)));
+                
             
                 for (i=0; i<j; ++i){
                     deltai = gaussian(deltaj, GUASSIAN_WIDTH_EXOGENOUS_IOR_SONAR, j, i);
-                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)-(float)deltai);
+                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)-(float)deltai*(weights.get(w)));
                 }
+                if(debug) System.out.println(" inhibitory GUASSIAN_WIDTH_EXOGENOUS_IOR_SONAR "+(float)deltai*(weights.get(w)));
                 
                 for (i=j+1; i<sensorDimension; ++i){
                     deltai = gaussian(deltaj, GUASSIAN_WIDTH_EXOGENOUS_IOR_SONAR, j, i);
-                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)-(float)deltai);
+                    attMap_sizeMinus1.set(i, attMap_sizeMinus1.get(i)-(float)deltai*(weights.get(w)));
                 }
+                if(debug) System.out.println(" inhibitory GUASSIAN_WIDTH_EXOGENOUS_IOR_SONAR "+(float)deltai*(weights.get(w)));
                                 
             }
            if(debug)  System.out.println("winner_w "+winner_w.featureJ);
         }
-        
+         }
                
        printToFile(attMap_sizeMinus1, "attMap.txt");
     }

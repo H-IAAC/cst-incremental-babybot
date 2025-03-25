@@ -133,8 +133,7 @@ public class ActionExecCodelet extends Codelet
         MemoryObject MO;
         MO = (MemoryObject) this.getInput("SALIENCY_MAP");
         saliencyMap = (List) MO.getI();
-        MO = (MemoryObject) this.getInput("WINNERS");
-        winnersList = (List) MO.getI();
+
         MemoryContainer MC = (MemoryContainer) this.getInput("MOTIVATION");
             motivationMO = (Idea) MC.getI();
        
@@ -201,14 +200,7 @@ public class ActionExecCodelet extends Codelet
         
         }
         
-        Winner lastWinner;
-       if( winnersList.size()<1){
-                if(debug) System.out.println("ACT_EXEC----- winnersList.size():"+winnersList.size());
-            lastWinner = new Winner(64,0,0);
-       }else{
-           lastWinner = (Winner) winnersList.get(winnersList.size() - 1);
-       }
-                
+        
         String actionToTk = actionsList.get(actionsList.size() - 1);
         int actionToTakeI = Integer.parseInt(actionToTk);
         String actionToTake = allActionsList.get(actionToTakeI);
@@ -217,7 +209,7 @@ public class ActionExecCodelet extends Codelet
                 +curiosity_lv+" yawPos: "+yawPos+" headPos: "+headPos);
         
         
-        winnerIndex = lastWinner.featureJ;
+   
        experiment_number = oc.vision.getEpoch();
         
         //oc.vision.setIValues(4, (int) (oc.vision.getIValues(4)+1));
