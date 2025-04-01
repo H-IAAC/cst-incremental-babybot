@@ -114,27 +114,30 @@ to successfully learn the intended ability. Starting from the second test experi
 
 ![](imgs/exps/scene_te1_n_te3.png)
 
+<img src="images/exps/scene_te1_n_te3.png" alt="Scene for Te1." width="400"/>
+
+
 **Experiment Te2:** A red Pioneer robot moves within a confined space in front of Marta, as shown in Figure 3e. Driven by curiosity-based motivation, a Phase 2 agent is encouraged to explore different states and actions, allowing it to search for the Pioneer even when it moves outside its field of view, enhancing Object Tracking capabilities. In contrast, a Phase 1 agent is unable to perform Te2 due to its purely reactive behavior, responding only to salient stimuli—typically stationary or slow-moving—within its limited field of vision.
 
-![](imgs/exps/scene_te2.png)
+<img src="images/exps/scene_te2.png" alt="Scene for Te2." width="400"/>
 
 **Experiment Te3:** A red Pioneer robot moves within an open space in front of Marta, as shown in Figure 3d. With the capacity to employ top-down attention and define features of interest, a Phase 3 agent can determine whether its focus should be on near or distant objects in order to track objects.
 In contrast, a Phase 2 agent is unable to perform Te3: although curiosity motivates it to seek new states, it lacks the attentional mechanisms to remain focused on the Pioneer once it moves
 to the back of the environment.
 
-![](imgs/exps/scene_te1_n_te3.png)
+<img src="images/exps/scene_te1_n_te3.png" alt="Scene for Te3." width="400"/>
 
 **Experiment Te4:** A red Pioneer robot moves within a delimited space, distancing itself from Marta and becoming occluded for a period of time, as illustrated in Figure 3b. The ability being explored is Object Permanence, which requires the cognitive functions available from at least Phase 4 to
 succeed. To perform this experiment, a Phase 4 agent must be capable of predicting the Pioneer’s trajectory. For this purpose, finetuning is carried out using Experiment Tr2, enabling the
 agent to develop procedural schemes tailored to this task. In contrast, a Phase 3 agent, lacking the ability to anticipate the robot’s path, fails to continue tracking the Pioneer once it
 passes behind the wall.
 
-![](imgs/exps/scene_tr2_n_te4.png)
+<img src="images/exps/scene_tr2_n_te4.png" alt="Scene for Te4." width="400"/>
 
 **Experiment Te5:** A red Pioneer robot moves within a confined space, distancing itself from Marta and becoming occluded for a period of time. Meanwhile, a blue Pioneer robot remains stationary in a location visible to Marta, as shown in Figure 3c. The abilities being explored are Multiple Object Tracking and Object Permanence. To successfully complete this task, the agent requires the cognitive modules available in Phase 5.
 In order to track both Pioneers, a Phase 5 agent must be capable of alternating its attention—being able to focus on more than one target. In contrast, a Phase 4 agent maintains its attention on a single target and is therefore only able to track one Pioneer.
 
-![](imgs/exps/scene_tr3_n_te5.png)
+<img src="images/exps/scene_tr3_n_te5.png" alt="Scene for Te5." width="400"/>
 
 ---
 
@@ -144,10 +147,12 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
 - Each developmental phase shows increased reward acquisition, indicating **successful incremental learning**.
 - Fine-tuning in later phases allowed the robot to anticipate occluded object trajectories, a key trait of **object permanence**.
 
-| Phase | Reward Curve |
-|-------|---------------|
-| 1-3   | ![](imgs/Rewards_stages_1_2_3.png) |
-| 4-5   | ![](imgs/Rewards_stages_4_5.png) |
+
+<p float="left">
+  <img src="images/Rewards_stages_1_2_3.png" width="300" />
+  <img src="images/Rewards_stages_4_5.png" width="300" />
+  <em>Fig: Training curves. (left) Phases 1 to 3; (right) Phases 4 to 5. </em>
+</p>
 
 ### Performance Highlights
 - **Phase 3**: Demonstrated successful top-down focus on target features (e.g., color, distance).
