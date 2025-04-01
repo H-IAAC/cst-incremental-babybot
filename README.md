@@ -100,7 +100,7 @@ The project includes **training and testing experiments** that progressively cha
 - (Collaborator, 2025-)  Letícia Berto: PhD Candidate, IC-UNICAMP
 - (Collaborator, 2025-)  Paula P. Costa: Professor, FEEC-UNICAMP
 - (Collaborator, 2025-)  Alexandre Simões: Professor, ICTS-Unesp
-- 
+  
 ## Acknowledgements
 
 - LR is funded by MCTI project DOU 01245.003479/2024 -10. 
