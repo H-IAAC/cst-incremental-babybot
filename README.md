@@ -76,10 +76,12 @@ The project includes **training and testing experiments** that progressively cha
 - **Phase 4**: Achieved predictive tracking during full occlusion using procedural memory.
 - **Phase 5**: Alternating attention allowed the agent to **shift focus between multiple objects**, a previously unachievable task.
 
-### Limitations
-- Conducted in a simulation—real-world transfer may require calibration.
-- Multi-object tracking is improved but still limited in attention-switching robustness.
-- Generalization to novel environments is untested.
+## 📌 Key Contributions
+
+- **Incremental Learning Framework** for object tracking and object permanence
+- Integration of **curiosity**, **attention mechanisms**, and **deep reinforcement learning**
+- Demonstrated transition from **reactive to predictive behaviors**
+- Realistic simulations of **infant-like development**
 
 ## Citation
 
