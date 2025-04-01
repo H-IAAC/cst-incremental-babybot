@@ -194,54 +194,40 @@ def plot_graphs_mean_dv(title, mean1, dv1, exp, expx, max_ticks, step_ticks, pri
     
     min_r1 = min(mean1, mean2, mean3, mean4, mean5)
     min_r = min(min_r1)
-    min_r = int(min_r)-1
-
-    Y_ticks = [i for i in range(min_r,max_ticks+4, step_ticks)]
-    Y_ticks_act = [i for i in range(min_r,max_ticks, step_ticks)]
-
-    plt.figure(figsize=(40,30))
-    print("before subplot")
-    fig, ax1 = plt.subplots(figsize=(40, 30))
-    ax1.set_ylim([min_r, max_ticks])
-    ax1.set_xlabel('Episode')
-    ax1.set_yticks(Y_ticks)
-    ax1.set_xticks(expx)
-    ax1.tick_params(axis='y') # , labelcolor=color
-    ax1.set_ylabel(title)  # we already handled the x-label with ax1
-    print("before plot 1")
+    min_r = int(min_r) - 1
+    Y_ticks = [i for i in range(min_r, max_ticks + 4, step_ticks)]
     
-    color = 'tab:blue'
-    ax1.plot(exp, mean1, '^b:', label="1st Substage") #color=color
-    plt.fill_between(exp,np.array(mean1)-np.array(dv1)/2,np.array(mean1)+np.array(dv1)/2,alpha=.1, color=color)
+    def plot_and_save(subtitle, means, dvs, labels, colors, filename):
+        font=60
+        plt.figure(figsize=(40, 25))
+        fig, ax1 = plt.subplots(figsize=(40, 25))
+        ax1.set_ylim([min_r, max_ticks])
+        ax1.set_xlabel('Episode', fontsize=font)
+        ax1.set_yticks(Y_ticks)
+        ax1.set_xticks(expx)
+        ax1.set_ylabel(title, fontsize=font)
+        ax1.tick_params(axis='x', labelsize=font)  # Tamanho da fonte dos rótulos do eixo x
+        ax1.tick_params(axis='y', labelsize=font)  # Tamanho da fonte dos rótulos do eixo y
 
-    #ax2 = ax1.twinx()
-    color = 'tab:red'
-    #ax2.tick_params(axis='y')
-    ax1.plot(exp, mean2, '^r:', label="2nd Substage") #color=color
-    plt.fill_between(exp,np.array(mean2)-np.array(dv2)/2,np.array(mean2)+np.array(dv2)/2,alpha=.1, color=color)
+        for mean, dv, label, color in zip(means, dvs, labels, colors):
+            ax1.plot(exp, mean, marker='^', linestyle=':', label=label, color=color)
+            ax1.fill_between(exp, np.array(mean) - np.array(dv) / 2, np.array(mean) + np.array(dv) / 2, alpha=0.1, color=color)
+        
+        plt.legend(loc="lower right", fontsize=font)
+        fig.tight_layout()
+        plt.savefig(output_folder + filename)
+        plt.close(fig)
+    
+    # Primeira imagem com 1º, 2º e 3º subestágios
+    plot_and_save(title, [mean1, mean2, mean3], [dv1, dv2, dv3],
+                  ["1st Substage", "2nd Substage", "3rd Substage"],
+                  ['tab:blue', 'tab:red', 'tab:green'], title + '_stages_1_2_3.pdf')
+    
+    # Segunda imagem com 4º e 5º subestágios
+    plot_and_save(title, [mean4, mean5], [dv4, dv5],
+                  ["4th Substage", "5th Substage"],
+                  ['tab:orange', 'tab:purple'], title + '_stages_4_5.pdf')
 
-    #ax3 = ax1.twinx()
-    color = 'tab:orange'
-    #ax3.tick_params(axis='y')
-    ax1.plot(exp, mean3, '^y:', label="3rd Substage") #color=color
-    plt.fill_between(exp,np.array(mean3)-np.array(dv3)/2,np.array(mean3)+np.array(dv3)/2,alpha=.1, color=color)
-
-    color = 'tab:green'
-    #ax3.tick_params(axis='y')
-    ax1.plot(exp, mean4, '^g:', label="4th Substage") #color=color
-    plt.fill_between(exp,np.array(mean4)-np.array(dv4)/2,np.array(mean4)+np.array(dv4)/2,alpha=.1, color=color)
-
-    color = 'tab:purple'
-    #ax3.tick_params(axis='y')
-    ax1.plot(exp, mean5, '^m:', label="5th Substage") #color=color
-    plt.fill_between(exp,np.array(mean5)-np.array(dv5)/2,np.array(mean5)+np.array(dv5)/2,alpha=.1, color=color)
-
-    plt.legend(loc="lower right")
-    print("before save")
-
-    fig.tight_layout()
-
-    plt.savefig(output_folder+title+'.pdf')  
 
 def plot_graphs_mean_dv_act(title, mean1, dv1, exp, expx, max_ticks, step_ticks, mean2, dv2, mean3, dv3, mean4, dv4, mean5, dv5):
     

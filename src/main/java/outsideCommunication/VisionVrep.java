@@ -607,7 +607,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+" color2:"+ Arrays.toString(colorObjs.get(1))+
                             " Pos1:"+Arrays.toString(positions[0])+" Pos2:"+Arrays.toString(positions[1])+" MaxSalValue:"+lastLinef.get(6)+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(7);
                 }else{
                                         s = " QTables:"+lastLinei.get(0)+
                             " Exp:"+lastLinei.get(1)+
@@ -618,7 +618,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+
                             " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(7);
                     out.println(s);
 
                     s = " \nQTables:"+lastLinei.get(0)+
@@ -630,7 +630,7 @@ public class VisionVrep implements SensorI{
                             " \nHeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ "\n color1:"+Arrays.toString(colorObjs.get(0))+
                             " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+"\n"+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(7);
                 }
                 if(debugp) System.out.println(s);
                 
