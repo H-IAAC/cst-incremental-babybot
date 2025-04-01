@@ -182,7 +182,7 @@ In Experiment **Te1**, the Pioneer remains stationary in front of the agent, ser
 
 In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limited set of cognitive modules available in this phase, the agent is unable to track the Pioneer once it exits its FOV.
 
-<img src="imgs/res/1A_test.GIF" alt="Phase 1 agent in Te2 - video." width="400"/>
+<img src="imgs/exps/1A_test.GIF" alt="Phase 1 agent in Te2 - video." width="400"/>
 
 ## 📌 Key Contributions
 
