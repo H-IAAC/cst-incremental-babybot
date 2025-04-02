@@ -256,7 +256,7 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 </p>
 
 <p align="center">
-  <img src="imgs/exps/3A_test.GIF" width="600"/>
+  <img src="imgs/exps/3A_test.gif" width="600"/>
 <br/>
   <em>Fig: Phase 3 agent on Experiment Te3 - Success</em>
 </p>
