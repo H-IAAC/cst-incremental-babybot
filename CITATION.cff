@@ -2,10 +2,11 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: rl_CSR
+title: cst-incremental-babybot
 message: >-
-  Code for Special Issue on “Cognitive architectures for
-  Reinforcement Learning”, Cognitive Systems Research
+  Repository for the code of the work submitted to IEEE
+  International Conference on Development and Learning
+  (ICDL-2025).
 type: software
 authors:
   - given-names: Leonardo
@@ -23,20 +24,41 @@ authors:
     email: gudwin@unicamp.br
     affiliation: Unicamp
     orcid: 'https://orcid.org/0000-0002-9666-3954'
+  - given-names: Paula
+    name-particle: Paro
+    family-names: Costa
+    email: paulad@unicamp.br
+    affiliation: >-
+      School of Electrical and Computer Engineering,
+      University of Campinas
+  - given-names: Letícia
+    name-particle: Mara
+    family-names: Berto
+    email: leticia.berto@ic.unicamp.br
+    affiliation: 'Institute of Computing, University of Campinas'
+  - given-names: Alexandre
+    family-names: Simões
+    affiliation: >-
+      Department of Control and Automation Engineering, São
+      Paulo State University
+    email: alexandre.simoes@unesp.br
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.14424260
+    value: 10.5281/zenodo.15123005
     description: Zenodo DOI
-repository-code: 'https://github.com/leolellisr/rl_CSR'
-repository-artifact: 'https://github.com/leolellisr/rl_CSR/releases/tag/v1.0.0'
+repository-code: 'https://github.com/H-IAAC/cst-incremental-babybot'
+repository-artifact: >-
+  https://github.com/H-IAAC/cst-incremental-babybot/releases/tag/v1.0.0
 abstract: >-
-  Code for paper "Dual or Unified: Optimizing Drive-Based
-  Reinforcement Learning for Cognitive Autonomous Robots",
-  submitted to Special Issue on “Cognitive architectures for
-  Reinforcement Learning”, Cognitive Systems Research
+  Repository for the code of the work submitted to IEEE
+  International Conference on Development and Learning
+  (ICDL-2025).
 keywords:
-  - Intrinsic Motivation
+  - Incremental Learning
   - Reinforcement Learning
-  - Cognitive Architecture
-  - Autonomous Humanoid Robot
-license: MIT
+  - Object Tracking
+  - Object Permanence
+  - Cognitive Robotics
+license: LGPL-2.1
+commit: main
+version: v1.0.0
