@@ -242,6 +242,39 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
   <em>Fig: Phase 2 agent on Experiment Te3 - Failed </em>
 </p>
 
+
+
+#### Phase 3
+
+ In this phase, the agent acquires the ability to generate top-down feature maps and define specific features as attentional objectives. With newly introduced attentional actions, it can dynamically modify which features are selected. Training continues with Experiment **Tr1**, building upon the model from Phase 2, followed by evaluation in Experiments **Te3** and **Te4**. 
+ 
+ In Experiment **Te3**, the Pioneer moves and can reach the back of the environment. By setting target attributes such as color, distance, and region, the agent successfully maintains visual focus on the Pioneer, even when it moves beyond its initial field of view. 
+ 
+
+<p align="center">
+<img src="imgs/exps/resTe3_ph3.png" alt="Results for Phase 3 agent in experiment Te3. (up) Vision sensor and attentional maps; (down) evolution of Phase 3 agent's field of view (FOV) in Te3" width="600"/>
+</p>
+
+<p align="center">
+  <img src="imgs/exps/3A_test.GIF" width="600"/>
+<br/>
+  <em>Fig: Phase 3 agent on Experiment Te3 - Success</em>
+</p>
+
+ Experiment **Te4** introduces a novel setup to evaluate the agent’s understanding of object permanence and its ability to predict object trajectories. The Pioneer moves within a restricted area at the back of the environment, occasionally becoming obstructed by a wall with an elevated section. While the Pioneer remains partially visible, the agent effectively tracks its motion. However, once it is fully occluded, the agent fails to anticipate its trajectory and loses focus.
+
+<p align="center">
+<img src="imgs/exps/resTe4_ph3.png" alt="Results for Phase 3 agent  in experiment Te4. (up) Vision sensor and attentional maps; (down) evolution of Phase 3's field of view (FOV) in Te4" width="600"/>
+</p>
+
+
+<p align="center">
+  <img src="imgs/exps/3B_test.gif" width="600"/>
+<br/>
+  <em>Fig: Phase 3 agent on Experiment Te4 - Failed </em>
+</p>
+
+
 ## 📌 Key Contributions
 
 - **Incremental Learning Framework** for object tracking and object permanence
