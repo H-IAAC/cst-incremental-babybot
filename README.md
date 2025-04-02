@@ -179,7 +179,7 @@ In Experiment **Te1**, the Pioneer remains stationary in front of the agent, ser
 <img src="imgs/exps/resTe1_ph1.png" alt="Results for Phase 1 agent. (up) (a-d) Te2. (down) evolution of Marta's field of view (FOV) in Te2" width="400"/>
 
 <p align="center">
-  <img src="imgs/exps/1A_test.GIF" width="400"/>
+  <img src="imgs/exps/1A_test.gif" width="400"/>
 <br/>
   <em>Fig: Marta keeps the attention on the red robot in Phase 1</em>
 </p>
