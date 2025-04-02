@@ -55,6 +55,13 @@ The architecture evolves across **five developmental phases**, each adding new c
 4. **Phase 4**: Procedural memory and trajectory prediction; object permanence. Involves fine-tuning, modifying the Learning module (green parallelogram)
 5. **Phase 5**: Alternating attention mechanism for multiple object tracking.  The Winner-Takes-All algorithm in the Winner Picker is replaced with an alternative attention mechanism.
 
+The code and parameters for each phase are available in different branches.
+- **[Phase 1](https://github.com/H-IAAC/cst-incremental-babybot/tree/1st_sub)**
+- **[Phase 2](https://github.com/H-IAAC/cst-incremental-babybot/tree/2nd_sub)**
+- **[Phase 3](https://github.com/H-IAAC/cst-incremental-babybot/tree/3rd_sub)**
+- **[Phase 4](https://github.com/H-IAAC/cst-incremental-babybot/tree/4th_sub)**
+- **[Phase 5](https://github.com/H-IAAC/cst-incremental-babybot/tree/5th_sub)**
+
 ![](imgs/ArchBabybot.png)
 
 ### Simulation Environment
@@ -133,7 +140,7 @@ In contrast, a Phase 2 agent is unable to perform Te3: although curiosity motiva
 to the back of the environment.
 
 <p align="center">
-<img src="imgs/exps/scene_te1_n_te3.png" alt="Scene for Te3." width="400"/>
+<img src="imgs/exps/scene_te1_n_te3.png" alt="Scene for Te3." width="600"/>
 </p>
 
 **Experiment Te4:** A red Pioneer robot moves within a delimited space, distancing itself from Marta and becoming occluded for a period of time, as illustrated in Figure 3b. The ability being explored is Object Permanence, which requires the cognitive functions available from at least Phase 4 to
