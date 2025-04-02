@@ -91,19 +91,19 @@ At the beginning of each new episode, Marta’s actuators are reset to their ini
 **Experiment Tr1:** A red Pioneer robot moves at an angular velocity of 2 rad/s within an open space in front of Marta, with blocks scattered throughout the environment. This setup is used during training for Experiments in Phases 1, 2, and 3. The objective is to assess the agent’s ability to incrementally develop Object Tracking capabilities.
 
 <p align="center">
-<img src="imgs/exps/scene_tr1.png" alt="Scene for Tr1." width="400"/>
+<img src="imgs/exps/scene_tr1.png" alt="Scene for Tr1." width="600"/>
 </p>
 
 **Experiment Tr2:** A red Pioneer robot moves at 1 rad/s within a delimited space away from Marta, becoming occluded for a period of time. This setup is used during training for experiments in Phase 4. The objective is to develop the agent’s understanding of Object Permanence.
 
 <p align="center">
-<img src="imgs/exps/scene_tr2_n_te4.png" alt="Scene for Tr2." width="400"/>
+<img src="imgs/exps/scene_tr2_n_te4.png" alt="Scene for Tr2." width="600"/>
 </p>
 
 **Experiment Tr3:** Two Pioneer robots, one red and one blue, move at an angular velocity of 2 rad/s within a delimited space away from Marta, both becoming occluded for a period of time. This setup is employed during training for experiments in Phase 5. The agent’s goal is to develop skills in Multiple Object Tracking and Object Permanence.
 
 <p align="center">
-<img src="imgs/exps/scene_tr3_n_te5.png" alt="Scene for Tr3." width="400"/>
+<img src="imgs/exps/scene_tr3_n_te5.png" alt="Scene for Tr3." width="600"/>
 </p>
 
 **(ii) Testing Experiments**
@@ -119,13 +119,13 @@ to successfully learn the intended ability. Starting from the second test experi
 **Experiment Te1:** A red Pioneer robot remains stationary in front of Marta, as illustrated in Figure 3d. In this experiment, the agent is expected to exhibit early stages of Object Tracking, as the robot responds reactively to salient stimuli through bottom-up attention, maintaining focus on the object within its field of view.
 
 <p align="center">
-<img src="imgs/exps/scene_te1_n_te3.png" alt="Scene for Te1." width="400"/>
+<img src="imgs/exps/scene_te1_n_te3.png" alt="Scene for Te1." width="600"/>
 </p>
 
 **Experiment Te2:** A red Pioneer robot moves within a confined space in front of Marta, as shown in Figure 3e. Driven by curiosity-based motivation, a Phase 2 agent is encouraged to explore different states and actions, allowing it to search for the Pioneer even when it moves outside its field of view, enhancing Object Tracking capabilities. In contrast, a Phase 1 agent is unable to perform Te2 due to its purely reactive behavior, responding only to salient stimuli—typically stationary or slow-moving—within its limited field of vision.
 
 <p align="center">
-<img src="imgs/exps/scene_te2.png" alt="Scene for Te2." width="400"/>
+<img src="imgs/exps/scene_te2.png" alt="Scene for Te2." width="600"/>
 </p>
 
 **Experiment Te3:** A red Pioneer robot moves within an open space in front of Marta, as shown in Figure 3d. With the capacity to employ top-down attention and define features of interest, a Phase 3 agent can determine whether its focus should be on near or distant objects in order to track objects.
@@ -142,14 +142,14 @@ agent to develop procedural schemes tailored to this task. In contrast, a Phase 
 passes behind the wall.
 
 <p align="center">
-<img src="imgs/exps/scene_tr2_n_te4.png" alt="Scene for Te4." width="400"/>
+<img src="imgs/exps/scene_tr2_n_te4.png" alt="Scene for Te4." width="600"/>
 </p>
 
 **Experiment Te5:** A red Pioneer robot moves within a confined space, distancing itself from Marta and becoming occluded for a period of time. Meanwhile, a blue Pioneer robot remains stationary in a location visible to Marta, as shown in Figure 3c. The abilities being explored are Multiple Object Tracking and Object Permanence. To successfully complete this task, the agent requires the cognitive modules available in Phase 5.
 In order to track both Pioneers, a Phase 5 agent must be capable of alternating its attention—being able to focus on more than one target. In contrast, a Phase 4 agent maintains its attention on a single target and is therefore only able to track one Pioneer.
 
 <p align="center">
-<img src="imgs/exps/scene_tr3_n_te5.png" alt="Scene for Te5." width="400"/>
+<img src="imgs/exps/scene_tr3_n_te5.png" alt="Scene for Te5." width="600"/>
 </p>
 
 ---
@@ -190,11 +190,11 @@ The agent was first trained using Experiment **Tr1**, and subsequently evaluated
 In Experiment **Te1**, the Pioneer remains stationary in front of the agent, serving as the primary focus of attention. Relying solely on bottom-up mechanisms to generate the salience map, the agent successfully maintains its field of view on the Pioneer. 
 
 <p align="center">
-<img src="imgs/exps/resTe1_ph1.png" alt="Results for Phase 1 agent. (up) (a-d) Te1; (e-f) Te2. (down) evolution of Marta's field of view (FOV) in Te1" width="400"/>
+<img src="imgs/exps/resTe1_ph1.png" alt="Results for Phase 1 agent in experiment Te1. (up) Vision sensor and attentional maps; (down) evolution of Marta's field of view (FOV) in Te1" width="600"/>
 </p>
 
 <p align="center">
-  <img src="imgs/exps/1A_test.gif" width="400"/>
+  <img src="imgs/exps/1A_test.gif" width="600"/>
 <br/>
   <em>Fig: Phase 1 agent on Experiment Te1 - Success</em>
 </p>
@@ -202,14 +202,14 @@ In Experiment **Te1**, the Pioneer remains stationary in front of the agent, ser
 In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limited set of cognitive modules available in this phase, the agent is unable to track the Pioneer once it exits its FOV.
 
 <p align="center">
-<img src="imgs/exps/resTe1_ph1.png" alt="Results for Phase 1 agent. (up) (a-d) Te2. (down) evolution of Marta's field of view (FOV) in Te2" width="400"/>
+<img src="imgs/exps/resTe2_ph1.png" alt="Results for Phase 1 agent  in experiment Te2. (up) Vision sensor and attentional maps; (down) evolution of Marta's field of view (FOV) in Te2" width="600"/>
 </p>
 
 
 <p align="center">
-  <img src="imgs/exps/1A_test.gif" width="400"/>
+  <img src="imgs/exps/1B_test.GIF" width="600"/>
 <br/>
-  <em>Fig: Phase 1 agent on Experiment Te1 - Success</em>
+  <em>Fig: Phase 1 agent on Experiment Te2 - Failed </em>
 </p>
 
 ## 📌 Key Contributions
@@ -245,7 +245,7 @@ In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limit
 - LB is funded by the Sao Paulo Research Foundation (FAPESP), Brasil, Process Number #2021/07050-0
 -  AS is partially funded by CNPq PQ-2 grant (312323/2022-0)
 
-This project was supported by the brazilian Ministry of Science, Technology and Innovations, with resources from Law № 8,248, of October 23, 1991, within the scope of PPI-SOFTEX, coordinated by Softex and published Arquitetura Cognitiva (Phase 3), DOU 01245.003479/2024 -10.
+ This study was financed, in part, by the São Paulo Research Foundation (FAPESP), Brasil, Process Number 2020/09850-0. This project was supported by the brazilian Ministry of Science, Technology and Innovations, with resources from Law n$^o$ 8,248, of October 23, 1991, within the scope of PPI-SOFTEX, coordinated by Softex and published Arquitetura Cognitiva (Phase 3), DOU 01245.003479/2024 -10.
 
 
 ## License
