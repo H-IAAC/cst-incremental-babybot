@@ -224,7 +224,7 @@ In Experiment **Te2**, the Pioneer moves. With the introduction of curiosity-dri
 </p>
 
 <p align="center">
-  <img src="imgs/exps/1A_test.gif" width="600"/>
+  <img src="imgs/exps/2A_test.GIF" width="600"/>
 <br/>
   <em>Fig: Phase 2 agent on Experiment Te2 - Success</em>
 </p>
@@ -232,12 +232,12 @@ In Experiment **Te2**, the Pioneer moves. With the introduction of curiosity-dri
 In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now able to reach the back of the environment. Although the agent, motivated by curiosity, attempts to track the Pioneer through exploratory behavior, it ultimately loses visual contact once the Pioneer moves into the background, highlighting the limitations of the current phase.
 
 <p align="center">
-<img src="imgs/exps/resTe2_ph1.png" alt="Results for Phase 2 agent  in experiment Te3. (up) Vision sensor and attentional maps; (down) evolution of Phase 2's field of view (FOV) in Te2" width="600"/>
+<img src="imgs/exps/resTe3_ph2.png" alt="Results for Phase 2 agent  in experiment Te3. (up) Vision sensor and attentional maps; (down) evolution of Phase 2's field of view (FOV) in Te3" width="600"/>
 </p>
 
 
 <p align="center">
-  <img src="imgs/exps/1B_test.GIF" width="600"/>
+  <img src="imgs/exps/2B_test.GIF" width="600"/>
 <br/>
   <em>Fig: Phase 2 agent on Experiment Te3 - Failed </em>
 </p>
