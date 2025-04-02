@@ -11,7 +11,7 @@ with open("CITATION.cff", "r") as file:
     cff_content = file.read()
     citation = cffconvert.Citation(cff_content)
 
-citation_str = citation.as_bibtex(reference="Rossi-LL-RL-CSR")
+citation_str = citation.as_bibtex(reference="Rossi-LL-RL-ICDL25")
 citation_str = citation_str.replace("@misc", "@software")
 
 citation_str = ("<!--CITATION START-->\n"+
