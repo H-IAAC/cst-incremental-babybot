@@ -167,8 +167,8 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
       <img src="imgs/Rewards_stages_1_2_3.png" width="300"/><br/>
       <sub><b>Training curves</b><br/>Phases 1 to 3</sub>
     </td>
-    <td align="imgs">
-      <img src="images/Rewards_stages_4_5.png" width="300"/><br/>
+    <td align="center">
+      <img src="imgs/Rewards_stages_4_5.png" width="300"/><br/>
       <sub><b>Training curves</b><br/>Phases 4 to 5</sub>
     </td>
   </tr>
@@ -202,7 +202,7 @@ In Experiment **Te1**, the Pioneer remains stationary in front of the agent, ser
 In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limited set of cognitive modules available in this phase, the agent is unable to track the Pioneer once it exits its FOV.
 
 <p align="center">
-<img src="imgs/exps/resTe2_ph1.png" alt="Results for Phase 1 agent  in experiment Te2. (up) Vision sensor and attentional maps; (down) evolution of Marta's field of view (FOV) in Te2" width="600"/>
+<img src="imgs/exps/resTe2_ph1.png" alt="Results for Phase 1 agent  in experiment Te2. (up) Vision sensor and attentional maps; (down) evolution of Phase 1's field of view (FOV) in Te2" width="600"/>
 </p>
 
 
@@ -210,6 +210,36 @@ In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limit
   <img src="imgs/exps/1B_test.GIF" width="600"/>
 <br/>
   <em>Fig: Phase 1 agent on Experiment Te2 - Failed </em>
+</p>
+
+
+#### Phase 2
+Knowledge acquired from Experiment **Tr1** in Phase 1 is transferred, and training continues with the addition of new cognitive modules. The agent is then evaluated in Experiments **Te2** and **Te3**. 
+
+In Experiment **Te2**, the Pioneer moves. With the introduction of curiosity-driven behavior, the agent explores alternative actions in different states, enabling it to maintain visual contact with the Pioneer even as it moves beyond the initial field of view. 
+
+
+<p align="center">
+<img src="imgs/exps/resTe2_ph2.png" alt="Results for Phase 2 agent in experiment Te2. (up) Vision sensor and attentional maps; (down) evolution of Phase 2 agent's field of view (FOV) in Te2" width="600"/>
+</p>
+
+<p align="center">
+  <img src="imgs/exps/1A_test.gif" width="600"/>
+<br/>
+  <em>Fig: Phase 2 agent on Experiment Te2 - Success</em>
+</p>
+
+In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now able to reach the back of the environment. Although the agent, motivated by curiosity, attempts to track the Pioneer through exploratory behavior, it ultimately loses visual contact once the Pioneer moves into the background, highlighting the limitations of the current phase.
+
+<p align="center">
+<img src="imgs/exps/resTe2_ph1.png" alt="Results for Phase 2 agent  in experiment Te3. (up) Vision sensor and attentional maps; (down) evolution of Phase 2's field of view (FOV) in Te2" width="600"/>
+</p>
+
+
+<p align="center">
+  <img src="imgs/exps/1B_test.GIF" width="600"/>
+<br/>
+  <em>Fig: Phase 2 agent on Experiment Te3 - Failed </em>
 </p>
 
 ## 📌 Key Contributions
