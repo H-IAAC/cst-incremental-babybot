@@ -286,8 +286,13 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 
 <!--Don't remove the following tags, it's used for placing the generated citation from the CFF file-->
 <!--CITATION START-->
-```
-
+```bibtext
+@software{Rossi-LL-RL-CSR,
+author = {de Lellis Rossi, Leonardo and Luna Colombini, Esther  and Ribeiro Gudwin, Ricardo and Paro Costa, Paula and Mara Berto, Letícia and Simões, Alexandre},
+doi = {10.5281/zenodo.15123005},
+title = {cst-incremental-babybot},
+url = {https://github.com/H-IAAC/cst-incremental-babybot}
+}
 ```
 <!--CITATION END-->
 
