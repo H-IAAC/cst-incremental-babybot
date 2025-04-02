@@ -176,17 +176,24 @@ In Experiment **Te1**, the Pioneer remains stationary in front of the agent, ser
 
 <img src="imgs/exps/resTe1_ph1.png" alt="Results for Phase 1 agent. (up) (a-d) Te1; (e-f) Te2. (down) evolution of Marta's field of view (FOV) in Te1" width="400"/>
 
-<img src="imgs/exps/resTe1_ph1.png" alt="Results for Phase 1 agent. (up) (a-d) Te2. (down) evolution of Marta's field of view (FOV) in Te2" width="400"/>
 
 <p align="center">
   <img src="imgs/exps/1A_test.gif" width="400"/>
 <br/>
-  <em>Fig: Marta keeps the attention on the red robot in Phase 1</em>
+  <em>Fig: Phase 1 agent on Experiment Te1 - Success</em>
 </p>
 
 In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limited set of cognitive modules available in this phase, the agent is unable to track the Pioneer once it exits its FOV.
 
-<img src="imgs/exps/1A_test.GIF" alt="Phase 1 agent in Te2 - video." width="400"/>
+<img src="imgs/exps/resTe1_ph1.png" alt="Results for Phase 1 agent. (up) (a-d) Te2. (down) evolution of Marta's field of view (FOV) in Te2" width="400"/>
+
+
+
+<p align="center">
+  <img src="imgs/exps/1A_test.gif" width="400"/>
+<br/>
+  <em>Fig: Phase 1 agent on Experiment Te1 - Success</em>
+</p>
 
 ## 📌 Key Contributions
 
