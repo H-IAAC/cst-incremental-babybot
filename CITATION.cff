@@ -44,7 +44,7 @@ authors:
     email: alexandre.simoes@unesp.br
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.15123005
+    value: 10.5281/zenodo.15133064
     description: Zenodo DOI
 repository-code: 'https://github.com/H-IAAC/cst-incremental-babybot'
 repository-artifact: >-
