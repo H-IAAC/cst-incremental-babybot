@@ -188,13 +188,15 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
 - **Phase 4**: Achieved predictive tracking during full occlusion using procedural memory.
 - **Phase 5**: Alternating attention allowed the agent to **shift focus between multiple objects**, a previously unachievable task.
 
---
+___
+
 
 ### Testing results
 
 In the following subsections, the test results for all phases are presented. Each phase includes two sets of results: (i) The first row displays images captured by the vision sensor, followed by their corresponding attentional maps, that represent two timesteps from a single episode in which the cognitive agent -- equipped with the necessary modules -- is expected to complete (or not) the task successfully. (ii) The second row illustrates the evolution of Marta's field of view (FOV) throughout the successful episode, along with the position of the Pioneer robot(s) at five key timesteps, including the two shown in the first row. These timesteps are selected based on the experimental setup defined for each phase. If the Pioneer robot is in motion, its trajectory between consecutive timesteps is also plotted.
 
---
+___
+
 
 #### Phase 1
 The agent was first trained using Experiment **Tr1**, and subsequently evaluated in Experiments **Te1** and **Te2**. 
@@ -224,7 +226,8 @@ In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limit
   <em>Fig: Phase 1 agent on Experiment Te2 - Failed </em>
 </p>
 
---
+___
+
 
 #### Phase 2
 Knowledge acquired from Experiment **Tr1** in Phase 1 is transferred, and training continues with the addition of new cognitive modules. The agent is then evaluated in Experiments **Te2** and **Te3**. 
@@ -256,7 +259,8 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 </p>
 
 
---
+___
+
 
 #### Phase 3
 
@@ -288,7 +292,8 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
   <em>Fig: Phase 3 agent on Experiment Te4 - Failed </em>
 </p>
 
---
+___
+
 
 #### Phase 4
 
@@ -322,7 +327,8 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
   <em>Fig: Phase 4 agent on Experiment Te5 - Failed </em>
 </p>
 
---
+___
+
 
 #### Phase 5
 
