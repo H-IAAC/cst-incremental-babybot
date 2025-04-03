@@ -188,6 +188,8 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
 - **Phase 4**: Achieved predictive tracking during full occlusion using procedural memory.
 - **Phase 5**: Alternating attention allowed the agent to **shift focus between multiple objects**, a previously unachievable task.
 
+<hr style="height:1px; border:none; background:#ccc;">
+
 - - - - - - - - - - - - - -
 
 
