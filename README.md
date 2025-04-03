@@ -191,6 +191,11 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
 
 - - - - - - - - - - - - - -
 
+### Trained models
+
+Available [here](https://zenodo.org/records/15133064)!
+
+- - - - - - - - - - - - - -
 
 ### Testing results
 
