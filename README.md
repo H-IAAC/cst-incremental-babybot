@@ -370,7 +370,7 @@ In experiment **Te5**, a stationary blue Pioneer remains continuously visible on
 ```bibtext
 @software{Rossi-LL-RL-ICDL25,
 author = {de Lellis Rossi, Leonardo and Luna Colombini, Esther  and Ribeiro Gudwin, Ricardo and Paro Costa, Paula and Mara Berto, Letícia and Simões, Alexandre},
-doi = {10.5281/zenodo.15123005},
+doi = {10.5281/zenodo.15133064},
 title = {cst-incremental-babybot},
 url = {https://github.com/H-IAAC/cst-incremental-babybot}
 }
