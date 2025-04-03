@@ -282,6 +282,40 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 </p>
 
 
+
+#### Phase 4
+
+ Building upon the findings from Phase 3, we hypothesized that the agent could leverage procedural memory to predict the Pioneer's trajectory. To test this hypothesis, the model from Phase 3 was fine-tuned using a scenario in which the Pioneer becomes fully occluded. Training is now conducted in Experiment **Tr2**, followed by evaluation in Experiments **Te4** and **Te5**. 
+ 
+ In Experiment **Te4**, the Pioneer moves toward the back of the environment. With fine-tuning, the agent learns potential trajectory patterns and successfully tracks the Pioneer even when it becomes fully occluded.
+
+ 
+
+<p align="center">
+<img src="imgs/exps/resTe4_ph4.png" alt="Results for Phase 4 agent in experiment Te4. (up) Vision sensor and attentional maps; (down) evolution of Phase 4 agent's field of view (FOV) in Te4" width="600"/>
+</p>
+
+<p align="center">
+  <img src="imgs/exps/4A_test.GIF" width="600"/>
+<br/>
+  <em>Fig: Phase 4 agent on Experiment Te4 - Success</em>
+</p>
+
+ 
+  Experiment **Te5** introduces a second Pioneer to assess the agent's ability to combine object permanence with multiple object tracking. The red Pioneer moves within a confined area at the back of the environment, occasionally becoming obscured by a wall with an elevated section, while the newly introduced blue Pioneer remains stationary and always visible to the agent. When the red Pioneer is partially visible, the agent successfully tracks its motion. However, once it becomes fully occluded, the agent fails to predict its path and does not shift attention to the blue Pioneer. Furthermore, when the agent focuses on the stationary blue Pioneer, it loses track of the moving red Pioneer, highlighting a limitation in attention-switching capabilities at this phase.
+  
+<p align="center">
+<img src="imgs/exps/resTe4_ph5.png" alt="Results for Phase 4 agent  in experiment Te5. (up) Vision sensor and attentional maps; (down) evolution of Phase 4's field of view (FOV) in Te5" width="600"/>
+</p>
+
+
+<p align="center">
+  <img src="imgs/exps/4B_test.gif" width="600"/>
+<br/>
+  <em>Fig: Phase 4 agent on Experiment Te5 - Failed </em>
+</p>
+
+
 ## 📌 Key Contributions
 
 - **Incremental Learning Framework** for object tracking and object permanence
