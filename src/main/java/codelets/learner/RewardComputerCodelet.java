@@ -18,6 +18,10 @@ import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.learning.QLearning;
 import br.unicamp.cst.representation.idea.Idea;
+import coppelia.FloatWA;
+import coppelia.IntW;
+import coppelia.remoteApi;
+import static java.lang.Math.round;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -25,6 +29,7 @@ import java.util.Map;
 import outsideCommunication.OutsideCommunication;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 /**
  * @author L. L. Rossi (leolellisr)
  * Obs: This class represents the implementations present in the proposed scheme for: 
@@ -190,6 +195,27 @@ public class RewardComputerCodelet extends Codelet
             return sum / list.size();
         } 
 
+      public float checkLookingAtPioneer(float[] headPos, float[] pioneerPos, float neckYaw, float headPitch) {
+    double yaw = round(neckYaw*100)/100;
+    double pitch = round(headPitch*100)/100;
+System.out.println("yaw"+yaw);
+System.out.println("pitch"+pitch);
+    Vector3D lookDir = new Vector3D(
+        Math.cos(pitch) * Math.cos(yaw),
+        Math.cos(pitch) * Math.sin(yaw),
+        Math.sin(pitch)
+    );
+
+    Vector3D targetDir = new Vector3D(
+        pioneerPos[0] - headPos[0],
+        pioneerPos[1] - headPos[1],
+        pioneerPos[2] - headPos[2]
+    ).normalize();
+
+    float dot = (float) lookDir.dotProduct(targetDir);
+    return (float) Math.acos(dot); // retorna ângulo em radianos
+}
+
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
@@ -207,6 +233,61 @@ public class RewardComputerCodelet extends Codelet
              if(debug) System.out.println("getSpeed null ");
             return;
         }
+        
+/*        float[] positionPioneer = new float[3];
+        try {
+            FloatWA position = new FloatWA(3);
+            
+            FloatWA orientation = new FloatWA(3);
+            IntW obj_handle = new IntW(-1);
+            String s = "Pioneer1";
+            oc.vrep.simxGetObjectHandle(oc.clientID, s, obj_handle, remoteApi.simx_opmode_blocking);
+            oc.vrep.simxGetObjectPosition(oc.clientID, obj_handle.getValue(), -1, position, oc.vrep.simx_opmode_blocking);
+            if(debug) System.out.println("positionPioneer "+" position - x: "+position.getArray()[0]+", y: "+position.getArray()[1]+", z: "+position.getArray()[2]);
+            positionPioneer[0] =   position.getArray()[0];
+            positionPioneer[1] =   position.getArray()[1];
+            positionPioneer[2] =   position.getArray()[2];
+            
+            
+        } catch (Exception e) {
+             if(debug) System.out.println("positionPioneer null ");
+            return;
+        }
+        float[] positionHead = new float[3];
+        float[] orientationHead = new float[3];
+        try {
+            FloatWA position = new FloatWA(3);
+            
+            FloatWA orientation = new FloatWA(3);
+            IntW obj_handle = new IntW(-1);
+            String s = "Vision_sensor";
+            oc.vrep.simxGetObjectHandle(oc.clientID, s, obj_handle, remoteApi.simx_opmode_blocking);
+            oc.vrep.simxGetObjectPosition(oc.clientID, obj_handle.getValue(), -1, position, oc.vrep.simx_opmode_blocking);
+            oc.vrep.simxGetObjectOrientation(oc.clientID, obj_handle.getValue(), -1, orientation, oc.vrep.simx_opmode_blocking);
+            
+            if(debug) System.out.println("positionHead "+" position - x: "+position.getArray()[0]+", y: "+position.getArray()[1]+", z: "+position.getArray()[2]);
+            positionHead[0] =   position.getArray()[0];
+            positionHead[1] =   position.getArray()[1];
+            positionHead[2] =   position.getArray()[2];
+            orientationHead[0] =   orientation.getArray()[0];
+            orientationHead[1] =   orientation.getArray()[1];
+            orientationHead[2] =   orientation.getArray()[2];
+            
+        } catch (Exception e) {
+             if(debug) System.out.println("positionHead null ");
+            return;
+        }
+        System.out.println("positionHead x:"+positionHead[0]);
+        System.out.println("positionHead y:"+positionHead[1]);
+        System.out.println("positionPioneer x:"+positionPioneer[0]);
+        System.out.println("positionPioneer y:"+positionPioneer[1]);
+        
+        float angle = checkLookingAtPioneer(positionHead, positionPioneer, yawPos, headPos);
+        System.out.println("angle (rad): "+angle);
+        System.out.println("angle (deg): "+Math.toDegrees(angle));
+        oc.vision.setFValues(7, angle);
+        */
+
       /*  try {
         Thread.sleep(50);
         } catch (Exception e) {
@@ -439,7 +520,48 @@ public class RewardComputerCodelet extends Codelet
                         " CurV:"+cur_drive+" dCurV:"+cur_delta+" Ri:"+reward_i+" Gi:"+global_reward);
         
                         }
-                       
+                        
+        double MartaX = -0.0609;
+        double MartaY = -2.0745;
+        double MartaZ = 0.58;
+        float[] posPioneer = oc.vision.getPosition("Pioneer1");
+        double dx = posPioneer[0] - MartaX;
+        double dy = posPioneer[1] - MartaY;
+        double dz = posPioneer[2] - MartaZ;
+        // ângulo do Pioneer nos planos XY e YZ
+        double targetYaw = Math.atan2(dy, dx); // radianos
+        double targetYawDeg = Math.toDegrees(targetYaw);
+        
+        double distXY = Math.sqrt(dx*dx + dy*dy);
+
+        double targetPitch = Math.atan2(dz, distXY);
+        double targetPitchDeg = Math.toDegrees(targetPitch);
+        // converte neckYaw (yawPos) e neckPitch (pitchPos) para graus
+
+        //System.out.println("Target angle (rad): " + targetYaw);
+        //System.out.println("Target angle (deg): " + targetYawDeg);
+
+        // converte neckYaw (yawPos) para graus
+        double neckYawDeg = Math.toDegrees(yawPos);
+        double headPitchDeg = Math.toDegrees(headPos);
+        // calcula diferença corrigindo offset de 90° do eixo do sensor
+        double yawDiff = targetYawDeg - (neckYawDeg + 90);
+        yawDiff = ((yawDiff + 180) % 360) - 180;
+
+        double pitchDiff = targetPitchDeg - headPitchDeg;
+        pitchDiff = ((pitchDiff + 180) % 360) - 180;
+        System.out.println("Yaw diff (deg): " + Math.abs(yawDiff));
+System.out.println("pitch Diff (deg): " + Math.abs(pitchDiff));
+
+        // verifica se está dentro do FOV 2D (horizontal e vertical)
+        if (Math.abs(yawDiff) < 30 && Math.abs(pitchDiff) < 30) {
+            oc.vision.setIValues(5, 1);
+        } else {
+            oc.vision.setIValues(5, 0);
+        }
+
+        oc.vision.setFValues(7, (float) yawDiff);
+        oc.vision.setFValues(8, (float) pitchDiff);             
         }
 
     }

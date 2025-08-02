@@ -1,15 +1,3 @@
-/*
- * /*******************************************************************************
- *  * Copyright (c) 2012  DCA-FEEC-UNICAMP
- *  * All rights reserved. This program and the accompanying materials
- *  * are made available under the terms of the GNU Lesser Public License v3
- *  * which accompanies this distribution, and is available at
- *  * http://www.gnu.org/licenses/lgpl.html
- *  * 
- *  * Contributors:
- *  *     K. Raizer, A. L. O. Paraense, R. R. Gudwin - initial API and implementation
- *  ******************************************************************************/
- 
 package outsideCommunication;
 
 import CommunicationInterface.SensorI;
@@ -17,15 +5,9 @@ import coppelia.FloatWA;
 import coppelia.IntWA;
 import coppelia.IntW;
 import coppelia.remoteApi;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 
 public class DepthVrep implements SensorI {
     private final IntW vision_handles;
@@ -37,7 +19,9 @@ public class DepthVrep implements SensorI {
     private final int res = 256, print_step = 1;
     private final int max_time_graph = 100;
     private SensorI vision;
-    private boolean debug = false; // Enable debug logging
+    private boolean debug = true; // ativar debug para logar handles inválidos
+
+    private boolean streamingInitialized = false; // para evitar múltiplas inicializações
 
     public DepthVrep(remoteApi vrep, int clientid, IntW vision_handles, int stageVision, SensorI vision) {
         this.time_graph = 0;
@@ -65,78 +49,78 @@ public class DepthVrep implements SensorI {
 
     private final Object lock = new Object();
 
-@Override
-public Object getData() {
-    synchronized (lock) {
-        return getDepthDataInternal();
-    }
-}
-
-private Object getDepthDataInternal() {
-    IntWA resolution = new IntWA(2);
-        FloatWA auxValues_WA = new FloatWA(res * res);
-        float[] temp_dep;
-
-        int read_depth;
-        long startTime = System.currentTimeMillis();
-        int retries = 3;
-
-        synchronized (vrep) { // Ensure thread safety with remote API calls
-            while (retries > 0) {
-                try {
-                    if ( vision_handles.getValue() == 0) {
-                        System.err.println("Depth Invalid clientID or vision handle. Exiting...");
-                        return depth_data; // Exit if critical values are uninitialized
-                    }
-
-                    if (resolution.getArray().length < 2 || auxValues_WA.getArray().length == 0) {
-                        System.err.println("Erro: Variáveis não inicializadas corretamente!");
-                        return depth_data;
-                    }
-                    
-                    if (vrep == null) {
-                        System.err.println("Erro: API remota não inicializada corretamente!");
-                        return depth_data;
-                    }
-
-
-                    read_depth = vrep.simxGetVisionSensorDepthBuffer(clientID, vision_handles.getValue(), resolution, auxValues_WA, vrep.simx_opmode_streaming);
-                    if (read_depth == remoteApi.simx_return_ok) {
-                        break; // Exit loop if call is successful
-                    } else {
-                        if (debug) System.out.println("Depth buffer retrieval failed, retrying...");
-                    }
-                } catch (Exception e) {
-                    //System.err.println("Error retrieving depth buffer: " + e.getMessage());
-                    retries--;
-                    if (retries == 0) {
-                        System.out.println("Failed to retrieve depth buffer after retries. Exiting gracefully.");
-                        return depth_data;
-                    }
-                }
-            }
-
-            while (System.currentTimeMillis() - startTime < 2000) {
-                try {
-                    read_depth = vrep.simxGetVisionSensorDepthBuffer(clientID, vision_handles.getValue(), resolution, auxValues_WA, remoteApi.simx_opmode_buffer);
-                    if (read_depth == remoteApi.simx_return_ok || read_depth == remoteApi.simx_return_novalue_flag) {
-                        temp_dep = auxValues_WA.getArray();
-                        float[] depth_or = new float[res * res];
-                        processDepthData(temp_dep, depth_or);
-                        return depth_data;
-                    } else {
-                        resetDepthData();
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error processing depth data: " + e.getMessage());
-                }
-            }
+    @Override
+    public Object getData() {
+        synchronized (lock) {
+            return getDepthDataInternal();
         }
-        return depth_data;
-}
+    }
 
+    private Object getDepthDataInternal() {
+     IntWA resolution = new IntWA(2);
+     FloatWA auxValues_WA = new FloatWA(res * res);
+     float[] temp_dep;
 
-  
+     int read_depth;
+
+     synchronized (vrep) {
+         // ✅ Checagem inicial
+         if (clientID < 0 || vrep == null) {
+             System.err.println("[DepthVrep] ERRO: clientID inválido ou API não inicializada");
+             return depth_data;
+         }
+         if (vision_handles == null || vision_handles.getValue() <= 0) {
+             System.err.println("[DepthVrep] ERRO: Vision handle inválido! Valor=" +
+                     (vision_handles == null ? "null" : vision_handles.getValue()));
+             return depth_data;
+         }
+
+         if (debug) {
+             System.out.println("[DepthVrep] clientID=" + clientID +
+                     " vision_handle=" + vision_handles.getValue() +
+                     " streamingInit=" + streamingInitialized);
+         }
+
+         try {
+             // ✅ Inicializa streaming apenas uma vez
+             if (!streamingInitialized) {
+                 vrep.simxGetVisionSensorDepthBuffer(clientID, vision_handles.getValue(),
+                         resolution, auxValues_WA, remoteApi.simx_opmode_streaming);
+                 streamingInitialized = true;
+                 return depth_data;
+             }
+
+             read_depth = vrep.simxGetVisionSensorDepthBuffer(clientID, vision_handles.getValue(),
+                     resolution, auxValues_WA, remoteApi.simx_opmode_buffer);
+
+             if (read_depth != remoteApi.simx_return_ok) {
+                 if (debug) System.err.println("[DepthVrep] Falha/novalue ao ler depth buffer. Código=" + read_depth);
+                 resetDepthData();
+                 return depth_data;
+             }
+
+             // ✅ Verifica resolução real
+             int width = resolution.getArray()[0];
+             int height = resolution.getArray()[1];
+             if (width * height > auxValues_WA.getArray().length) {
+                 System.err.println("[DepthVrep] ERRO: resolução inesperada " + width + "x" + height);
+                 resetDepthData();
+                 return depth_data;
+             }
+
+             temp_dep = auxValues_WA.getArray();
+             float[] depth_or = new float[res * res];
+             processDepthData(temp_dep, depth_or);
+             return depth_data;
+
+         } catch (Exception e) {
+             System.err.println("[DepthVrep] EXCEÇÃO JNI: " + e.getMessage());
+             resetDepthData();
+             return depth_data;
+         }
+     }
+ }
+
 
     private void processDepthData(float[] temp_dep, float[] depth_or) {
         int count_aux = 0;
@@ -194,144 +178,59 @@ private Object getDepthDataInternal() {
             depth_data.set(i, 0f);
         }
     }
-	@Override
-	public void resetData() {
-		// TODO Auto-generated method stub
-		
-	}
 
     @Override
-    public void setEpoch(int exp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    public void resetData() {}
     @Override
-    public int getEpoch() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    public void setEpoch(int exp) {}
     @Override
-    public int getAux() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public int getEpoch() { return 0; }
     @Override
-    public int getMaxActions() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public int getAux() { return 0; }
     @Override
-    public int getMaxEpochs() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-   
-
-
+    public int getMaxActions() { return 0; }
     @Override
-    public int getnAct() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public int getMaxEpochs() { return 0; }
     @Override
-    public void setnAct(int a) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public int getnAct() { return 0; }
     @Override
-    public float getFValues(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void setnAct(int a) {}
     @Override
-    public void setFValues(int i, float f) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public float getFValues(int i) { return 0; }
     @Override
-    public float getIValues(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void setFValues(int i, float f) {}
     @Override
-    public void setIValues(int i, int f) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public float getIValues(int i) { return 0; }
     @Override
-    public ArrayList<String> getExecutedAct() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void setIValues(int i, int f) {}
     @Override
-    public void addAction(String a) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public ArrayList<String> getExecutedAct() { return null; }
     @Override
-    public boolean endEpochR() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void addAction(String a) {}
     @Override
-    public String getLastAction() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public boolean endEpochR() { return false; }
     @Override
-    public void setLastAction(String a) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public String getLastAction() { return null; }
     @Override
-    public String gettype() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void setLastAction(String a) {}
     @Override
-    public void setNextAct(boolean next_ac) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public String gettype() { return null; }
     @Override
-    public boolean getNextAct() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void setNextAct(boolean next_ac) {}
     @Override
-    public boolean getNextActR() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public boolean getNextAct() { return false; }
     @Override
-    public void setNextActR(boolean next_ac) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public boolean getNextActR() { return false; }
     @Override
-    public float[] getPosition(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void setNextActR(boolean next_ac) {}
     @Override
-    public float[] getColor(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public float[] getPosition(String s) { return null; }
     @Override
-    public boolean endEpoch() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public float[] getColor(int i) { return null; }
     @Override
-    public void setCrash(boolean cr) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public boolean endEpoch() { return false; }
     @Override
-    public boolean getCrash() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
+    public void setCrash(boolean cr) {}
+    @Override
+    public boolean getCrash() { return false; }
 }

@@ -46,6 +46,10 @@ import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
+import java.util.*;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
+import java.lang.management.ManagementFactory;
 
 /**
  *
@@ -72,6 +76,9 @@ public class VisionVrep implements SensorI{
     private String runId="";
     private ArrayList<float[]> colorObjs = new ArrayList<>();
     private boolean crash;
+     private static final long serialVersionUID = 1L;
+     private static final String CHECKPOINT_FILE = "vision_checkpoint.dat";
+
     public VisionVrep(remoteApi vrep, int clientid, IntW vision_handles, int max_epochs, int num_tables, 
             int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, int num_pioneer) {
         this.time_graph = 0;
@@ -94,10 +101,10 @@ public class VisionVrep implements SensorI{
         executedActions = new ArrayList();
         this.res = res;
         this.max_time_graph = max_time_graph;
-        // Float Global_Reward, HeadPitch, NeckYaw, CurV, CurD, Instant_Reward, maxSalValue, _
-        // Int n_tables, exp, Fovea, printStep, act_n, _, _, _
+        // Float Global_Reward, HeadPitch, NeckYaw, CurV, CurD, Instant_Reward, maxSalValue, angleVis
+        // Int n_tables, exp, Fovea, printStep, act_n, fieldVie, _, _
         
-        for(int i=0;i<8;i++){
+        for(int i=0;i<9;i++){
             lastLinef.add(0f);
             lastLinei.add(0);
         }
@@ -123,7 +130,37 @@ public class VisionVrep implements SensorI{
             return;
         }
         }
-    }}
+    }
+     restoreCheckpoint();
+    }
+    
+    // ✅ Método para salvar estado
+    private void saveCheckpoint() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(CHECKPOINT_FILE))) {
+            out.writeObject(this.num_epoch);
+            out.writeObject(this.lastLinei);
+            out.writeObject(this.lastLinef);
+            out.writeObject(this.executedActions);
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar checkpoint: " + e.getMessage());
+        }
+    }
+
+    // ✅ Método para restaurar estado
+    @SuppressWarnings("unchecked")
+    private void restoreCheckpoint() {
+        File file = new File(CHECKPOINT_FILE);
+        if (!file.exists()) return;
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            this.num_epoch = (Integer) in.readObject();
+            this.lastLinei = (ArrayList<Integer>) in.readObject();
+            this.lastLinef = (ArrayList<Float>) in.readObject();
+            this.executedActions = (ArrayList<String>) in.readObject();
+            System.out.println("Checkpoint restaurado: epoch=" + num_epoch);
+        } catch (Exception e) {
+            System.err.println("Erro ao restaurar checkpoint: " + e.getMessage());
+        }
+    }
     
     @Override
     public float[] getPosition(String s){
@@ -360,6 +397,7 @@ public class VisionVrep implements SensorI{
             lastLinef.set(5,(float) 0);
             lastLinef.set(6,(float) 0);
             lastLinef.set(7,(float) 0);
+            lastLinef.set(8,(float) 0);
             crash = false;
             lastLinei.set(4,0);
             //lastLinei.set(5,100);
@@ -376,7 +414,7 @@ public class VisionVrep implements SensorI{
             } 
            
 
-            
+            saveCheckpoint();
             return true;
         }
            
@@ -465,11 +503,18 @@ public class VisionVrep implements SensorI{
             Thread.currentThread().interrupt();
         }
 */
-        if ( vision_handles.getValue() == 0) {
+        if ( vision_handles.getValue() == 0 || vision_handles.getValue() == -1) {
                         System.err.println("Vision Invalid clientID or vision handle. Exiting...");
+                        Collections.fill(vision_data, 0f);
                         return vision_data; // Exit if critical values are uninitialized
                     }
         
+        if (clientID == -1 || vision_handles == null || vision_handles.getValue() <= 0) {
+            System.err.println("Vision handle inválido, pulando leitura.");
+            Collections.fill(vision_data, 0f);
+            return vision_data;
+        }
+
         char temp_RGB[];                            //char Array to get RGB data of Vision Sensor
         
         CharWA image_RGB = new CharWA(res*res*3);           //CharWA that returns RGB data of Vision Sensor
@@ -497,15 +542,17 @@ public class VisionVrep implements SensorI{
         }
 
 
-        try {
-         }
-        catch(Exception e){
-        System.out.println("error vision ");
-    }
+        
         while (System.currentTimeMillis()-startTime < 2000)
         {
-            ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution, image_RGB, 0, 
+            
+            try {
+                ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution, image_RGB, 0, 
                     remoteApi.simx_opmode_buffer);
+                 } catch (Exception e) {
+                System.err.println("Erro JNI no buffer de imagem: " + e.getMessage());
+                return vision_data;
+                }
             if (ret_RGB == remoteApi.simx_return_ok  || ret_RGB == remoteApi.simx_return_novalue_flag){
                 
                 int count_aux = 0; 
@@ -594,7 +641,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+colorObjs.get(0).toString()+" color2:"+ Arrays.toString(colorObjs.get(1))+
                             " Pos1:"+Arrays.toString(positions[0])+" Pos2:"+Arrays.toString(positions[1])+" MaxSalValue:"+lastLinef.get(6)+
-                             " Memory:"+lastLinef.get(6);
+                             " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                     out.println(s);
 
                     s = " QTables:"+lastLinei.get(0)+
@@ -606,7 +653,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+" color2:"+ Arrays.toString(colorObjs.get(1))+
                             " Pos1:"+Arrays.toString(positions[0])+" Pos2:"+Arrays.toString(positions[1])+" MaxSalValue:"+lastLinef.get(6)+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                 }else{
                                         s = " QTables:"+lastLinei.get(0)+
                             " Exp:"+lastLinei.get(1)+
@@ -617,7 +664,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+
                             " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                     out.println(s);
 
                     s = " \nQTables:"+lastLinei.get(0)+
@@ -629,7 +676,7 @@ public class VisionVrep implements SensorI{
                             " \nHeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ "\n color1:"+Arrays.toString(colorObjs.get(0))+
                             " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+"\n"+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                 }
                 if(debugp) System.out.println(s);
                 

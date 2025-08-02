@@ -40,8 +40,8 @@ public class CST_incremental_babybot {
         int n_tables = 1;
         String runId=""; 
         int num_pioneer = 1;
-        int stage = 2, exp = 1, res = 256, max_time_graph=100, MAX_ACTION_NUMBER = 500;
-        long seed = 1234;
+        int stage = 1, exp = 297, res = 256, max_time_graph=100, MAX_ACTION_NUMBER = 500;
+        long seed = 5678;
         OutsideCommunication oc = new OutsideCommunication(300,mode,n_tables,seed, stage, 
                 exp, "", res, max_time_graph, MAX_ACTION_NUMBER, num_pioneer);
         oc.start(); 

@@ -68,7 +68,7 @@ private String mode;
 
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
-private boolean debug = true, sdebug = false;
+private boolean debug = false, sdebug = false;
 private int num_tables, aux_crash = 0,  aux_mt = 0, num_pioneer;
 private ArrayList<String> executedActions  = new ArrayList<>();
 private ArrayList<String> allActionsList;
