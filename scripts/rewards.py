@@ -317,7 +317,7 @@ strings_to_remove = [
     "r_imp: ","g_imp: ","b_imp: ", "hug_drive: ", "cur_drive: ", " QTables:", "cur_a: ", "sur_a: ",
     "Exp:", "Nact:", "Type:", "cur_a:", "sur_a:","exp_c:","exp_s:","dSurV:","SurV:","dCurV:","CurV:",
     "QTables:", "Ri:", "Ri S:", "Ri C:", "G_Reward S:", "G_Reward C:", "G_Reward:"," LastAct:", "Act C:", "Act S:",
-    "color1:", "Pos1:", "Pos2:", "fov:", "HeadPitch:", "NeckYaw:", "color2:"
+    "color1:", "Pos1:", "Pos2:", "fov:", "HeadPitch:", "NeckYaw:", "color2:", "fov_y:", "fov_p:", "Field:" 
 ]
 
 remove_strings_from_file(file1, strings_to_remove)
