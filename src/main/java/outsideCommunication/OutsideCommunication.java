@@ -50,7 +50,7 @@ public class OutsideCommunication {
         private List<FloatWA> objsPositions;
         private ArrayList<FloatWA> allobjsPositions;
         private ArrayList<FloatWA> objsOrientations;
-        private String mode;
+        public String mode;
         Random random;
         long seed;
         String runId;
