@@ -57,6 +57,15 @@ import java.lang.management.ManagementFactory;
  * @author L. L. Rossi (leolellisr)
  */
 public class VisionVrep implements SensorI{
+    // === Buffers reutilizáveis para reduzir GC e alocações por frame ===
+    private transient coppelia.CharWA imageRGB_cache;
+    private transient coppelia.IntWA  resolution_cache = new coppelia.IntWA(2);
+    private transient boolean visionStreamInitialized = false;
+    private transient char[] pixels_red_cache;
+    private transient char[] pixels_green_cache;
+    private transient char[] pixels_blue_cache;
+    // === fim: buffers reutilizáveis ===
+
     private final IntW vision_handles;
     private final remoteApi vrep;
     private final int clientID; 
@@ -517,29 +526,32 @@ public class VisionVrep implements SensorI{
 
         char temp_RGB[];                            //char Array to get RGB data of Vision Sensor
         
-        CharWA image_RGB = new CharWA(res*res*3);           //CharWA that returns RGB data of Vision Sensor
-        IntWA resolution = new IntWA(2);            //Array to get resolution of Vision Sensor
+        if (imageRGB_cache == null || imageRGB_cache.getArray().length < res*res*3) {
+            imageRGB_cache = new CharWA(res*res*3);
+        }
+        CharWA image_RGB = imageRGB_cache;           // reuse buffer
+        IntWA resolution = resolution_cache;         // reuse buffer
         int ret_RGB;
+
         long startTime = System.currentTimeMillis();
         
         int retries = 3;
-        while (retries > 0) {
-            try {
-                        ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution, 
-                        image_RGB, 0, vrep.simx_opmode_streaming); 
-
-                if (ret_RGB == remoteApi.simx_return_ok) {
-                    break;  // Exit loop if call is successful
+        if (!visionStreamInitialized) {
+            while (retries > 0) {
+                try {
+                    ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution,
+                        image_RGB, 0, remoteApi.simx_opmode_streaming);
+                    if (ret_RGB == remoteApi.simx_return_ok || ret_RGB == remoteApi.simx_return_novalue_flag) {
+                        visionStreamInitialized = true; // streaming iniciado
+                        break;
+                    }
+                } catch (Exception e) {
+                    // opcional: log
                 }
-            } catch (Exception e) {
-                //System.out.println("Error retrieving vision buffer, retrying...");
                 retries--;
-                if (retries == 0) {
-                    System.out.println("Failed to retrieve vision buffer after retries. Exiting gracefully.");
-                    break;
-                }
             }
         }
+
 
 
         
@@ -557,9 +569,15 @@ public class VisionVrep implements SensorI{
                 
                 int count_aux = 0; 
                 temp_RGB = image_RGB.getArray();
-                char[] pixels_red = new char[res*res];
-                char[] pixels_green = new char[res*res];
-                char[] pixels_blue = new char[res*res];
+                if (pixels_red_cache == null || pixels_red_cache.length < res*res) {
+                    pixels_red_cache   = new char[res*res];
+                    pixels_green_cache = new char[res*res];
+                    pixels_blue_cache  = new char[res*res];
+                }
+                char[] pixels_red   = pixels_red_cache;
+                char[] pixels_green = pixels_green_cache;
+                char[] pixels_blue  = pixels_blue_cache;
+
                 
                 
                 for(int y =0; y < res; y++){  
@@ -592,9 +610,10 @@ public class VisionVrep implements SensorI{
                 int count_aux = 0; 
                 for(int y =0; y < res; y++){  
                     for(int x =0; x < res; x++){  
-                        vision_data.set(count_aux, new Float(0));
-                        vision_data.set(count_aux+1, new Float(0));
-                        vision_data.set(count_aux+2, new Float(0));
+                        vision_data.set(count_aux, 0f);
+                        vision_data.set(count_aux+1, 0f);
+                        vision_data.set(count_aux+2, 0f);
+
                         count_aux += 3;
                     }
                 }
