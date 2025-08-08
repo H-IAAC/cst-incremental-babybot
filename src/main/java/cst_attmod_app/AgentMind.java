@@ -29,6 +29,7 @@ import codelets.learner.DecisionCodelet;
 import codelets.motor.MotorCodelet;
 import codelets.sensors.Sensor_Vision;
 import codelets.sensors.Sensor_Depth;
+import codelets.sensors.Sensor_Position;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -249,7 +250,7 @@ private long seed;
         //visions.addInput(stage_fmMO);
         depths.addOutput(depth_read);
         insertCodelet(depths);
-        
+        Codelet positions = new Sensor_Position(oc);
         //Sensor Buffers
         //Vision data
         Codelet vision_buffer = new SensorBufferCodelet("VISION", "VISION_BUFFER", Buffersize);
