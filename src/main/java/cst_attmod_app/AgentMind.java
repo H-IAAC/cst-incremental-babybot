@@ -250,7 +250,11 @@ private long seed;
         //visions.addInput(stage_fmMO);
         depths.addOutput(depth_read);
         insertCodelet(depths);
+        
+        //Depth positions
         Codelet positions = new Sensor_Position(oc);
+        insertCodelet(positions);
+        
         //Sensor Buffers
         //Vision data
         Codelet vision_buffer = new SensorBufferCodelet("VISION", "VISION_BUFFER", Buffersize);
