@@ -703,7 +703,7 @@ public class VisionVrep implements SensorI{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        if(lastLinei.get(1)%5 == 0) saveImage(vision_data, res, dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_rgb.png",
+        if(lastLinei.get(1)%lastLinei.get(3) == 0) saveImage(vision_data, res, dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_rgb.png",
                 dtf.format(now)+"_"+lastLinei.get(1)+"_"+lastLinei.get(4)+"_gsc.png");
         
     }
