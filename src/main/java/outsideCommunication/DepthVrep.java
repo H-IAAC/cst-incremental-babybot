@@ -64,9 +64,8 @@ public class DepthVrep implements SensorI {
         final FloatWA depthWA  = new FloatWA(0); 
         int rc;
 
-        // validações rápidas
         if (vrep == null || clientID < 0 || vision_handles == null || vision_handles.getValue() <= 0) {
-            if (debug) System.err.println("[DepthVrep] client/handle inválido");
+            if (debug) System.err.println("[DepthVrep] client/handle invalid");
             resetDepthData();
             return depth_data;
         }
@@ -91,7 +90,7 @@ public class DepthVrep implements SensorI {
             return depth_data; 
         }
         if (rc != remoteApi.simx_return_ok) {
-            if (debug) System.err.println("[DepthVrep] erro remoto: " + rc + " — reiniciando streaming");
+            if (debug) System.err.println("[DepthVrep] remote error: " + rc );
             depthStreamingInitialized = false;
             resetDepthData();
             return depth_data;
@@ -99,14 +98,14 @@ public class DepthVrep implements SensorI {
 
         int[] resArr = resolution.getArray();
         if (resArr == null || resArr.length < 2 || resArr[0] <= 0 || resArr[1] <= 0) {
-            if (debug) System.err.println("[DepthVrep] resolução inválida");
+            if (debug) System.err.println("[DepthVrep] invalid resolution");
             resetDepthData();
             return depth_data;
         }
         int w = resArr[0], h = resArr[1];
         float[] raw = depthWA.getArray();
         if (raw == null || raw.length != w*h) {
-            if (debug) System.err.println("[DepthVrep] tamanho inesperado: " +
+            if (debug) System.err.println("[DepthVrep] unexpectable size: " +
                 (raw == null ? "null" : raw.length) + " vs " + (w*h));
             resetDepthData();
             return depth_data;

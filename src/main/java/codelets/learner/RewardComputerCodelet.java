@@ -486,7 +486,7 @@ System.out.println("pitch"+pitch);
         // converte neckYaw (yawPos) para graus
         double neckYawDeg = Math.toDegrees(yawPos);
         double headPitchDeg = Math.toDegrees(headPos);
-        // calcules diff fixing offset 90° of sensor
+        // calcules diff fixing offset 90 of sensor
         double yawDiff = targetYawDeg - (neckYawDeg + 90);
         yawDiff = ((yawDiff + 180) % 360) - 180;
 

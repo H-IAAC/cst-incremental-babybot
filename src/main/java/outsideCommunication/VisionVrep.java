@@ -505,7 +505,7 @@ public class VisionVrep implements SensorI{
         int rc;
 
         if (vrep == null || clientID < 0 || vision_handles == null || vision_handles.getValue() <= 0) {
-            System.err.println("[VisionVrep] clientID/handle inválido");
+            System.err.println("[VisionVrep] invalid clientID/handle");
             fillVisionDataWithZeros();
             return vision_data;
         }
@@ -532,14 +532,14 @@ public class VisionVrep implements SensorI{
             return vision_data;
         }
         if (rc != remoteApi.simx_return_ok) {
-            System.err.println("[VisionVrep] erro remoto: " + rc + " — reiniciando streaming");
+            System.err.println("[VisionVrep]  remote error: " + rc );
             imgStreamingInitialized = false;
             return vision_data;
         }
 
         int[] resArr = resolution.getArray();
         if (resArr == null || resArr.length < 2 || resArr[0] <= 0 || resArr[1] <= 0) {
-            System.err.println("[VisionVrep] resolução inválida");
+            System.err.println("[VisionVrep] resolution invalid");
             return vision_data;
         }
         int w = resArr[0];
