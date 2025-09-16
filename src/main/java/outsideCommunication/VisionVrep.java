@@ -78,6 +78,9 @@ public class VisionVrep implements SensorI{
     private boolean crash;
      private static final long serialVersionUID = 1L;
      private static final String CHECKPOINT_FILE = "vision_checkpoint.dat";
+     private static final Object COPPELIA_LOCK = new Object(); // lock global p/ chamadas remotas
+    private volatile boolean imgStreamingInitialized = false; // inicia streaming uma vez
+
 
     public VisionVrep(remoteApi vrep, int clientid, IntW vision_handles, int max_epochs, int num_tables, 
             int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, int num_pioneer) {
@@ -497,119 +500,96 @@ public class VisionVrep implements SensorI{
     
     @Override
     public Object getData() {
-       /*try {
-            Thread.sleep(50);
-        } catch (Exception e) {
-            Thread.currentThread().interrupt();
-        }
-*/
-        if ( vision_handles.getValue() == 0 || vision_handles.getValue() == -1) {
-                        System.err.println("Vision Invalid clientID or vision handle. Exiting...");
-                        Collections.fill(vision_data, 0f);
-                        return vision_data; // Exit if critical values are uninitialized
-                    }
-        
-        if (clientID == -1 || vision_handles == null || vision_handles.getValue() <= 0) {
-            System.err.println("Vision handle inválido, pulando leitura.");
-            Collections.fill(vision_data, 0f);
+        final IntWA resolution = new IntWA(2);
+        final CharWA imageWA   = new CharWA(0); // <<< não pré-aloque, deixe o nativo preencher
+        int rc;
+
+        // validações rápidas
+        if (vrep == null || clientID < 0 || vision_handles == null || vision_handles.getValue() <= 0) {
+            System.err.println("[VisionVrep] clientID/handle inválido");
+            fillVisionDataWithZeros();
             return vision_data;
         }
 
-        char temp_RGB[];                            //char Array to get RGB data of Vision Sensor
-        
-        CharWA image_RGB = new CharWA(res*res*3);           //CharWA that returns RGB data of Vision Sensor
-        IntWA resolution = new IntWA(2);            //Array to get resolution of Vision Sensor
-        int ret_RGB;
-        long startTime = System.currentTimeMillis();
-        
-        int retries = 3;
-        while (retries > 0) {
-            try {
-                        ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution, 
-                        image_RGB, 0, vrep.simx_opmode_streaming); 
-
-                if (ret_RGB == remoteApi.simx_return_ok) {
-                    break;  // Exit loop if call is successful
-                }
-            } catch (Exception e) {
-                //System.out.println("Error retrieving vision buffer, retrying...");
-                retries--;
-                if (retries == 0) {
-                    System.out.println("Failed to retrieve vision buffer after retries. Exiting gracefully.");
-                    break;
-                }
-            }
-        }
-
-
-        
-        while (System.currentTimeMillis()-startTime < 2000)
-        {
-            
-            try {
-                ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution, image_RGB, 0, 
-                    remoteApi.simx_opmode_buffer);
-                 } catch (Exception e) {
-                System.err.println("Erro JNI no buffer de imagem: " + e.getMessage());
-                return vision_data;
-                }
-            if (ret_RGB == remoteApi.simx_return_ok  || ret_RGB == remoteApi.simx_return_novalue_flag){
-                
-                int count_aux = 0; 
-                temp_RGB = image_RGB.getArray();
-                char[] pixels_red = new char[res*res];
-                char[] pixels_green = new char[res*res];
-                char[] pixels_blue = new char[res*res];
-                
-                
-                for(int y =0; y < res; y++){  
-                    for(int x =0; x < res; x++){  
-                        char pixel_red = temp_RGB[3*(y*res+x)];
-                        char pixel_green = temp_RGB[3*(y*res+x)+1];
-                        char pixel_blue = temp_RGB[3*(y*res+x)+2];
-                        pixels_red[count_aux]=pixel_red;
-                        pixels_green[count_aux]=pixel_green;
-                        pixels_blue[count_aux]=pixel_blue;
-                        count_aux += 1;
-                    } 
-                }
-                if(stage>2){
-                    int pixel_len = 3;
-                    int cont_pix = 0;
-                    for(int i =0; i < res*res; i++){
-                        vision_data.set(cont_pix, (float)pixels_red[i]);
-                        vision_data.set(cont_pix+1, (float)pixels_green[i]);
-                        vision_data.set(cont_pix+2, (float)pixels_blue[i]);
-                        cont_pix += pixel_len;
-                         
-                    }
-                }
-                
-                if(stage==2) setResizedColorData(pixels_red, pixels_green, pixels_blue, 2);
-                if(stage==1) setResizedColorData(pixels_red, pixels_green, pixels_blue, 4);
-                
-            } else{
-                int count_aux = 0; 
-                for(int y =0; y < res; y++){  
-                    for(int x =0; x < res; x++){  
-                        vision_data.set(count_aux, new Float(0));
-                        vision_data.set(count_aux+1, new Float(0));
-                        vision_data.set(count_aux+2, new Float(0));
-                        count_aux += 3;
-                    }
-                }
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
+            if (!imgStreamingInitialized) {
+                vrep.simxGetVisionSensorImage(
+                    clientID, vision_handles.getValue(), resolution, imageWA,
+                    0, // 0 = RGB
+                    remoteApi.simx_opmode_streaming
+                );
+                imgStreamingInitialized = true;
+                return vision_data; // 1ª chamada normalmente não tem dados
             }
 
-        
-        
+            rc = vrep.simxGetVisionSensorImage(
+                clientID, vision_handles.getValue(), resolution, imageWA,
+                0,
+                remoteApi.simx_opmode_buffer
+            );
         }
-        
-        // SYNC
 
-          
-        return  vision_data;
+        if (rc == remoteApi.simx_return_novalue_flag) {
+            // sem dados novos, mantém o último
+            return vision_data;
+        }
+        if (rc != remoteApi.simx_return_ok) {
+            System.err.println("[VisionVrep] erro remoto: " + rc + " — reiniciando streaming");
+            imgStreamingInitialized = false;
+            return vision_data;
+        }
+
+        // valida resolução real
+        int[] resArr = resolution.getArray();
+        if (resArr == null || resArr.length < 2 || resArr[0] <= 0 || resArr[1] <= 0) {
+            System.err.println("[VisionVrep] resolução inválida");
+            return vision_data;
+        }
+        int w = resArr[0];
+        int h = resArr[1];
+        int expected = w * h * 3;
+
+        // valida tamanho do buffer
+        char[] raw = imageWA.getArray();
+        if (raw == null || raw.length != expected) {
+            System.err.println("[VisionVrep] tamanho inesperado: " +
+                (raw == null ? "null" : raw.length) + " vs " + expected);
+            return vision_data;
+        }
+
+        // garante tamanho da lista de saída
+        ensureVisionDataSize(expected);
+
+        // copia valores, convertendo char (0..65535) para 0..255
+        for (int i = 0; i < expected; i++) {
+            vision_data.set(i, (float) (raw[i] & 0xFF));
+        }
+
+        return vision_data;
     }
-    
+
+    // preenche vision_data com zeros se necessário
+    private void fillVisionDataWithZeros() {
+        if (vision_data == null) {
+            vision_data = Collections.synchronizedList(new ArrayList<>(res * res * 3));
+        }
+        while (vision_data.size() < res * res * 3) {
+            vision_data.add(0f);
+        }
+        for (int i = 0; i < vision_data.size(); i++) {
+            vision_data.set(i, 0f);
+        }
+    }
+
+    // garante tamanho da lista
+    private void ensureVisionDataSize(int size) {
+        if (vision_data == null) {
+            vision_data = Collections.synchronizedList(new ArrayList<>(size));
+        }
+        while (vision_data.size() < size) {
+            vision_data.add(0f);
+        }
+    }
 
 	@Override
 	public void resetData() {
