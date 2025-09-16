@@ -137,7 +137,7 @@ public class VisionVrep implements SensorI{
      restoreCheckpoint();
     }
     
-    // ✅ Método para salvar estado
+    // Save state
     private void saveCheckpoint() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(CHECKPOINT_FILE))) {
             out.writeObject(this.num_epoch);
@@ -145,11 +145,11 @@ public class VisionVrep implements SensorI{
             out.writeObject(this.lastLinef);
             out.writeObject(this.executedActions);
         } catch (IOException e) {
-            System.err.println("Erro ao salvar checkpoint: " + e.getMessage());
+            System.err.println("Error in saving checkpoint: " + e.getMessage());
         }
     }
 
-    // ✅ Método para restaurar estado
+    // Method to restore state
     @SuppressWarnings("unchecked")
     private void restoreCheckpoint() {
         File file = new File(CHECKPOINT_FILE);
@@ -159,9 +159,9 @@ public class VisionVrep implements SensorI{
             this.lastLinei = (ArrayList<Integer>) in.readObject();
             this.lastLinef = (ArrayList<Float>) in.readObject();
             this.executedActions = (ArrayList<String>) in.readObject();
-            System.out.println("Checkpoint restaurado: epoch=" + num_epoch);
+            System.out.println("Checkpoint restored: epoch=" + num_epoch);
         } catch (Exception e) {
-            System.err.println("Erro ao restaurar checkpoint: " + e.getMessage());
+            System.err.println("Error restoring checkpoint: " + e.getMessage());
         }
     }
     
@@ -501,10 +501,9 @@ public class VisionVrep implements SensorI{
     @Override
     public Object getData() {
         final IntWA resolution = new IntWA(2);
-        final CharWA imageWA   = new CharWA(0); // <<< não pré-aloque, deixe o nativo preencher
+        final CharWA imageWA   = new CharWA(0); 
         int rc;
 
-        // validações rápidas
         if (vrep == null || clientID < 0 || vision_handles == null || vision_handles.getValue() <= 0) {
             System.err.println("[VisionVrep] clientID/handle inválido");
             fillVisionDataWithZeros();
@@ -519,7 +518,7 @@ public class VisionVrep implements SensorI{
                     remoteApi.simx_opmode_streaming
                 );
                 imgStreamingInitialized = true;
-                return vision_data; // 1ª chamada normalmente não tem dados
+                return vision_data; 
             }
 
             rc = vrep.simxGetVisionSensorImage(
@@ -530,7 +529,6 @@ public class VisionVrep implements SensorI{
         }
 
         if (rc == remoteApi.simx_return_novalue_flag) {
-            // sem dados novos, mantém o último
             return vision_data;
         }
         if (rc != remoteApi.simx_return_ok) {
@@ -539,7 +537,6 @@ public class VisionVrep implements SensorI{
             return vision_data;
         }
 
-        // valida resolução real
         int[] resArr = resolution.getArray();
         if (resArr == null || resArr.length < 2 || resArr[0] <= 0 || resArr[1] <= 0) {
             System.err.println("[VisionVrep] resolução inválida");
@@ -549,7 +546,6 @@ public class VisionVrep implements SensorI{
         int h = resArr[1];
         int expected = w * h * 3;
 
-        // valida tamanho do buffer
         char[] raw = imageWA.getArray();
         if (raw == null || raw.length != expected) {
             System.err.println("[VisionVrep] tamanho inesperado: " +
@@ -557,10 +553,8 @@ public class VisionVrep implements SensorI{
             return vision_data;
         }
 
-        // garante tamanho da lista de saída
         ensureVisionDataSize(expected);
 
-        // copia valores, convertendo char (0..65535) para 0..255
         for (int i = 0; i < expected; i++) {
             vision_data.set(i, (float) (raw[i] & 0xFF));
         }
@@ -568,7 +562,6 @@ public class VisionVrep implements SensorI{
         return vision_data;
     }
 
-    // preenche vision_data com zeros se necessário
     private void fillVisionDataWithZeros() {
         if (vision_data == null) {
             vision_data = Collections.synchronizedList(new ArrayList<>(res * res * 3));
@@ -581,7 +574,7 @@ public class VisionVrep implements SensorI{
         }
     }
 
-    // garante tamanho da lista
+    // garantes list size
     private void ensureVisionDataSize(int size) {
         if (vision_data == null) {
             vision_data = Collections.synchronizedList(new ArrayList<>(size));
@@ -675,13 +668,12 @@ public class VisionVrep implements SensorI{
 
         for (int y = 0; y < res; y++) {
             for (int x = 0; x < res; x++) {
-                int index = (y * res + x) * 3; // Cada pixel tem 3 valores (R, G, B)
+                int index = (y * res + x) * 3; // each pixel has 3 values (R, G, B)
 
                 int r = Math.round(vision_data.get(index));
                 int g = Math.round(vision_data.get(index + 1));
                 int b = Math.round(vision_data.get(index + 2));
 
-                // Garantindo que os valores estejam no intervalo válido (0-255)
                 r = Math.min(255, Math.max(0, r));
                 g = Math.min(255, Math.max(0, g));
                 b = Math.min(255, Math.max(0, b));
@@ -689,18 +681,14 @@ public class VisionVrep implements SensorI{
                 int rgb = (r << 16) | (g << 8) | b;
                 colorImage.setRGB(x, y, rgb);
 
-                // Converter para escala de cinza (usando luminância perceptual)
-                /*int gray = (int) (0.299 * r + 0.587 * g + 0.114 * b);
-                grayscaleImage.setRGB(x, y, (gray << 16) | (gray << 8) | gray);*/
             }
         }
 
         try {
             ImageIO.write(colorImage, "png", new File("data/"+colorFilename));
-           // ImageIO.write(grayscaleImage, "png", new File("data/"+grayscaleFilename));
            
         } catch (IOException e) {
-            System.err.println("Erro ao salvar a imagem: " + e.getMessage());
+            System.err.println("Error saving image: " + e.getMessage());
         }
     }
     

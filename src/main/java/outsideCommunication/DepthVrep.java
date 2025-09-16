@@ -19,9 +19,9 @@ public class DepthVrep implements SensorI {
     private final int res = 256, print_step = 1;
     private final int max_time_graph = 100;
     private SensorI vision;
-    private boolean debug = true; // ativar debug para logar handles inválidos
+    private boolean debug = true; 
 
-    private boolean streamingInitialized = false; // para evitar múltiplas inicializações
+    private boolean streamingInitialized = false; 
     private volatile boolean depthStreamingInitialized = false;
 
     public DepthVrep(remoteApi vrep, int clientid, IntW vision_handles, int stageVision, SensorI vision) {
@@ -61,7 +61,7 @@ public class DepthVrep implements SensorI {
 
     private Object getDepthDataInternal() {
         final IntWA resolution = new IntWA(2);
-        final FloatWA depthWA  = new FloatWA(0); // <<< não pré-aloque
+        final FloatWA depthWA  = new FloatWA(0); 
         int rc;
 
         // validações rápidas
@@ -78,7 +78,7 @@ public class DepthVrep implements SensorI {
                     remoteApi.simx_opmode_streaming
                 );
                 depthStreamingInitialized = true;
-                return depth_data; // 1ª chamada quase nunca tem dados
+                return depth_data; 
             }
 
             rc = vrep.simxGetVisionSensorDepthBuffer(
@@ -88,7 +88,7 @@ public class DepthVrep implements SensorI {
         }
 
         if (rc == remoteApi.simx_return_novalue_flag) {
-            return depth_data; // sem dados novos
+            return depth_data; 
         }
         if (rc != remoteApi.simx_return_ok) {
             if (debug) System.err.println("[DepthVrep] erro remoto: " + rc + " — reiniciando streaming");
@@ -112,19 +112,15 @@ public class DepthVrep implements SensorI {
             return depth_data;
         }
 
-        // Copie/normalize para depth_data respeitando seu 'stage' e o tamanho real
-        // (aqui um exemplo simples, mantendo seu clamp 0..10)
-        ensureDepthDataSize(res * res); // garanta que depth_data tenha tamanho res*res
+        ensureDepthDataSize(res * res); 
         float[] depth_or = new float[res * res];
-        processDepthData(raw, depth_or); // usa seu método existente
-        // preencha depth_data com depth_or (um para um)
+        processDepthData(raw, depth_or);
         for (int i = 0; i < depth_or.length; i++) {
             if (i < depth_data.size()) depth_data.set(i, depth_or[i]);
         }
         return depth_data;
     }
 
-    // helper — garanta tamanho do List<Float>
     private void ensureDepthDataSize(int size) {
         if (depth_data == null) depth_data = Collections.synchronizedList(new ArrayList<>(size));
         while (depth_data.size() < size) depth_data.add(0f);
