@@ -169,10 +169,12 @@ public class VisionVrep implements SensorI{
     public float[] getPosition(String s){
         IntW obj_handle = new IntW(-1);
         FloatWA position = new FloatWA(3);
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
 	vrep.simxGetObjectHandle(clientID, s, obj_handle, remoteApi.simx_opmode_blocking);
 	if (obj_handle.getValue() == -1) System.out.println("Error on connecting to "+s);
 		
         vrep.simxGetObjectPosition(clientID, obj_handle.getValue(), -1, position, vrep.simx_opmode_blocking);
+        }
         float[] positionf = position.getArray();
         if(Math.abs(positionf[0])>0.0001 && Math.abs(positionf[1])>0.0001){
         if(s.equals("Pioneer1")){
@@ -319,6 +321,7 @@ public class VisionVrep implements SensorI{
 		}*/
         
         FloatWA position = new FloatWA(3);
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
 	vrep.simxGetObjectPosition(clientID, vision_handles.getValue(), -1, position,
         vrep.simx_opmode_streaming);
 	boolean m_act;
@@ -427,6 +430,7 @@ public class VisionVrep implements SensorI{
            
             return false;
     }
+    }
     
     @Override
     public boolean endEpochR(){
@@ -437,8 +441,10 @@ public class VisionVrep implements SensorI{
 		}*/
      if(debug) System.out.println("End epoch R");
         FloatWA position = new FloatWA(3);
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
 	vrep.simxGetObjectPosition(clientID, vision_handles.getValue(), -1, position,
         vrep.simx_opmode_streaming);
+        }
 	boolean m_act;
         m_act = lastLinei.get(4)>this.getMaxActions();
         boolean ret = this.getEpoch() > 1 && (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act || crash);
@@ -526,7 +532,7 @@ public class VisionVrep implements SensorI{
                 0,
                 remoteApi.simx_opmode_buffer
             );
-        }
+        
 
         if (rc == remoteApi.simx_return_novalue_flag) {
             return vision_data;
@@ -560,6 +566,7 @@ public class VisionVrep implements SensorI{
         }
 
         return vision_data;
+        }
     }
 
     private void fillVisionDataWithZeros() {

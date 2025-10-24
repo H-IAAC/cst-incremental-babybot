@@ -202,7 +202,9 @@ public class OutsideCommunication {
         
         public void set_object_back(int obj) throws InterruptedException{
             int time = 500;
+            synchronized (RemoteApiLock.COPPELIA_LOCK) {
             vrep.simxSetObjectPosition(clientID, obj_handle[obj].getValue(), -1, allobjsPositions.get(3), vrep.simx_opmode_oneshot);        
+            }
             if (obj == 0 || obj == 2) {
                 time = time*2;
             }
@@ -214,8 +216,10 @@ public class OutsideCommunication {
         }
 
         public void reset_positions(){
+            synchronized (RemoteApiLock.COPPELIA_LOCK) {
             for (int i = 0; i < nObjs; i++) {
                 vrep.simxSetObjectPosition(clientID, obj_handle[i].getValue(), -1, allobjsPositions.get(i), vrep.simx_opmode_oneshot);
+            }
             }
         }
         

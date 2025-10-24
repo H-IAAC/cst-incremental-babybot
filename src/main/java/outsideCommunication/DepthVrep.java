@@ -84,7 +84,7 @@ public class DepthVrep implements SensorI {
                 clientID, vision_handles.getValue(), resolution, depthWA,
                 remoteApi.simx_opmode_buffer
             );
-        }
+        
 
         if (rc == remoteApi.simx_return_novalue_flag) {
             return depth_data; 
@@ -118,6 +118,7 @@ public class DepthVrep implements SensorI {
             if (i < depth_data.size()) depth_data.set(i, depth_or[i]);
         }
         return depth_data;
+        }
     }
 
     private void ensureDepthDataSize(int size) {
