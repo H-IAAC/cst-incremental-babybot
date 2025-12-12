@@ -307,7 +307,7 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 
  Building upon the findings from Phase 3, we hypothesized that the agent could leverage procedural memory to predict the Pioneer's trajectory. To test this hypothesis, the model from Phase 3 was fine-tuned using a scenario in which the Pioneer becomes fully occluded. Training is now conducted in Experiment **Tr2**, followed by evaluation in Experiments **Te4** and **Te5**. 
  
- In Experiment **Te4**, the Pioneer moves toward the back of the environment. With fine-tuning, the agent learns potential trajectory patterns and successfully tracks the Pioneer even when it becomes fully occluded.
+ In Experiment **Te4a**, the Pioneer moves toward the back of the environment. With fine-tuning, the agent learns potential trajectory patterns and successfully tracks the Pioneer even when it becomes fully occluded.
 
  
 
@@ -318,7 +318,15 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 <p align="center">
   <img src="imgs/exps/4A_test.gif" width="600"/>
 <br/>
-  <em>Fig: Phase 4 agent on Experiment Te4 - Success</em>
+  <em>Fig: Phase 4 agent on Experiment Te4a - Success</em>
+</p>
+
+ In Experiment **Te4b**, the Pioneer becomes obscured by the walls, but stops for a few moments. In this case, the agent predicts the Pioneer's trajectory, but loses track when it stops. Upon seeing the Pioneer, the agent is able to track it again
+
+<p align="center">
+  <img src="imgs/exps/test4AnB.GIF" width="600"/>
+<br/>
+  <em>Fig: Phase 4 agent on Experiment Te4b - Success</em>
 </p>
 
  
