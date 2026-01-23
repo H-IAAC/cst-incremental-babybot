@@ -19,9 +19,10 @@ public class DepthVrep implements SensorI {
     private final int res = 256, print_step = 1;
     private final int max_time_graph = 100;
     private SensorI vision;
-    private boolean debug = true; // ativar debug para logar handles inválidos
+    private boolean debug = true; 
 
-    private boolean streamingInitialized = false; // para evitar múltiplas inicializações
+    private boolean streamingInitialized = false; 
+    private volatile boolean depthStreamingInitialized = false;
 
     public DepthVrep(remoteApi vrep, int clientid, IntW vision_handles, int stageVision, SensorI vision) {
         this.time_graph = 0;
@@ -56,70 +57,74 @@ public class DepthVrep implements SensorI {
         }
     }
 
+    private final Object apiLock = new Object();
+
     private Object getDepthDataInternal() {
-     IntWA resolution = new IntWA(2);
-     FloatWA auxValues_WA = new FloatWA(res * res);
-     float[] temp_dep;
+        final IntWA resolution = new IntWA(2);
+        final FloatWA depthWA  = new FloatWA(0); 
+        int rc;
 
-     int read_depth;
+        if (vrep == null || clientID < 0 || vision_handles == null || vision_handles.getValue() <= 0) {
+            if (debug) System.err.println("[DepthVrep] client/handle invalid");
+            resetDepthData();
+            return depth_data;
+        }
 
-     synchronized (vrep) {
-         // ✅ Checagem inicial
-         if (clientID < 0 || vrep == null) {
-             System.err.println("[DepthVrep] ERRO: clientID inválido ou API não inicializada");
-             return depth_data;
-         }
-         if (vision_handles == null || vision_handles.getValue() <= 0) {
-             System.err.println("[DepthVrep] ERRO: Vision handle inválido! Valor=" +
-                     (vision_handles == null ? "null" : vision_handles.getValue()));
-             return depth_data;
-         }
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
+            if (!depthStreamingInitialized) {
+                vrep.simxGetVisionSensorDepthBuffer(
+                    clientID, vision_handles.getValue(), resolution, depthWA,
+                    remoteApi.simx_opmode_streaming
+                );
+                depthStreamingInitialized = true;
+                return depth_data; 
+            }
 
-         if (debug) {
-             System.out.println("[DepthVrep] clientID=" + clientID +
-                     " vision_handle=" + vision_handles.getValue() +
-                     " streamingInit=" + streamingInitialized);
-         }
+            rc = vrep.simxGetVisionSensorDepthBuffer(
+                clientID, vision_handles.getValue(), resolution, depthWA,
+                remoteApi.simx_opmode_buffer
+            );
+        
 
-         try {
-             // ✅ Inicializa streaming apenas uma vez
-             if (!streamingInitialized) {
-                 vrep.simxGetVisionSensorDepthBuffer(clientID, vision_handles.getValue(),
-                         resolution, auxValues_WA, remoteApi.simx_opmode_streaming);
-                 streamingInitialized = true;
-                 return depth_data;
-             }
+        if (rc == remoteApi.simx_return_novalue_flag) {
+            return depth_data; 
+        }
+        if (rc != remoteApi.simx_return_ok) {
+            if (debug) System.err.println("[DepthVrep] remote error: " + rc );
+            depthStreamingInitialized = false;
+            resetDepthData();
+            return depth_data;
+        }
 
-             read_depth = vrep.simxGetVisionSensorDepthBuffer(clientID, vision_handles.getValue(),
-                     resolution, auxValues_WA, remoteApi.simx_opmode_buffer);
+        int[] resArr = resolution.getArray();
+        if (resArr == null || resArr.length < 2 || resArr[0] <= 0 || resArr[1] <= 0) {
+            if (debug) System.err.println("[DepthVrep] invalid resolution");
+            resetDepthData();
+            return depth_data;
+        }
+        int w = resArr[0], h = resArr[1];
+        float[] raw = depthWA.getArray();
+        if (raw == null || raw.length != w*h) {
+            if (debug) System.err.println("[DepthVrep] unexpectable size: " +
+                (raw == null ? "null" : raw.length) + " vs " + (w*h));
+            resetDepthData();
+            return depth_data;
+        }
 
-             if (read_depth != remoteApi.simx_return_ok) {
-                 if (debug) System.err.println("[DepthVrep] Falha/novalue ao ler depth buffer. Código=" + read_depth);
-                 resetDepthData();
-                 return depth_data;
-             }
+        ensureDepthDataSize(res * res); 
+        float[] depth_or = new float[res * res];
+        processDepthData(raw, depth_or);
+        for (int i = 0; i < depth_or.length; i++) {
+            if (i < depth_data.size()) depth_data.set(i, depth_or[i]);
+        }
+        return depth_data;
+        }
+    }
 
-             // ✅ Verifica resolução real
-             int width = resolution.getArray()[0];
-             int height = resolution.getArray()[1];
-             if (width * height > auxValues_WA.getArray().length) {
-                 System.err.println("[DepthVrep] ERRO: resolução inesperada " + width + "x" + height);
-                 resetDepthData();
-                 return depth_data;
-             }
-
-             temp_dep = auxValues_WA.getArray();
-             float[] depth_or = new float[res * res];
-             processDepthData(temp_dep, depth_or);
-             return depth_data;
-
-         } catch (Exception e) {
-             System.err.println("[DepthVrep] EXCEÇÃO JNI: " + e.getMessage());
-             resetDepthData();
-             return depth_data;
-         }
-     }
- }
+    private void ensureDepthDataSize(int size) {
+        if (depth_data == null) depth_data = Collections.synchronizedList(new ArrayList<>(size));
+        while (depth_data.size() < size) depth_data.add(0f);
+    }
 
 
     private void processDepthData(float[] temp_dep, float[] depth_or) {

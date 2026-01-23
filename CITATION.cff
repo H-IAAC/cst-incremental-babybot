@@ -4,9 +4,8 @@
 cff-version: 1.2.0
 title: cst-incremental-babybot
 message: >-
-  Repository for the code of the work submitted to IEEE
-  International Conference on Development and Learning
-  (ICDL-2025).
+  Repository for the code of the work "Where Are My Toys Going? 
+  Exploring Incremental Learning in Object Tracking and Object Permanence"
 type: software
 authors:
   - given-names: Leonardo
@@ -50,9 +49,8 @@ repository-code: 'https://github.com/H-IAAC/cst-incremental-babybot'
 repository-artifact: >-
   https://github.com/H-IAAC/cst-incremental-babybot/releases/tag/v1.0.0
 abstract: >-
-  Repository for the code of the work submitted to IEEE
-  International Conference on Development and Learning
-  (ICDL-2025).
+  Repository for the code of the work "Where Are My Toys Going? 
+  Exploring Incremental Learning in Object Tracking and Object Permanence".
 keywords:
   - Incremental Learning
   - Reinforcement Learning
