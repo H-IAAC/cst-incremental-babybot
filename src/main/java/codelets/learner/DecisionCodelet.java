@@ -68,7 +68,7 @@ private String mode;
 
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
-private boolean debug = true, sdebug = false;
+private boolean debug = false, sdebug = false;
 private int num_tables, aux_crash = 0,  aux_mt = 0, num_pioneer;
 private ArrayList<String> executedActions  = new ArrayList<>();
 private ArrayList<String> allActionsList;
@@ -233,7 +233,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         float driveValueFloat = (float) oc.vision.getFValues(3);
         
         if(debug) System.out.println("  \nDecision driveValueFloat:"+driveValueFloat);      
-        // Posição da fóvea 
+        // Fovea  pos
         float foveaPositionFloat = (float) oc.vision.getIValues(2);
         float[] lastLineArray = new float[lastLine.size()];
         
@@ -288,7 +288,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         }
         float[] stateArray;
         if(num_pioneer>1){
-        // Concatenar todos os elementos em um único array
+        // Concatenate all elements in a single array
         stateArray = padOrTrimArray(concatenateArrays(
             new float[]{driveValueFloat}, 
             oc.vision.getPosition("Pioneer1"), 
@@ -340,7 +340,7 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         private float[] padOrTrimArray(float[] array, int targetSize) {
         float[] newArray = new float[targetSize];
         for (int i = 0; i < targetSize; i++) {
-            newArray[i] = (i < array.length) ? array[i] : 0.0f; // Preenche com zeros se necessário
+            newArray[i] = (i < array.length) ? array[i] : 0.0f; // Fill with zeros if needed
         }
         return newArray;
     }
