@@ -45,6 +45,7 @@ public class MotorVrep implements MotorI {
         this.speed = speed;
         //vrep.simxPauseCommunication(clientID,true);
         //vrep.simxPauseCommunication(clientID, true);
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
         int ret = vrep.simxSetJointTargetPosition(clientID, motor_handle, speed, remoteApi.simx_opmode_oneshot);
         
         if( ret == remoteApi.simx_error_noerror) {
@@ -103,10 +104,11 @@ public class MotorVrep implements MotorI {
            //vrep.simxSynchronousTrigger(clientID);
            return 1;
        }
-       
+        }
     }
     
     public int setPos(float speed) {  //Actually sets new position on joint
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
         this.speed = speed;
         //vrep.simxPauseCommunication(clientID,true);
         //vrep.simxPauseCommunication(clientID, true);
@@ -169,5 +171,6 @@ public class MotorVrep implements MotorI {
            return 1;
        }
        
+    }
     }
 }

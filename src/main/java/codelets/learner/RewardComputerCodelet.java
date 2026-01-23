@@ -18,6 +18,10 @@ import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.learning.QLearning;
 import br.unicamp.cst.representation.idea.Idea;
+import coppelia.FloatWA;
+import coppelia.IntW;
+import coppelia.remoteApi;
+import static java.lang.Math.round;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -25,6 +29,7 @@ import java.util.Map;
 import outsideCommunication.OutsideCommunication;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 /**
  * @author L. L. Rossi (leolellisr)
  * Obs: This class represents the implementations present in the proposed scheme for: 
@@ -190,6 +195,27 @@ public class RewardComputerCodelet extends Codelet
             return sum / list.size();
         } 
 
+      public float checkLookingAtPioneer(float[] headPos, float[] pioneerPos, float neckYaw, float headPitch) {
+    double yaw = round(neckYaw*100)/100;
+    double pitch = round(headPitch*100)/100;
+System.out.println("yaw"+yaw);
+System.out.println("pitch"+pitch);
+    Vector3D lookDir = new Vector3D(
+        Math.cos(pitch) * Math.cos(yaw),
+        Math.cos(pitch) * Math.sin(yaw),
+        Math.sin(pitch)
+    );
+
+    Vector3D targetDir = new Vector3D(
+        pioneerPos[0] - headPos[0],
+        pioneerPos[1] - headPos[1],
+        pioneerPos[2] - headPos[2]
+    ).normalize();
+
+    float dot = (float) lookDir.dotProduct(targetDir);
+    return (float) Math.acos(dot); // return angle in rad
+}
+
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
@@ -207,11 +233,8 @@ public class RewardComputerCodelet extends Codelet
              if(debug) System.out.println("getSpeed null ");
             return;
         }
-      /*  try {
-        Thread.sleep(50);
-        } catch (Exception e) {
-        Thread.currentThread().interrupt();
-        }       */
+        
+
 
         if(motivationMO == null){
               if(debug) System.out.println("Rewardcomputer motivationMO is null");
@@ -439,7 +462,48 @@ public class RewardComputerCodelet extends Codelet
                         " CurV:"+cur_drive+" dCurV:"+cur_delta+" Ri:"+reward_i+" Gi:"+global_reward);
         
                         }
-                       
+                        
+        double MartaX = -0.0609;
+        double MartaY = -2.0745;
+        double MartaZ = 0.58;
+        float[] posPioneer = oc.vision.getPosition("Pioneer1");
+        double dx = posPioneer[0] - MartaX;
+        double dy = posPioneer[1] - MartaY;
+        double dz = posPioneer[2] - MartaZ;
+        // Pioneer angle in XY and YZ
+        double targetYaw = Math.atan2(dy, dx); // radianos
+        double targetYawDeg = Math.toDegrees(targetYaw);
+        
+        double distXY = Math.sqrt(dx*dx + dy*dy);
+
+        double targetPitch = Math.atan2(dz, distXY);
+        double targetPitchDeg = Math.toDegrees(targetPitch);
+        // converte neckYaw (yawPos) e neckPitch (pitchPos) para graus
+
+        //System.out.println("Target angle (rad): " + targetYaw);
+        //System.out.println("Target angle (deg): " + targetYawDeg);
+
+        // converte neckYaw (yawPos) para graus
+        double neckYawDeg = Math.toDegrees(yawPos);
+        double headPitchDeg = Math.toDegrees(headPos);
+        // calcules diff fixing offset 90 of sensor
+        double yawDiff = targetYawDeg - (neckYawDeg + 90);
+        yawDiff = ((yawDiff + 180) % 360) - 180;
+
+        double pitchDiff = targetPitchDeg - headPitchDeg;
+        pitchDiff = ((pitchDiff + 180) % 360) - 180;
+        System.out.println("Yaw diff (deg): " + Math.abs(yawDiff));
+System.out.println("pitch Diff (deg): " + Math.abs(pitchDiff));
+
+        // verify if is FOV 2D (horizontal and vertical)
+        if (Math.abs(yawDiff) < 30 && Math.abs(pitchDiff) < 30) {
+            oc.vision.setIValues(5, 1);
+        } else {
+            oc.vision.setIValues(5, 0);
+        }
+
+        oc.vision.setFValues(7, (float) yawDiff);
+        oc.vision.setFValues(8, (float) pitchDiff);             
         }
 
     }

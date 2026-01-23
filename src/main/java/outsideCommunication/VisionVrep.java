@@ -46,6 +46,10 @@ import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
+import java.util.*;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
+import java.lang.management.ManagementFactory;
 
 /**
  *
@@ -72,6 +76,12 @@ public class VisionVrep implements SensorI{
     private String runId="";
     private ArrayList<float[]> colorObjs = new ArrayList<>();
     private boolean crash;
+     private static final long serialVersionUID = 1L;
+     private static final String CHECKPOINT_FILE = "vision_checkpoint.dat";
+     private static final Object COPPELIA_LOCK = new Object(); // lock global p/ chamadas remotas
+    private volatile boolean imgStreamingInitialized = false; // inicia streaming uma vez
+
+
     public VisionVrep(remoteApi vrep, int clientid, IntW vision_handles, int max_epochs, int num_tables, 
             int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, int num_pioneer) {
         this.time_graph = 0;
@@ -94,10 +104,10 @@ public class VisionVrep implements SensorI{
         executedActions = new ArrayList();
         this.res = res;
         this.max_time_graph = max_time_graph;
-        // Float Global_Reward, HeadPitch, NeckYaw, CurV, CurD, Instant_Reward, maxSalValue, _
-        // Int n_tables, exp, Fovea, printStep, act_n, _, _, _
+        // Float Global_Reward, HeadPitch, NeckYaw, CurV, CurD, Instant_Reward, maxSalValue, angleVis
+        // Int n_tables, exp, Fovea, printStep, act_n, fieldVie, _, _
         
-        for(int i=0;i<8;i++){
+        for(int i=0;i<9;i++){
             lastLinef.add(0f);
             lastLinei.add(0);
         }
@@ -123,16 +133,48 @@ public class VisionVrep implements SensorI{
             return;
         }
         }
-    }}
+    }
+     restoreCheckpoint();
+    }
+    
+    // Save state
+    private void saveCheckpoint() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(CHECKPOINT_FILE))) {
+            out.writeObject(this.num_epoch);
+            out.writeObject(this.lastLinei);
+            out.writeObject(this.lastLinef);
+            out.writeObject(this.executedActions);
+        } catch (IOException e) {
+            System.err.println("Error in saving checkpoint: " + e.getMessage());
+        }
+    }
+
+    // Method to restore state
+    @SuppressWarnings("unchecked")
+    private void restoreCheckpoint() {
+        File file = new File(CHECKPOINT_FILE);
+        if (!file.exists()) return;
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            this.num_epoch = (Integer) in.readObject();
+            this.lastLinei = (ArrayList<Integer>) in.readObject();
+            this.lastLinef = (ArrayList<Float>) in.readObject();
+            this.executedActions = (ArrayList<String>) in.readObject();
+            System.out.println("Checkpoint restored: epoch=" + num_epoch);
+        } catch (Exception e) {
+            System.err.println("Error restoring checkpoint: " + e.getMessage());
+        }
+    }
     
     @Override
     public float[] getPosition(String s){
         IntW obj_handle = new IntW(-1);
         FloatWA position = new FloatWA(3);
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
 	vrep.simxGetObjectHandle(clientID, s, obj_handle, remoteApi.simx_opmode_blocking);
 	if (obj_handle.getValue() == -1) System.out.println("Error on connecting to "+s);
 		
         vrep.simxGetObjectPosition(clientID, obj_handle.getValue(), -1, position, vrep.simx_opmode_blocking);
+        }
         float[] positionf = position.getArray();
         if(Math.abs(positionf[0])>0.0001 && Math.abs(positionf[1])>0.0001){
         if(s.equals("Pioneer1")){
@@ -279,6 +321,7 @@ public class VisionVrep implements SensorI{
 		}*/
         
         FloatWA position = new FloatWA(3);
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
 	vrep.simxGetObjectPosition(clientID, vision_handles.getValue(), -1, position,
         vrep.simx_opmode_streaming);
 	boolean m_act;
@@ -360,6 +403,7 @@ public class VisionVrep implements SensorI{
             lastLinef.set(5,(float) 0);
             lastLinef.set(6,(float) 0);
             lastLinef.set(7,(float) 0);
+            lastLinef.set(8,(float) 0);
             crash = false;
             lastLinei.set(4,0);
             //lastLinei.set(5,100);
@@ -376,7 +420,7 @@ public class VisionVrep implements SensorI{
             } 
            
 
-            
+            saveCheckpoint();
             return true;
         }
            
@@ -385,6 +429,7 @@ public class VisionVrep implements SensorI{
             this.setNextActR(true);
            
             return false;
+    }
     }
     
     @Override
@@ -396,8 +441,10 @@ public class VisionVrep implements SensorI{
 		}*/
      if(debug) System.out.println("End epoch R");
         FloatWA position = new FloatWA(3);
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
 	vrep.simxGetObjectPosition(clientID, vision_handles.getValue(), -1, position,
         vrep.simx_opmode_streaming);
+        }
 	boolean m_act;
         m_act = lastLinei.get(4)>this.getMaxActions();
         boolean ret = this.getEpoch() > 1 && (position.getArray()[2] < 0.35 || position.getArray()[0] > 0.2  || m_act || crash);
@@ -459,110 +506,90 @@ public class VisionVrep implements SensorI{
     
     @Override
     public Object getData() {
-       /*try {
-            Thread.sleep(50);
-        } catch (Exception e) {
-            Thread.currentThread().interrupt();
-        }
-*/
-        if ( vision_handles.getValue() == 0) {
-                        System.err.println("Vision Invalid clientID or vision handle. Exiting...");
-                        return vision_data; // Exit if critical values are uninitialized
-                    }
-        
-        char temp_RGB[];                            //char Array to get RGB data of Vision Sensor
-        
-        CharWA image_RGB = new CharWA(res*res*3);           //CharWA that returns RGB data of Vision Sensor
-        IntWA resolution = new IntWA(2);            //Array to get resolution of Vision Sensor
-        int ret_RGB;
-        long startTime = System.currentTimeMillis();
-        
-        int retries = 3;
-        while (retries > 0) {
-            try {
-                        ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution, 
-                        image_RGB, 0, vrep.simx_opmode_streaming); 
+        final IntWA resolution = new IntWA(2);
+        final CharWA imageWA   = new CharWA(0); 
+        int rc;
 
-                if (ret_RGB == remoteApi.simx_return_ok) {
-                    break;  // Exit loop if call is successful
-                }
-            } catch (Exception e) {
-                //System.out.println("Error retrieving vision buffer, retrying...");
-                retries--;
-                if (retries == 0) {
-                    System.out.println("Failed to retrieve vision buffer after retries. Exiting gracefully.");
-                    break;
-                }
-            }
+        if (vrep == null || clientID < 0 || vision_handles == null || vision_handles.getValue() <= 0) {
+            System.err.println("[VisionVrep] invalid clientID/handle");
+            fillVisionDataWithZeros();
+            return vision_data;
         }
 
-
-        try {
-         }
-        catch(Exception e){
-        System.out.println("error vision ");
-    }
-        while (System.currentTimeMillis()-startTime < 2000)
-        {
-            ret_RGB = vrep.simxGetVisionSensorImage(clientID, vision_handles.getValue(), resolution, image_RGB, 0, 
-                    remoteApi.simx_opmode_buffer);
-            if (ret_RGB == remoteApi.simx_return_ok  || ret_RGB == remoteApi.simx_return_novalue_flag){
-                
-                int count_aux = 0; 
-                temp_RGB = image_RGB.getArray();
-                char[] pixels_red = new char[res*res];
-                char[] pixels_green = new char[res*res];
-                char[] pixels_blue = new char[res*res];
-                
-                
-                for(int y =0; y < res; y++){  
-                    for(int x =0; x < res; x++){  
-                        char pixel_red = temp_RGB[3*(y*res+x)];
-                        char pixel_green = temp_RGB[3*(y*res+x)+1];
-                        char pixel_blue = temp_RGB[3*(y*res+x)+2];
-                        pixels_red[count_aux]=pixel_red;
-                        pixels_green[count_aux]=pixel_green;
-                        pixels_blue[count_aux]=pixel_blue;
-                        count_aux += 1;
-                    } 
-                }
-                if(stage>2){
-                    int pixel_len = 3;
-                    int cont_pix = 0;
-                    for(int i =0; i < res*res; i++){
-                        vision_data.set(cont_pix, (float)pixels_red[i]);
-                        vision_data.set(cont_pix+1, (float)pixels_green[i]);
-                        vision_data.set(cont_pix+2, (float)pixels_blue[i]);
-                        cont_pix += pixel_len;
-                         
-                    }
-                }
-                
-                if(stage==2) setResizedColorData(pixels_red, pixels_green, pixels_blue, 2);
-                if(stage==1) setResizedColorData(pixels_red, pixels_green, pixels_blue, 4);
-                
-            } else{
-                int count_aux = 0; 
-                for(int y =0; y < res; y++){  
-                    for(int x =0; x < res; x++){  
-                        vision_data.set(count_aux, new Float(0));
-                        vision_data.set(count_aux+1, new Float(0));
-                        vision_data.set(count_aux+2, new Float(0));
-                        count_aux += 3;
-                    }
-                }
+        synchronized (RemoteApiLock.COPPELIA_LOCK) {
+            if (!imgStreamingInitialized) {
+                vrep.simxGetVisionSensorImage(
+                    clientID, vision_handles.getValue(), resolution, imageWA,
+                    0, // 0 = RGB
+                    remoteApi.simx_opmode_streaming
+                );
+                imgStreamingInitialized = true;
+                return vision_data; 
             }
 
+            rc = vrep.simxGetVisionSensorImage(
+                clientID, vision_handles.getValue(), resolution, imageWA,
+                0,
+                remoteApi.simx_opmode_buffer
+            );
         
-        
-        }
-        
-        // SYNC
 
-          
-        return  vision_data;
+        if (rc == remoteApi.simx_return_novalue_flag) {
+            return vision_data;
+        }
+        if (rc != remoteApi.simx_return_ok) {
+            System.err.println("[VisionVrep]  remote error: " + rc );
+            imgStreamingInitialized = false;
+            return vision_data;
+        }
+
+        int[] resArr = resolution.getArray();
+        if (resArr == null || resArr.length < 2 || resArr[0] <= 0 || resArr[1] <= 0) {
+            System.err.println("[VisionVrep] resolution invalid");
+            return vision_data;
+        }
+        int w = resArr[0];
+        int h = resArr[1];
+        int expected = w * h * 3;
+
+        char[] raw = imageWA.getArray();
+        if (raw == null || raw.length != expected) {
+            System.err.println("[VisionVrep] tamanho inesperado: " +
+                (raw == null ? "null" : raw.length) + " vs " + expected);
+            return vision_data;
+        }
+
+        ensureVisionDataSize(expected);
+
+        for (int i = 0; i < expected; i++) {
+            vision_data.set(i, (float) (raw[i] & 0xFF));
+        }
+
+        return vision_data;
+        }
     }
-    
+
+    private void fillVisionDataWithZeros() {
+        if (vision_data == null) {
+            vision_data = Collections.synchronizedList(new ArrayList<>(res * res * 3));
+        }
+        while (vision_data.size() < res * res * 3) {
+            vision_data.add(0f);
+        }
+        for (int i = 0; i < vision_data.size(); i++) {
+            vision_data.set(i, 0f);
+        }
+    }
+
+    // garantes list size
+    private void ensureVisionDataSize(int size) {
+        if (vision_data == null) {
+            vision_data = Collections.synchronizedList(new ArrayList<>(size));
+        }
+        while (vision_data.size() < size) {
+            vision_data.add(0f);
+        }
+    }
 
 	@Override
 	public void resetData() {
@@ -594,7 +621,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+colorObjs.get(0).toString()+" color2:"+ Arrays.toString(colorObjs.get(1))+
                             " Pos1:"+Arrays.toString(positions[0])+" Pos2:"+Arrays.toString(positions[1])+" MaxSalValue:"+lastLinef.get(6)+
-                             " Memory:"+lastLinef.get(6);
+                             " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                     out.println(s);
 
                     s = " QTables:"+lastLinei.get(0)+
@@ -606,7 +633,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+" color2:"+ Arrays.toString(colorObjs.get(1))+
                             " Pos1:"+Arrays.toString(positions[0])+" Pos2:"+Arrays.toString(positions[1])+" MaxSalValue:"+lastLinef.get(6)+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                 }else{
                                         s = " QTables:"+lastLinei.get(0)+
                             " Exp:"+lastLinei.get(1)+
@@ -617,7 +644,7 @@ public class VisionVrep implements SensorI{
                             " HeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ " color1:"+Arrays.toString(colorObjs.get(0))+
                             " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                     out.println(s);
 
                     s = " \nQTables:"+lastLinei.get(0)+
@@ -629,7 +656,7 @@ public class VisionVrep implements SensorI{
                             " \nHeadPitch:"+lastLinef.get(1)+" NeckYaw:"+lastLinef.get(2)+
                             " LastAct: "+lastAction+ "\n color1:"+Arrays.toString(colorObjs.get(0))+
                             " Pos1:"+Arrays.toString(positions[0])+" MaxSalValue:"+lastLinef.get(6)+"\n"+
-                            " Memory:"+lastLinef.get(6);
+                            " Memory:"+lastLinef.get(6)+" fov_y:"+lastLinef.get(7)+" fov_p:"+lastLinef.get(8)+" Field:"+lastLinei.get(5);
                 }
                 if(debugp) System.out.println(s);
                 
@@ -648,13 +675,12 @@ public class VisionVrep implements SensorI{
 
         for (int y = 0; y < res; y++) {
             for (int x = 0; x < res; x++) {
-                int index = (y * res + x) * 3; // Cada pixel tem 3 valores (R, G, B)
+                int index = (y * res + x) * 3; // each pixel has 3 values (R, G, B)
 
                 int r = Math.round(vision_data.get(index));
                 int g = Math.round(vision_data.get(index + 1));
                 int b = Math.round(vision_data.get(index + 2));
 
-                // Garantindo que os valores estejam no intervalo válido (0-255)
                 r = Math.min(255, Math.max(0, r));
                 g = Math.min(255, Math.max(0, g));
                 b = Math.min(255, Math.max(0, b));
@@ -662,18 +688,14 @@ public class VisionVrep implements SensorI{
                 int rgb = (r << 16) | (g << 8) | b;
                 colorImage.setRGB(x, y, rgb);
 
-                // Converter para escala de cinza (usando luminância perceptual)
-                /*int gray = (int) (0.299 * r + 0.587 * g + 0.114 * b);
-                grayscaleImage.setRGB(x, y, (gray << 16) | (gray << 8) | gray);*/
             }
         }
 
         try {
             ImageIO.write(colorImage, "png", new File("data/"+colorFilename));
-           // ImageIO.write(grayscaleImage, "png", new File("data/"+grayscaleFilename));
            
         } catch (IOException e) {
-            System.err.println("Erro ao salvar a imagem: " + e.getMessage());
+            System.err.println("Error saving image: " + e.getMessage());
         }
     }
     

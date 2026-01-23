@@ -1,6 +1,6 @@
 # Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence
 
-Repository for the code of the work submitted to IEEE International Conference on Development and Learning (ICDL-2025).
+Repository for the code of the work "Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence".
 
 This project investigates **incremental cognitive development** in robotics by enabling a humanoid robot to acquire object tracking and object permanence skills in a structured, developmental manner inspired by **Piagetian psychology**.
 
@@ -181,15 +181,30 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
   </tr>
 </table>
 
+--
 
 ### Performance Highlights
 - **Phase 3**: Demonstrated successful top-down focus on target features (e.g., color, distance).
 - **Phase 4**: Achieved predictive tracking during full occlusion using procedural memory.
 - **Phase 5**: Alternating attention allowed the agent to **shift focus between multiple objects**, a previously unachievable task.
 
+
+- - - - - - - - - - - - - -
+
+### Trained models
+
+Available [here](https://zenodo.org/records/15133064)!
+
+To use the model, create a **/models** folder in the project root and insert the **"pol"** file of the desired Phase in that folder.
+
+- - - - - - - - - - - - - -
+
 ### Testing results
 
 In the following subsections, the test results for all phases are presented. Each phase includes two sets of results: (i) The first row displays images captured by the vision sensor, followed by their corresponding attentional maps, that represent two timesteps from a single episode in which the cognitive agent -- equipped with the necessary modules -- is expected to complete (or not) the task successfully. (ii) The second row illustrates the evolution of Marta's field of view (FOV) throughout the successful episode, along with the position of the Pioneer robot(s) at five key timesteps, including the two shown in the first row. These timesteps are selected based on the experimental setup defined for each phase. If the Pioneer robot is in motion, its trajectory between consecutive timesteps is also plotted.
+
+- - - - - - - - - - - - - -
+
 
 #### Phase 1
 The agent was first trained using Experiment **Tr1**, and subsequently evaluated in Experiments **Te1** and **Te2**. 
@@ -218,6 +233,8 @@ In contrast, in Experiment **Te2**, the Pioneer moves. However, due to the limit
 <br/>
   <em>Fig: Phase 1 agent on Experiment Te2 - Failed </em>
 </p>
+
+- - - - - - - - - - - - - -
 
 
 #### Phase 2
@@ -250,6 +267,8 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 </p>
 
 
+- - - - - - - - - - - - - -
+
 
 #### Phase 3
 
@@ -281,6 +300,69 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
   <em>Fig: Phase 3 agent on Experiment Te4 - Failed </em>
 </p>
 
+- - - - - - - - - - - - - -
+
+
+#### Phase 4
+
+ Building upon the findings from Phase 3, we hypothesized that the agent could leverage procedural memory to predict the Pioneer's trajectory. To test this hypothesis, the model from Phase 3 was fine-tuned using a scenario in which the Pioneer becomes fully occluded. Training is now conducted in Experiment **Tr2**, followed by evaluation in Experiments **Te4** and **Te5**. 
+ 
+ In Experiment **Te4a**, the Pioneer moves toward the back of the environment. With fine-tuning, the agent learns potential trajectory patterns and successfully tracks the Pioneer even when it becomes fully occluded.
+
+ 
+
+<p align="center">
+<img src="imgs/exps/resTe4_ph4.png" alt="Results for Phase 4 agent in experiment Te4. (up) Vision sensor and attentional maps; (down) evolution of Phase 4 agent's field of view (FOV) in Te4" width="600"/>
+</p>
+
+<p align="center">
+  <img src="imgs/exps/4A_test.gif" width="600"/>
+<br/>
+  <em>Fig: Phase 4 agent on Experiment Te4a - Success</em>
+</p>
+
+ In Experiment **Te4b**, the Pioneer becomes obscured by the walls, but stops for a few moments. In this case, the agent predicts the Pioneer's trajectory, but loses track when it stops. Upon seeing the Pioneer, the agent is able to track it again
+
+<p align="center">
+  <img src="imgs/exps/test4AnB.GIF" width="600"/>
+<br/>
+  <em>Fig: Phase 4 agent on Experiment Te4b - Success</em>
+</p>
+
+ 
+  Experiment **Te5** introduces a second Pioneer to assess the agent's ability to combine object permanence with multiple object tracking. The red Pioneer moves within a confined area at the back of the environment, occasionally becoming obscured by a wall with an elevated section, while the newly introduced blue Pioneer remains stationary and always visible to the agent. When the red Pioneer is partially visible, the agent successfully tracks its motion. However, once it becomes fully occluded, the agent fails to predict its path and does not shift attention to the blue Pioneer. Furthermore, when the agent focuses on the stationary blue Pioneer, it loses track of the moving red Pioneer, highlighting a limitation in attention-switching capabilities at this phase.
+  
+<p align="center">
+<img src="imgs/exps/resTe4_ph5.png" alt="Results for Phase 4 agent  in experiment Te5. (up) Vision sensor and attentional maps; (down) evolution of Phase 4's field of view (FOV) in Te5" width="600"/>
+</p>
+
+
+<p align="center">
+  <img src="imgs/exps/4B_test.gif" width="600"/>
+<br/>
+  <em>Fig: Phase 4 agent on Experiment Te5 - Failed </em>
+</p>
+
+- - - - - - - - - - - - - -
+
+
+#### Phase 5
+
+To enable the agent to shift its attention between multiple points, the WTA mechanism in the attentional system was replaced with an Alternating Attention algorithm. This new approach selects the five highest-value points in the saliency map, assigning each a weight proportional to its rank: [1, 0.75, 0.5, 0.25, 0.125]. Training is conducted in Experiment **Tr3**, building upon the model from Phase 4, and evaluation is performed in Experiment **Te5**. 
+
+In experiment **Te5**, a stationary blue Pioneer remains continuously visible on one side of the environment, while the red Pioneer moves within a confined area at the back, occasionally becoming occluded by a wall with an elevated section. Initially, the agent attempts to maintain simultaneous visual focus on both Pioneers. As the red Pioneer moves farther away and tracking both becomes unfeasible, the agent begins alternating its focus between them, demonstrating the effectiveness of the Alternating Attention mechanism.
+ 
+
+<p align="center">
+<img src="imgs/exps/resTe5_ph5.png" alt="Results for Phase 5 agent in experiment Te5. (up) Vision sensor and attentional maps; (down) evolution of Phase 5 agent's field of view (FOV) in Te5" width="600"/>
+</p>
+
+<p align="center">
+  <img src="imgs/exps/5A_test.gif" width="600"/>
+<br/>
+  <em>Fig: Phase 5 agent on Experiment Te5 - Success</em>
+</p>
+
 
 ## 📌 Key Contributions
 
@@ -294,9 +376,9 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
 <!--Don't remove the following tags, it's used for placing the generated citation from the CFF file-->
 <!--CITATION START-->
 ```bibtext
-@software{Rossi-LL-RL-ICDL25,
+@software{Rossi-LL-RL-cst-incremental-babybot,
 author = {de Lellis Rossi, Leonardo and Luna Colombini, Esther  and Ribeiro Gudwin, Ricardo and Paro Costa, Paula and Mara Berto, Letícia and Simões, Alexandre},
-doi = {10.5281/zenodo.15123005},
+doi = {10.5281/zenodo.15133064},
 title = {cst-incremental-babybot},
 url = {https://github.com/H-IAAC/cst-incremental-babybot}
 }
@@ -320,7 +402,7 @@ url = {https://github.com/H-IAAC/cst-incremental-babybot}
 - LB is funded by the Sao Paulo Research Foundation (FAPESP), Brasil, Process Number #2021/07050-0
 -  AS is partially funded by CNPq PQ-2 grant (312323/2022-0)
 
- This study was financed, in part, by the São Paulo Research Foundation (FAPESP), Brasil, Process Number 2020/09850-0. This project was supported by the brazilian Ministry of Science, Technology and Innovations, with resources from Law n$^o$ 8,248, of October 23, 1991, within the scope of PPI-SOFTEX, coordinated by Softex and published Arquitetura Cognitiva (Phase 3), DOU 01245.003479/2024 -10.
+ This study was financed, in part, by the São Paulo Research Foundation (FAPESP), Brasil, Process Number 2020/09850-0. This project was supported by the brazilian Ministry of Science, Technology and Innovations, with resources from Law nº 8.248, of October 23, 1991, within the scope of PPI-SOFTEX, coordinated by Softex and published Arquitetura Cognitiva (Phase 3), DOU 01245.003479/2024 -10.
 
 
 ## License
