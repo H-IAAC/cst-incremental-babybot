@@ -159,7 +159,7 @@ public class LearnerCodeletNet extends Codelet
                 
                 
 		// learning mode ---> build DQN from scratch
-		if (mode.equals("learning") && this.stage == 1 && experiment_number == 1) {
+		if (mode.equals("learning")  && experiment_number == 1) {
 			dql = new QLearningDiscreteDenseRBF(mdp, MARTA_NET, MARTA_QL, manager);
         
 		} else if (mode.equals("learning") && (this.stage > 1  || experiment_number > 1)){
