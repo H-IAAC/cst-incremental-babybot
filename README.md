@@ -1,6 +1,6 @@
 # Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence
 
-Repository for the code of the work submitted to IEEE International Conference on Development and Learning (ICDL-2025).
+Repository for the code of the work "Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence".
 
 This project investigates **incremental cognitive development** in robotics by enabling a humanoid robot to acquire object tracking and object permanence skills in a structured, developmental manner inspired by **Piagetian psychology**.
 
@@ -376,7 +376,7 @@ In experiment **Te5**, a stationary blue Pioneer remains continuously visible on
 <!--Don't remove the following tags, it's used for placing the generated citation from the CFF file-->
 <!--CITATION START-->
 ```bibtext
-@software{Rossi-LL-RL-ICDL25,
+@software{Rossi-LL-RL-cst-incremental-babybot,
 author = {de Lellis Rossi, Leonardo and Luna Colombini, Esther  and Ribeiro Gudwin, Ricardo and Paro Costa, Paula and Mara Berto, Letícia and Simões, Alexandre},
 doi = {10.5281/zenodo.15133064},
 title = {cst-incremental-babybot},
