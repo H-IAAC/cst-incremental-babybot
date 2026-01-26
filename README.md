@@ -347,7 +347,7 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
  In Experiment **Te4b**, the Pioneer becomes obscured by the walls, but stops for a few moments. In this case, the agent predicts the Pioneer's trajectory, but loses track when it stops. Upon seeing the Pioneer, the agent is able to track it again
 
 <p align="center">
-  <img src="imgs/exps/test4AnB.GIF" width="600"/>
+  <img src="imgs/exps/4AnB_test.gif" width="600"/>
 <br/>
   <em>Fig: Phase 4 agent on Experiment Te4b - Success</em>
 </p>
