@@ -212,10 +212,10 @@ between [-40-140] (y-axis) throughout the test episodes [1-50] (x-axis). Means a
 
 | Phase | Te1 | Te2 | Te3 | Te4a | Te4b | Te5 |
 |---|---|---|---|---|---|---|
-| Phase 1 | <img src="imgs/exps/1A_test.gif" width="100"/> | <img src="imgs/exps/1B_test.gif" width="100"/> | - | - | - | - |
-| Phase 2 | <img src="imgs/exps/v2/test2_1A.gif" width="100"/> | <img src="imgs/exps/2A_test.gif" width="100"/> | <img src="imgs/exps/2B_test.gif" width="100"/> | - | - | - |
-| Phase 3 | <img src="imgs/exps/v2/test3_1A.gif" width="100"/> | <img src="imgs/exps/v2/test3_2A.gif" width="100"/> | <img src="imgs/exps/3A_test.gif" width="100"/> | <img src="imgs/exps/3B_test.gif" width="100"/> | - | - |
-| Phase 4 | <img src="imgs/exps/v2/test4_1A.gif" width="100"/> | <img src="imgs/exps/v2/test4_2A.gif" width="100"/> | <img src="imgs/exps/v2/test4_3A.gif" width="100"/> | <img src="imgs/exps/4A_test.gif" width="100"/> | <img src="imgs/exps/test4AnB.gif" width="100"/> | <img src="imgs/exps/4B_test.gif" width="100"/> |
+| Phase 1 | <img src="imgs/exps/1A_test.gif" width="100"/> | <img src="imgs/exps/1B_test.GIF" width="100"/> | - | - | - | - |
+| Phase 2 | <img src="imgs/exps/v2/test2_1A.gif" width="100"/> | <img src="imgs/exps/2A_test.GIF" width="100"/> | <img src="imgs/exps/2B_test_cut.GIF" width="100"/> | - | - | - |
+| Phase 3 | <img src="imgs/exps/v2/test3_1A.gif" width="100"/> | <img src="imgs/exps/v2/test3_2A.gif" width="100"/> | <img src="imgs/exps/3A_test_cut.gif" width="100"/> | <img src="imgs/exps/3B_test.gif" width="100"/> | - | - |
+| Phase 4 | <img src="imgs/exps/v2/test4_1A.gif" width="100"/> | <img src="imgs/exps/v2/test4_2A.gif" width="100"/> | <img src="imgs/exps/v2/test4_3A.gif" width="100"/> | <img src="imgs/exps/4A_test.gif" width="100"/> | <img src="imgs/exps/4AnB_test.gif" width="100"/> | <img src="imgs/exps/4B_test.gif" width="100"/> |
 | Phase 5 | <img src="imgs/exps/v2/test5_1A.gif" width="100"/> | <img src="imgs/exps/v2/test5_2A.gif" width="100"/> | <img src="imgs/exps/v2/test5_3A.gif" width="100"/> | <img src="imgs/exps/v2/test5_4A.gif" width="100"/> | <img src="imgs/exps/v2/test5_4B.gif" width="100"/> | <img src="imgs/exps/5A_test.gif" width="100"/> |
 
 
