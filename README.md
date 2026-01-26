@@ -201,7 +201,27 @@ To use the model, create a **/models** folder in the project root and insert the
 
 ### Testing results
 
-In the following subsections, the test results for all phases are presented. Each phase includes two sets of results: (i) The first row displays images captured by the vision sensor, followed by their corresponding attentional maps, that represent two timesteps from a single episode in which the cognitive agent -- equipped with the necessary modules -- is expected to complete (or not) the task successfully. (ii) The second row illustrates the evolution of Marta's field of view (FOV) throughout the successful episode, along with the position of the Pioneer robot(s) at five key timesteps, including the two shown in the first row. These timesteps are selected based on the experimental setup defined for each phase. If the Pioneer robot is in motion, its trajectory between consecutive timesteps is also plotted.
+Test graphs shows mean angular deviations between Marta’s vision and the Pioneer robot(s) in degrees
+between [-40-140] (y-axis) throughout the test episodes [1-50] (x-axis). Means and standard deviations were calculated between the different seeds. Marta’s FOV is shown in gray (i.e., the angular deviation with the Pioneer must remain within this space). When the result is positive (the agent maintained focus on the Pioneer-expected outcome), the graph is plotted in green. When the result is negative (the agent was unable to maintain focus on the Pioneer), the graph is plotted in red. Because the test suite is incremental, each phase was evaluated starting from the test scenario at which the previous phase failed (except for the first), including all preceding tests. If a phase failed, subsequent tests were not evaluated, as the incremental design renders testing of more complex scenarios meaningless when simpler ones fail.
+
+<p align="center">
+  <img src="imgs/exps/table3.png" width="600"/>
+<br/>
+  <em>Mean angular deviations between Marta’s vision and the Pioneer robot(s) in degrees</em>
+</p>
+
+| Phase | Te1 | Te2 | Te3 | Te4a | Te4b | Te5 |
+|---|---|---|---|---|---|---|
+| Phase 1 | <img src="imgs/exps/1A_test.gif" width="100"/> | <img src="imgs/exps/1B_test.gif" width="100"/> | - | - | - | - |
+| Phase 2 | <img src="imgs/exps/v2/test2_1A.gif" width="100"/> | <img src="imgs/exps/2A_test.gif" width="100"/> | <img src="imgs/exps/2B_test.gif" width="100"/> | - | - | - |
+| Phase 3 | <img src="imgs/exps/v2/test3_1A.gif" width="100"/> | <img src="imgs/exps/v2/test3_2A.gif" width="100"/> | <img src="imgs/exps/3A_test.gif" width="100"/> | <img src="imgs/exps/3B_test.gif" width="100"/> | - | - |
+| Phase 4 | <img src="imgs/exps/v2/test4_1A.gif" width="100"/> | <img src="imgs/exps/v2/test4_2A.gif" width="100"/> | <img src="imgs/exps/v2/test4_3A.gif" width="100"/> | <img src="imgs/exps/4A_test.gif" width="100"/> | <img src="imgs/exps/test4AnB.gif" width="100"/> | <img src="imgs/exps/4B_test.gif" width="100"/> |
+| Phase 5 | <img src="imgs/exps/v2/test5_1A.gif" width="100"/> | <img src="imgs/exps/v2/test5_2A.gif" width="100"/> | <img src="imgs/exps/v2/test5_3A.gif" width="100"/> | <img src="imgs/exps/v2/test5_4A.gif" width="100"/> | <img src="imgs/exps/v2/test5_4B.gif" width="100"/> | <img src="imgs/exps/5A_test.gif" width="100"/> |
+
+
+
+
+In the following subsections, the test results for all phases are presented. Each phase includes two sets of  results: (i) The first row displays images captured by the vision sensor, followed by their corresponding attentional maps, that represent two timesteps from a single episode in which the cognitive agent -- equipped with the necessary modules -- is expected to complete (or not) the task successfully. (ii) The second row illustrates the evolution of Marta's field of view (FOV) throughout the successful episode, along with the position of the Pioneer robot(s) at five key timesteps, including the two shown in the first row. These timesteps are selected based on the experimental setup defined for each phase. If the Pioneer robot is in motion, its trajectory between consecutive timesteps is also plotted.
 
 - - - - - - - - - - - - - -
 
