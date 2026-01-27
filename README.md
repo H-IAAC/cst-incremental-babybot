@@ -1,7 +1,3 @@
-# Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence
-
-Repository for the code of the work "Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence".
-
 This project investigates **incremental cognitive development** in robotics by enabling a humanoid robot to acquire object tracking and object permanence skills in a structured, developmental manner inspired by **Piagetian psychology**.
 
 Developed using the **Cognitive System Toolkit (CST)** and based on the **CONAIM cognitive architecture**, this project contributes to cognitive robotics by demonstrating how perceptual, attentional, motivational, and learning mechanisms can be progressively integrated into a robotic system to mimic aspects of infant learning.
