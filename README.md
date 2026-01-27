@@ -51,12 +51,7 @@ The architecture evolves across **five developmental phases**, each adding new c
 4. **Phase 4**: Procedural memory and trajectory prediction; object permanence. Involves fine-tuning, modifying the Learning module (green parallelogram)
 5. **Phase 5**: Alternating attention mechanism for multiple object tracking.  The Winner-Takes-All algorithm in the Winner Picker is replaced with an alternative attention mechanism.
 
-The code and parameters for each phase are available in different branches.
-- **[Phase 1](https://github.com/H-IAAC/cst-incremental-babybot/tree/1st_sub)**
-- **[Phase 2](https://github.com/H-IAAC/cst-incremental-babybot/tree/2nd_sub)**
-- **[Phase 3](https://github.com/H-IAAC/cst-incremental-babybot/tree/3rd_sub)**
-- **[Phase 4](https://github.com/H-IAAC/cst-incremental-babybot/tree/4th_sub)**
-- **[Phase 5](https://github.com/H-IAAC/cst-incremental-babybot/tree/5th_sub)**
+
 
 ![](imgs/ArchBabybot.png)
 
@@ -387,38 +382,6 @@ In experiment **Te5**, a stationary blue Pioneer remains continuously visible on
 - Demonstrated transition from **reactive to predictive behaviors**
 - Realistic simulations of **infant-like development**
 
-## Citation
-
-<!--Don't remove the following tags, it's used for placing the generated citation from the CFF file-->
-<!--CITATION START-->
-```bibtext
-@software{Rossi-LL-RL-cst-incremental-babybot,
-author = {de Lellis Rossi, Leonardo and Luna Colombini, Esther  and Ribeiro Gudwin, Ricardo and Paro Costa, Paula and Mara Berto, Letícia and Simões, Alexandre},
-doi = {10.5281/zenodo.15133064},
-title = {cst-incremental-babybot},
-url = {https://github.com/H-IAAC/cst-incremental-babybot}
-}
-```
-<!--CITATION END-->
-
-## Authors
-  
-- (2025-) Leonardo de Lellis Rossi: PhD Candidate, FEEC-UNICAMP
-- (Supervisor, 2025-) Ricardo Gudwin: Professor, FEEC-UNICAMP
-- (Co-Supervisor, 2025-) Esther Luna Colombini: Professor, IC-UNICAMP
-- (Collaborator, 2025-)  Letícia Berto: PhD Candidate, IC-UNICAMP
-- (Collaborator, 2025-)  Paula P. Costa: Professor, FEEC-UNICAMP
-- (Collaborator, 2025-)  Alexandre Simões: Professor, ICTS-Unesp
-  
-## Acknowledgements
-
-- LR is funded by MCTI project DOU 01245.003479/2024 -10. 
-- RG is funded by CEPID/BRAINN (FAPESP 2013/07559-3) grant.
-- EC is partially funded by CNPq PQ-2 grant (315468/2021-1)
-- LB is funded by the Sao Paulo Research Foundation (FAPESP), Brasil, Process Number #2021/07050-0
--  AS is partially funded by CNPq PQ-2 grant (312323/2022-0)
-
- This study was financed, in part, by the São Paulo Research Foundation (FAPESP), Brasil, Process Number 2020/09850-0. This project was supported by the brazilian Ministry of Science, Technology and Innovations, with resources from Law nº 8.248, of October 23, 1991, within the scope of PPI-SOFTEX, coordinated by Softex and published Arquitetura Cognitiva (Phase 3), DOU 01245.003479/2024 -10.
 
 
 ## License
