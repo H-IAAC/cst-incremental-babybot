@@ -17,6 +17,7 @@ import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
+import br.unicamp.cst.support.CodeletsProfiler;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -179,6 +180,7 @@ public class ActionExecCodelet extends Codelet
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
+        
         if(debug) System.out.println("proc actEx");
         crashed = false;
         yawPos = oc.NeckYaw_m.getSpeed();

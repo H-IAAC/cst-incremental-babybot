@@ -162,13 +162,9 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
 <table>
   <tr>
     <td align="center">
-      <img src="imgs/Rewards_stages_1_2_3.png" width="300"/><br/>
-      <sub><b>Training curves</b><br/>Phases 1 to 3</sub>
-    </td>
-    <td align="center">
-      <img src="imgs/Rewards_stages_4_5.png" width="300"/><br/>
-      <sub><b>Training curves</b><br/>Phases 4 to 5</sub>
-    </td>
+      <img src="imgs/rewards.pdf" width="300"/><br/>
+      <sub><b>Training curves</b>
+    
   </tr>
 </table>
 

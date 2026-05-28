@@ -40,14 +40,14 @@ public class CST_incremental_babybot {
         int n_tables = 1;
         String runId=""; 
         int num_pioneer = 1;
-        int stage = 3, exp =35, res = 256, max_time_graph=100, MAX_ACTION_NUMBER = 500;
-        long seed = 5678;
+        int stage = 4, exp =1, res = 256, max_time_graph=100, MAX_ACTION_NUMBER = 500;
+        long seed = 91011;
         OutsideCommunication oc = new OutsideCommunication(50,mode,n_tables,seed, stage, 
                 exp, "", res, max_time_graph, MAX_ACTION_NUMBER, num_pioneer);
         oc.start(); 
         //  (OutsideCommunication oc, String mode, String motivation, int num_tables, int print_step)
         AgentMind am = new AgentMind(oc, mode, "drives",n_tables, 5,seed, num_pioneer); // OC, mode, Num_QTables,  PrintStep, seed, num_pioneer, 
-
+        
     }
     
 }

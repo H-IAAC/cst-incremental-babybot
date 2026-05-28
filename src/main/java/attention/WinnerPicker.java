@@ -15,6 +15,7 @@ package attention;
 import CommunicationInterface.SensorI;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -35,7 +36,12 @@ public class WinnerPicker extends Codelet{
     private  int time_graph;
     
     private boolean first = true;
-    
+    private MemoryObject saliencyMapMO;
+    private MemoryObject winnerTypeMO;
+    private MemoryObject winnersListMO;
+    private MemoryObject attentionalMapMO;
+
+    private long procCounter = 0;
     private List winnersList;
     private List attentionalMap;
     private List saliencyMap;
@@ -86,26 +92,68 @@ public class WinnerPicker extends Codelet{
 
     @Override
     public void accessMemoryObjects() {
-        MemoryObject MO;
-        MO = (MemoryObject) this.getInput(salMapName);
-        saliencyMap = (List) MO.getI();
-        MO = (MemoryObject) this.getInput("TYPE");
-        winnerType = (List) MO.getI();
-        MO = (MemoryObject) this.getOutput(winnersListName);
-        winnersList = (List) MO.getI();
-        MO = (MemoryObject) this.getOutput(attentionalMapName);
-        attentionalMap = (List) MO.getI();
+        saliencyMapMO = (MemoryObject) this.getInput(salMapName);
+        winnerTypeMO = (MemoryObject) this.getInput("TYPE");
+        winnersListMO = (MemoryObject) this.getOutput(winnersListName);
+        attentionalMapMO = (MemoryObject) this.getOutput(attentionalMapName);
 
+        saliencyMap = saliencyMapMO == null ? null : (List) saliencyMapMO.getI();
+        winnerType = winnerTypeMO == null ? null : (List) winnerTypeMO.getI();
+        winnersList = winnersListMO == null ? null : (List) winnersListMO.getI();
+        attentionalMap = attentionalMapMO == null ? null : (List) attentionalMapMO.getI();
+
+        debugMemoryObject("saliencyMap", saliencyMapMO, saliencyMap);
+        debugMemoryObject("winnerType", winnerTypeMO, winnerType);
+        debugMemoryObject("winnersList", winnersListMO, winnersList);
+        debugMemoryObject("attentionalMap", attentionalMapMO, attentionalMap);
     }
 
+    private void debugMemoryObject(String label, MemoryObject mo, Object value) {
+        System.out.println("[WinnerPicker] " + label
+                + " MO=" + (mo == null ? "null" : System.identityHashCode(mo))
+                + " valueClass=" + (value == null ? "null" : value.getClass().getName())
+                + " valueId=" + (value == null ? "null" : System.identityHashCode(value))
+                + " size=" + listSize(value));
+    }
+
+    private int listSize(Object value) {
+        if (value instanceof List) {
+            return ((List) value).size();
+        }
+        return -1;
+    }
     @Override
     public void calculateActivation() {
 
 
     }
 
+    private int safeEpoch() {
+        try {
+            return vision == null ? -1 : vision.getEpoch();
+        } catch (Exception e) {
+            return -1;
+        }
+    }
     @Override
     public void proc() {
+        procCounter++;
+
+        saliencyMap = saliencyMapMO == null ? null : (List) saliencyMapMO.getI();
+        winnerType = winnerTypeMO == null ? null : (List) winnerTypeMO.getI();
+        winnersList = winnersListMO == null ? null : (List) winnersListMO.getI();
+        attentionalMap = attentionalMapMO == null ? null : (List) attentionalMapMO.getI();
+
+        System.out.println("[WinnerPicker] proc=" + procCounter
+                + " epoch=" + safeEpoch()
+                + " saliencySize=" + listSize(saliencyMap)
+                + " winnerTypeSize=" + listSize(winnerType)
+                + " winnersSize=" + listSize(winnersList)
+                + " attentionalMapSizeBefore=" + listSize(attentionalMap)
+                + " sensorDimension=" + sensorDimension
+                + " timeWindow=" + timeWindow
+                + " print_step=" + print_step);
+        
     	try {
             Thread.sleep(80);//Estava 80
         } catch (Exception e) {
@@ -117,7 +165,42 @@ public class WinnerPicker extends Codelet{
         long fireTime = 0;
 
 
+        if (saliencyMap == null) {
+            System.out.println("[WinnerPicker] saliencyMap is null. Check input name: " + salMapName);
+            return;
+        }
 
+        if (winnerType == null) {
+            System.out.println("[WinnerPicker] winnerType is null. Check input name: TYPE");
+            return;
+        }
+
+        if (winnersList == null) {
+            System.out.println("[WinnerPicker] winnersList is null. Check output name: " + winnersListName);
+            return;
+        }
+
+        if (attentionalMap == null) {
+            System.out.println("[WinnerPicker] attentionalMap is null. Creating new list for: " + attentionalMapName);
+            attentionalMap = new ArrayList();
+        }
+
+        if (sensorDimension <= 0) {
+            System.out.println("[WinnerPicker] sensorDimension <= 0. Cannot construct attentional map. sensorDimension="
+                    + sensorDimension);
+            return;
+        }
+
+        if (timeWindow <= 0) {
+            System.out.println("[WinnerPicker] timeWindow <= 0. Cannot maintain attentional map. timeWindow="
+                    + timeWindow);
+            return;
+        }
+
+        if (winnerType.isEmpty()) {
+            System.out.println("[WinnerPicker] winnerType is empty. Waiting for TYPE memory.");
+            return;
+        }
         for(int t = 0; t < saliencyMap.size();t++){
             ArrayList<Float> line;
             line = (ArrayList<Float>) saliencyMap.get(t);
@@ -138,6 +221,10 @@ public class WinnerPicker extends Codelet{
         } 
         
         int type = BOTTOM_UP;
+        if (winnerType == null || winnerType.isEmpty()) {
+            System.out.println("[WinnerPicker] winnerType is null/empty. Cannot compute winner yet.");
+            return;
+        }
         ArrayList<Integer> linewinner = (ArrayList<Integer>) winnerType.get(winnerType.size()-1);
         if(max != 0 && last_winner_index  != max_index){
             if(linewinner.get(max_index) == TOP_DOWN) type = TOP_DOWN;
@@ -151,7 +238,7 @@ public class WinnerPicker extends Codelet{
         double deltaj, deltai;
         long t;
 
-        if(attentionalMap.size() == timeWindow){
+        while (attentionalMap.size() >= timeWindow && !attentionalMap.isEmpty()) {
             attentionalMap.remove(0);
         }
 
@@ -231,7 +318,15 @@ public class WinnerPicker extends Codelet{
            if(debug)  System.out.println("winner_w "+winner_w.featureJ);
         }
         
-               
+               if (attentionalMapMO != null) {
+                    attentionalMapMO.setI(attentionalMap);
+                }
+
+                System.out.println("[WinnerPicker] attentional map updated:"
+                        + " outerSize=" + attentionalMap.size()
+                        + " lastRowSize=" + (attMap_sizeMinus1 == null ? -1 : attMap_sizeMinus1.size())
+                        + " attListId=" + System.identityHashCode(attentionalMap)
+                        + " attMO=" + System.identityHashCode(attentionalMapMO));
        printToFile(attMap_sizeMinus1, "attMap.txt");
     }
 

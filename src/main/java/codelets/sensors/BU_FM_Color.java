@@ -14,6 +14,7 @@ package codelets.sensors;
 
 import CommunicationInterface.SensorI;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 import sensory.FeatMapCodelet;
 //import codelets.motor.Lock;
 
@@ -101,7 +102,7 @@ public class BU_FM_Color extends FeatMapCodelet {
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }*/
-        
+
         MemoryObject vision_bufferMO = (MemoryObject) sensor_buffers.get(0);        //Gets vision Data
         
         List visionData_buffer;

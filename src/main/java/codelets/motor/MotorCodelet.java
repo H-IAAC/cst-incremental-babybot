@@ -21,6 +21,8 @@ package codelets.motor;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import CommunicationInterface.MotorI;
+import br.unicamp.cst.support.CodeletsProfiler;
+import outsideCommunication.OutsideCommunication;
 
 public class MotorCodelet extends Codelet {
     
@@ -29,13 +31,13 @@ public class MotorCodelet extends Codelet {
     private final MotorI head_pitch_m, neck_yaw_m;
     
     private final int MOVEMENT_TIME = 2000; // 2 seconds
-    
-    public MotorCodelet(MotorI head_pitch, MotorI neck_yaw){
+    private OutsideCommunication oc;
+    public MotorCodelet(MotorI head_pitch, MotorI neck_yaw, OutsideCommunication oc){
     	super();
         head_pitch_m = head_pitch;
         neck_yaw_m = neck_yaw;
-    }
-
+       this.oc = oc;
+    }   
     @Override
     public void accessMemoryObjects() {
         motorActionMO = (MemoryObject) this.getInput("MOTOR");
@@ -55,7 +57,7 @@ public class MotorCodelet extends Codelet {
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }
-    	
+
 //    	String action = (String) motorActionMO.getI();
         neck_yaw_m.setSpeed((float) neck_yaw_pos_MO.getI());
         head_pitch_m.setSpeed((float) head_pitch_pos_MO.getI());

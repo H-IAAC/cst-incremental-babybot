@@ -15,6 +15,7 @@ package attention;
 import CommunicationInterface.SensorI;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -77,13 +78,14 @@ public class SalMap extends Codelet {
 
     @Override
     public void proc() {
+       
     	try {
             Thread.sleep(50);
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }
         ArrayList<Float> salMap_sizeMinus1 = null;
-        
+
         if(saliencyMap.size() == timeWindow){
             saliencyMap.remove(0);
         }

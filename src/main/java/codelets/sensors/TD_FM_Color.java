@@ -15,6 +15,7 @@ package codelets.sensors;
 import CommunicationInterface.SensorI;
 import attention.Winner;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 import sensory.FeatMapCodelet;
 
 import java.io.BufferedWriter;

@@ -9,6 +9,7 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
+import br.unicamp.cst.support.CodeletsProfiler;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -71,7 +72,7 @@ public class AcommodationCodelet extends Codelet
        // Main Codelet function, to be implemented in each subclass.
 	@Override
 	public void proc() {
-	
+
             if(stage == 1 || stage == 2){
                 nActions = 10;
             }else if(stage > 2){

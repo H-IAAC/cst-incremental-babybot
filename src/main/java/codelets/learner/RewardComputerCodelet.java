@@ -18,6 +18,7 @@ import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.learning.QLearning;
 import br.unicamp.cst.representation.idea.Idea;
+import br.unicamp.cst.support.CodeletsProfiler;
 import coppelia.FloatWA;
 import coppelia.IntW;
 import coppelia.remoteApi;
@@ -219,7 +220,7 @@ System.out.println("pitch"+pitch);
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
-        
+
         crashed = false;
         reward_i=0;
         

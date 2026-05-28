@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import outsideCommunication.OutsideCommunication;
 
 /**
  *
@@ -34,11 +35,12 @@ public class SensorBufferCodelet extends Codelet {
     private String bufferName;
     private int maxcapacity;
     private int ignore;
-    
-    public SensorBufferCodelet(String sensorName, String bufferName, int maxcpcty) {
+    private OutsideCommunication oc;
+    public SensorBufferCodelet(String sensorName, String bufferName, int maxcpcty, OutsideCommunication oc) {
         super();
         this.bufferName = bufferName;
         this.sensorName = sensorName;
+        this.oc = oc;
         maxcapacity = maxcpcty;
         ignore = 1;
     }

@@ -15,7 +15,9 @@ package codelets.sensors;
 import CommunicationInterface.SensorI;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 import codelets.motor.Lock;
+import outsideCommunication.OutsideCommunication;
 
 /**
  *
@@ -26,13 +28,13 @@ public class Sensor_Depth extends Codelet {
     private MemoryObject depth_read;
     private SensorI depth, vision;
     private int stage;
-    
-    public Sensor_Depth(SensorI depth, SensorI vision){
+    private OutsideCommunication oc;
+    public Sensor_Depth(SensorI depth, SensorI vision, OutsideCommunication oc){
         this.depth = depth;
         this.vision = vision;
         this.stage = vision.getStage();
-    }
-
+        this.oc = oc;
+        }
    
     
     @Override

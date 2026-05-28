@@ -11,6 +11,7 @@ import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.motivational.Drive;
 import br.unicamp.cst.motivational.MotivationalCodelet;
 import br.unicamp.cst.representation.idea.Idea;
+import br.unicamp.cst.support.CodeletsProfiler;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -144,7 +145,7 @@ private List<String> allStatesList;
         
         getActivation();
        
-        
+
       /*  try {
         Thread.sleep(50);
         } catch (Exception e) {

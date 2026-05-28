@@ -14,6 +14,7 @@ package codelets.sensors;
 
 import CommunicationInterface.SensorI;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 import sensory.CombFeatMapCodelet;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -53,6 +54,7 @@ OutsideCommunication oc;
      
     @Override
     public void calculateCombFeatMap() {
+
         this.stage = sensor.getStage();
    
        

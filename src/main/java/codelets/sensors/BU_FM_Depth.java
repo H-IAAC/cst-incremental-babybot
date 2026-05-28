@@ -14,6 +14,7 @@ package codelets.sensors;
 
 import CommunicationInterface.SensorI;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 import sensory.FeatMapCodelet;
 import codelets.motor.Lock;
 
@@ -59,6 +60,7 @@ private boolean debug = false;
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }*/
+
         MemoryObject depth_bufferMO = (MemoryObject) sensor_buffers.get(1);        //Gets Data
         
         List depthData_buffer;

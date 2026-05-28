@@ -15,6 +15,7 @@ package codelets.sensors;
 import CommunicationInterface.SensorI;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
+import br.unicamp.cst.support.CodeletsProfiler;
 
 /**
  *
@@ -55,7 +56,7 @@ public class Sensor_Vision extends Codelet {
 
         vision_read.setI(vision.getData());
         this.stage = vision.getStage();
-        
+
     }
     
 }
