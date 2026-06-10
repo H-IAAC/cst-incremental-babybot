@@ -1,7 +1,3 @@
-# Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence
-
-Repository for the code of the work "Where Are My Toys Going? Exploring Incremental Learning in Object Tracking and Object Permanence".
-
 This project investigates **incremental cognitive development** in robotics by enabling a humanoid robot to acquire object tracking and object permanence skills in a structured, developmental manner inspired by **Piagetian psychology**.
 
 Developed using the **Cognitive System Toolkit (CST)** and based on the **CONAIM cognitive architecture**, this project contributes to cognitive robotics by demonstrating how perceptual, attentional, motivational, and learning mechanisms can be progressively integrated into a robotic system to mimic aspects of infant learning.
@@ -55,12 +51,7 @@ The architecture evolves across **five developmental phases**, each adding new c
 4. **Phase 4**: Procedural memory and trajectory prediction; object permanence. Involves fine-tuning, modifying the Learning module (green parallelogram)
 5. **Phase 5**: Alternating attention mechanism for multiple object tracking.  The Winner-Takes-All algorithm in the Winner Picker is replaced with an alternative attention mechanism.
 
-The code and parameters for each phase are available in different branches.
-- **[Phase 1](https://github.com/H-IAAC/cst-incremental-babybot/tree/1st_sub)**
-- **[Phase 2](https://github.com/H-IAAC/cst-incremental-babybot/tree/2nd_sub)**
-- **[Phase 3](https://github.com/H-IAAC/cst-incremental-babybot/tree/3rd_sub)**
-- **[Phase 4](https://github.com/H-IAAC/cst-incremental-babybot/tree/4th_sub)**
-- **[Phase 5](https://github.com/H-IAAC/cst-incremental-babybot/tree/5th_sub)**
+
 
 ![](imgs/ArchBabybot.png)
 
@@ -171,13 +162,9 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
 <table>
   <tr>
     <td align="center">
-      <img src="imgs/Rewards_stages_1_2_3.png" width="300"/><br/>
-      <sub><b>Training curves</b><br/>Phases 1 to 3</sub>
-    </td>
-    <td align="center">
-      <img src="imgs/Rewards_stages_4_5.png" width="300"/><br/>
-      <sub><b>Training curves</b><br/>Phases 4 to 5</sub>
-    </td>
+      <img src="imgs/rewards.png" width="300"/><br/>
+      <sub><b>Training curves</b>
+    
   </tr>
 </table>
 
@@ -210,6 +197,7 @@ between [-40-140] (y-axis) throughout the test episodes [1-50] (x-axis). Means a
   <em>Mean angular deviations between Marta’s vision and the Pioneer robot(s) in degrees</em>
 </p>
 
+
 | Phase | Te1 | Te2 | Te3 | Te4a | Te4b | Te5 |
 |---|---|---|---|---|---|---|
 | Phase 1 | <img src="imgs/exps/1A_test.gif" width="100"/> | <img src="imgs/exps/1B_test.GIF" width="100"/> | - | - | - | - |
@@ -217,7 +205,6 @@ between [-40-140] (y-axis) throughout the test episodes [1-50] (x-axis). Means a
 | Phase 3 | <img src="imgs/exps/v2/test3_1A.gif" width="100"/> | <img src="imgs/exps/v2/test3_2A.gif" width="100"/> | <img src="imgs/exps/3A_test_cut.gif" width="100"/> | <img src="imgs/exps/3B_test.gif" width="100"/> | - | - |
 | Phase 4 | <img src="imgs/exps/v2/test4_1A.gif" width="100"/> | <img src="imgs/exps/v2/test4_2A.gif" width="100"/> | <img src="imgs/exps/v2/test4_3A.gif" width="100"/> | <img src="imgs/exps/4A_test.gif" width="100"/> | <img src="imgs/exps/4AnB_test.gif" width="100"/> | <img src="imgs/exps/4B_test.gif" width="100"/> |
 | Phase 5 | <img src="imgs/exps/v2/test5_1A.gif" width="100"/> | <img src="imgs/exps/v2/test5_2A.gif" width="100"/> | <img src="imgs/exps/v2/test5_3A.gif" width="100"/> | <img src="imgs/exps/v2/test5_4A.gif" width="100"/> | <img src="imgs/exps/v2/test5_4B.gif" width="100"/> | <img src="imgs/exps/5A_test.gif" width="100"/> |
-
 
 
 
@@ -344,7 +331,7 @@ In Experiment **Te3**, the Pioneer follows a similar movement pattern but is now
  In Experiment **Te4b**, the Pioneer becomes obscured by the walls, but stops for a few moments. In this case, the agent predicts the Pioneer's trajectory, but loses track when it stops. Upon seeing the Pioneer, the agent is able to track it again
 
 <p align="center">
-  <img src="imgs/exps/test4AnB.GIF" width="600"/>
+  <img src="imgs/exps/4AnB_test.gif" width="600"/>
 <br/>
   <em>Fig: Phase 4 agent on Experiment Te4b - Success</em>
 </p>
@@ -391,38 +378,6 @@ In experiment **Te5**, a stationary blue Pioneer remains continuously visible on
 - Demonstrated transition from **reactive to predictive behaviors**
 - Realistic simulations of **infant-like development**
 
-## Citation
-
-<!--Don't remove the following tags, it's used for placing the generated citation from the CFF file-->
-<!--CITATION START-->
-```bibtext
-@software{Rossi-LL-RL-cst-incremental-babybot,
-author = {de Lellis Rossi, Leonardo and Luna Colombini, Esther  and Ribeiro Gudwin, Ricardo and Paro Costa, Paula and Mara Berto, Letícia and Simões, Alexandre},
-doi = {10.5281/zenodo.15133064},
-title = {cst-incremental-babybot},
-url = {https://github.com/H-IAAC/cst-incremental-babybot}
-}
-```
-<!--CITATION END-->
-
-## Authors
-  
-- (2025-) Leonardo de Lellis Rossi: PhD Candidate, FEEC-UNICAMP
-- (Supervisor, 2025-) Ricardo Gudwin: Professor, FEEC-UNICAMP
-- (Co-Supervisor, 2025-) Esther Luna Colombini: Professor, IC-UNICAMP
-- (Collaborator, 2025-)  Letícia Berto: PhD Candidate, IC-UNICAMP
-- (Collaborator, 2025-)  Paula P. Costa: Professor, FEEC-UNICAMP
-- (Collaborator, 2025-)  Alexandre Simões: Professor, ICTS-Unesp
-  
-## Acknowledgements
-
-- LR is funded by MCTI project DOU 01245.003479/2024 -10. 
-- RG is funded by CEPID/BRAINN (FAPESP 2013/07559-3) grant.
-- EC is partially funded by CNPq PQ-2 grant (315468/2021-1)
-- LB is funded by the Sao Paulo Research Foundation (FAPESP), Brasil, Process Number #2021/07050-0
--  AS is partially funded by CNPq PQ-2 grant (312323/2022-0)
-
- This study was financed, in part, by the São Paulo Research Foundation (FAPESP), Brasil, Process Number 2020/09850-0. This project was supported by the brazilian Ministry of Science, Technology and Innovations, with resources from Law nº 8.248, of October 23, 1991, within the scope of PPI-SOFTEX, coordinated by Softex and published Arquitetura Cognitiva (Phase 3), DOU 01245.003479/2024 -10.
 
 
 ## License
