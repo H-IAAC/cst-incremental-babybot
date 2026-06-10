@@ -180,7 +180,7 @@ In order to track both Pioneers, a Phase 5 agent must be capable of alternating 
 
 ### Trained models
 
-Available [here](https://zenodo.org/records/15133064)!
+Available [here](removed for blind review)!
 
 To use the model, create a **/models** folder in the project root and insert the **"pol"** file of the desired Phase in that folder.
 
