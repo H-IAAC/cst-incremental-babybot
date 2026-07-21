@@ -49,7 +49,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import codelets.support.*;
-
+import config.ExperimentConfig;
+import config.LearningAlgorithm;
+import metrics.TimingRegistry;
 /**
  *
  * @author L. L. Rossi (leolellisr)
@@ -64,15 +66,24 @@ public class AgentMind extends Mind {
     public static final boolean saverCodelet = false;
     private int index_hunger, index_curiosity, print_step, num_pioneer;
         private String stringOutputac = "", stringOutputreS = "", stringOutputreC = "";
-private long seed;
-    public AgentMind(OutsideCommunication oc, String mode, String motivation, 
-            int num_tables, int print_step,long seed, int num_pioneer) throws IOException{
+    private long seed;
+    private TimingRegistry timingRegistry;
+    public AgentMind(
+            OutsideCommunication oc,
+            ExperimentConfig config,
+            TimingRegistry timingRegistry
+    ) throws IOException {
+
         super();
-        oc.vision.setIValues(3, print_step);
-        oc.vision.setIValues(0, num_tables);
-        this.print_step = print_step;
-        this.seed = seed;
-        this.num_pioneer = num_pioneer;
+        this.timingRegistry = timingRegistry;
+        String mode = config.training ? "exploring" : "learning";
+        String motivation =
+                config.motivationEnabled ? "drives" : "none";
+    
+        int num_tables = 1;
+        int print_step = 5;
+        long seed = config.seed;
+        int num_pioneer = config.numberOfPioneers;
         //System.out.println("AgentMind");
         //////////////////////////////////////////////
         //Declare Memory Objects
@@ -298,38 +309,55 @@ private long seed;
         depth_fm_c.setProfiling(true);
         depth_fm_c.setCodeletProfiler("profile/", "depth_fm_c", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
      // TOP DOWN
-        Codelet vision_color_top_fm_c = new TD_FM_Color(oc.vision, sensbuff_names_vision.size(), 
-                sensbuff_names_vision, "VISION_COLOR_TOP_FM",Buffersize,Sensor_dimension, print_step);
-        vision_color_top_fm_c.addInput(vision_bufferMO);
-        vision_color_top_fm_c.addInput(winnersMO);
-        vision_color_top_fm_c.addInput(desFeatCMO);
-        vision_color_top_fm_c.addOutput(vision_color_top_fmMO);
-        insertCodelet(vision_color_top_fm_c);
-        vision_color_top_fm_c.setProfiling(true);
-        vision_color_top_fm_c.setCodeletProfiler("profile/", "vision_color_top_fm_c", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
+        if (config.topDownEnabled) {
 
-         
-      
-        //Depth FM
-        Codelet depth_top_fm_c = new TD_FM_Depth(oc.vision, sensbuff_names_vision.size(),
-                sensbuff_names_vision,"DEPTH_TOP_FM",Buffersize,Sensor_dimension, print_step);
-        depth_top_fm_c.addInput(winnersMO);
-        depth_top_fm_c.addInput(depth_bufferMO);
-        depth_top_fm_c.addInput(desFeatDMO);
-        depth_top_fm_c.addInput(desFeatRMO);
-        depth_top_fm_c.addOutput(depth_top_fmMO);
-        depth_top_fm_c.addOutput(vision_region_top_fmMO);
-        insertCodelet(depth_top_fm_c);
-        depth_top_fm_c.setProfiling(true);
-        depth_top_fm_c.setCodeletProfiler("profile/", "depth_top_fm_c", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
+            Codelet vision_color_top_fm_c =
+                    new TD_FM_Color(
+                            oc.vision,
+                            sensbuff_names_vision.size(),
+                            sensbuff_names_vision,
+                            "VISION_COLOR_TOP_FM",
+                            Buffersize,
+                            Sensor_dimension,
+                            num_tables
+                    );
 
-        
+            vision_color_top_fm_c.addInput(vision_bufferMO);
+            vision_color_top_fm_c.addInput(desFeatCMO);
+            vision_color_top_fm_c.addOutput(vision_color_top_fmMO);
+
+            insertCodelet(vision_color_top_fm_c);
+
+            Codelet depth_top_fm_c =
+                    new TD_FM_Depth(
+                            oc.vision,
+                            sensbuff_names_vision.size(),
+                            sensbuff_names_vision,
+                            "DEPTH_TOP_FM",
+                            Buffersize,
+                            Sensor_dimension,
+                            num_tables
+                    );
+
+            depth_top_fm_c.addInput(depth_bufferMO);
+            depth_top_fm_c.addInput(desFeatDMO);
+            depth_top_fm_c.addInput(desFeatRMO);
+
+            depth_top_fm_c.addOutput(depth_top_fmMO);
+
+            insertCodelet(depth_top_fm_c);
+        }
         ArrayList<String> FMnames = new ArrayList<>();
+                // Mapas bottom-up: sempre disponíveis.
         FMnames.add("VISION_COLOR_FM");
         FMnames.add("DEPTH_FM");
-        FMnames.add("VISION_COLOR_TOP_FM");
-        FMnames.add("DEPTH_TOP_FM");
-        FMnames.add("REGION_TOP_FM");
+
+        // Mapas top-down: somente quando habilitados.
+        if (config.topDownEnabled) {
+            FMnames.add("VISION_COLOR_TOP_FM");
+            FMnames.add("DEPTH_TOP_FM");
+            FMnames.add("REGION_TOP_FM");
+        }
         
         //CFM
         Codelet comb_fm_c = new CFM(oc.vision, FMnames.size(), FMnames,Buffersize,Sensor_dimension, 
@@ -368,7 +396,7 @@ private long seed;
         dec_mak_cod.setCodeletProfiler("profile/", "dec_mak_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
 
             //CURIOSITY REWARD CODELET
-            Codelet reward_cod = new RewardComputerCodelet(oc, Buffersize, Sensor_dimension, mode, motivation, "", "REWARDS_STRING_OUTPUT", num_tables);
+            Codelet reward_cod = new RewardComputerCodelet(oc, Buffersize, Sensor_dimension, mode, motivation, "", "REWARDS_STRING_OUTPUT", num_tables, config, timingRegistry);
             reward_cod.addInput(salMapMO);
             reward_cod.addInput(winnersMO);        
             if(motivation.equals("drives")){
@@ -382,24 +410,55 @@ private long seed;
         reward_cod.setCodeletProfiler("profile/", "reward_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
 
             
-            Codelet learner_cod = new LearnerCodeletNet(oc.vrep, oc.clientID, oc, Buffersize, mode, motivation,
-                    "", "DQN", num_tables,this.seed );
-            learner_cod.addInput(salMapMO);
-            learner_cod.addInput(rewardsMO);
-            learner_cod.addInput(actionsMO);
-            learner_cod.addInput(statesMO);
-            if(motivation.equals("drives")){
-                learner_cod.addInput(motivationMC);
-              }
-            learner_cod.addOutput(qtableMO);
-            insertCodelet(learner_cod);
-            learner_cod.setProfiling(true);
-        learner_cod.setCodeletProfiler("profile/", "learner_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
+            Codelet learner_cod;
 
+            switch (config.algorithm) {
+
+                case TABULAR_Q:
+                    learner_cod = new LearnerCodelet(
+                            oc.vrep,
+                            oc.clientID,
+                            oc,
+                            Buffersize,
+                            mode,
+                            motivation,
+                            "drives",
+                            "DQN",
+                            num_tables,
+                            seed, config, timingRegistry
+                    );
+                    break;
+
+                case DQN:
+                case ONLINE_Q_NETWORK:
+                    learner_cod = new LearnerCodeletNet(
+                            oc.vrep,
+                            oc.clientID,
+                            oc,
+                            Buffersize,
+                            mode,
+                            motivation,
+                            "drives",
+                            "DQN",
+                            num_tables,
+                            seed, config, timingRegistry
+                    );
+                    break;
+
+                default:
+                    learner_cod = null;
+                    break;
+            }
+
+            if (learner_cod != null) {
+                // Preserve os addInput e addOutput existentes.
+                insertCodelet(learner_cod);
+            }
             
         
         
-        Codelet decision_cod = new DecisionCodelet(oc, Buffersize, Sensor_dimension, mode, motivation, num_tables, num_pioneer);
+        Codelet decision_cod = new DecisionCodelet(oc, Buffersize, Sensor_dimension, mode, motivation, num_tables, num_pioneer, 
+                config, timingRegistry);
          decision_cod.addInput(salMapMO);
         if(motivation.equals("drives")) decision_cod.addInput(motivationMC);
         decision_cod.addInput(qtableMO);
@@ -410,7 +469,8 @@ private long seed;
         decision_cod.setProfiling(true);
         decision_cod.setCodeletProfiler("profile/", "decision_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
 
-        Codelet action_exec_cod = new ActionExecCodelet(oc,  mode, Buffersize, Sensor_dimension, num_tables);
+        Codelet action_exec_cod = new ActionExecCodelet(oc,  mode, Buffersize, Sensor_dimension, num_tables, 
+                config, timingRegistry);
          action_exec_cod.addInput(salMapMO);
          action_exec_cod.addInput(winnersMO);
          action_exec_cod.addInput(vision_color_fmMO);
@@ -425,45 +485,59 @@ private long seed;
          action_exec_cod.setProfiling(true);
         action_exec_cod.setCodeletProfiler("profile/", "action_exec_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
 
+        if (config.proceduralMemoryEnabled) {
         // Assimilation
-        Codelet assimilation_cod = new AssimilationCodelet(oc, motivation, num_tables);
-        assimilation_cod.addInput(actionsMO);
-        assimilation_cod.addInput(statesMO);
-        assimilation_cod.addInput(rewardsMO);
-        if(motivation.equals("drives")){
-            assimilation_cod.addInput(motivationMC);
-        }
-        assimilation_cod.addOutput(proceduralMO);
-        insertCodelet(assimilation_cod);
-        assimilation_cod.setProfiling(true);
-        assimilation_cod.setCodeletProfiler("profile/", "assimilation_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
+            Codelet assimilation_cod = new AssimilationCodelet(oc, motivation, num_tables);
+            assimilation_cod.addInput(actionsMO);
+            assimilation_cod.addInput(statesMO);
+            assimilation_cod.addInput(rewardsMO);
+            if(motivation.equals("drives")){
+                assimilation_cod.addInput(motivationMC);
+            }
+            assimilation_cod.addOutput(proceduralMO);
+            insertCodelet(assimilation_cod);
+            assimilation_cod.setProfiling(true);
+            assimilation_cod.setCodeletProfiler("profile/", "assimilation_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
 
-        // Acommodation
-        Codelet acommodation_cod = new AcommodationCodelet(oc, motivation, num_tables);
-        acommodation_cod.addInput(actionsMO);
-        acommodation_cod.addInput(statesMO);
-        acommodation_cod.addInput(rewardsMO);
-        
-        if(motivation.equals("drives")){
-            acommodation_cod.addInput(motivationMC);
+            // Acommodation
+            Codelet acommodation_cod = new AcommodationCodelet(oc, motivation, num_tables);
+            acommodation_cod.addInput(actionsMO);
+            acommodation_cod.addInput(statesMO);
+            acommodation_cod.addInput(rewardsMO);
+            
+            if(motivation.equals("drives")){
+                acommodation_cod.addInput(motivationMC);
+            }
+            acommodation_cod.addOutput(proceduralMO);
+            insertCodelet(acommodation_cod);
+            acommodation_cod.setProfiling(true);
+            acommodation_cod.setCodeletProfiler("profile/", "acommodation_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
         }
-        acommodation_cod.addOutput(proceduralMO);
-        insertCodelet(acommodation_cod);
-        acommodation_cod.setProfiling(true);
-        acommodation_cod.setCodeletProfiler("profile/", "acommodation_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
+     if (config.motivationEnabled) {
 
-        if(motivation.equals("drives")){
-            // Motivation
-            Codelet curiosity_motivation_cod = new CuriosityDrive_MotivationCodelet("Curiosity_Motivation", 0.0, 1.0, 0.0, oc,num_tables);
-            curiosity_motivation_cod.addInput(actionsMO);
-            curiosity_motivation_cod.addInput(statesMO);
+            Codelet curiosity_motivation_cod =
+                    new CuriosityDrive_MotivationCodelet(
+                            "Curiosity_Motivation",
+                            0.0,
+                            1.0,
+                            0.0,
+                            oc,
+                            num_tables, timingRegistry
+                    );
+
             curiosity_motivation_cod.addInput(proceduralMO);
             curiosity_motivation_cod.addOutput(motivationMC);
+
             insertCodelet(curiosity_motivation_cod);
-            curiosity_motivation_cod.setProfiling(true);
-            curiosity_motivation_cod.setCodeletProfiler("profile/", "curiosity_motivation_cod", String.valueOf(oc.vision.getEpoch()),null, 10000L, CodeletsProfiler.FileFormat.CSV);
 
-
+            curiosity_motivation_cod.setCodeletProfiler(
+                    config.resultDirectory + "/" + config.runId + "/profile/",
+                    "curiosity_motivation_cod",
+                    String.valueOf(oc.vision.getEpoch()),
+                    null,
+                    10000L,
+                    CodeletsProfiler.FileFormat.CSV
+            );
         }
         
 

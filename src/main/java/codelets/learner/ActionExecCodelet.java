@@ -11,13 +11,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.Dictionary;
-
+import metrics.TimingRegistry;
 import attention.Winner;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
 import br.unicamp.cst.support.CodeletsProfiler;
+import config.ActionSpaceFactory;
+import config.ExperimentConfig;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -84,25 +86,32 @@ public class ActionExecCodelet extends Codelet
     private boolean debug = false, sdebug = false;
     private int aux_crash = 0;
     private ArrayList<String> executedActions  = new ArrayList<>();
-    private ArrayList<String> allActionsList;
+    private List<String> allActionsList;
     private ArrayList<Float> lastLine, lastRed, lastGreen, lastBlue, lastDist;
     private List winnersList, colorReadings, redReadings, greenReadings, blueReadings, distReadings;
     private List saliencyMap;
     private int aux_resetr=-1,aux_reset=-1, curiosity_lv, red_c, green_c, blue_c, cur_a=0, sur_a=0,num_tables;
     private  String nameMotivation;
-    public ActionExecCodelet (OutsideCommunication outc, String mode, int tWindow, int sensDimn, int num_tables) {
+    private final TimingRegistry timingRegistry;
+    public ActionExecCodelet (OutsideCommunication outc, String mode, int tWindow, int sensDimn, int num_tables, 
+            ExperimentConfig config, TimingRegistry timingRegistry) {
 
         super();
         time_graph = 0;
         sensorDimension = sensDimn;
         this.num_tables=num_tables;
-
+  
+    this.timingRegistry = timingRegistry;
+this.allActionsList =
+        ActionSpaceFactory.create(config.actionSet);
         // allActions: am0: focus; am1: neck left; am2: neck right; am3: head up; am4: head down; 
         // am5: fovea 0; am6: fovea 1; am7: fovea 2; am8: fovea 3; am9: fovea 4; 
         // am10: neck tofocus; am11: head tofocus; am12: neck awayfocus; am13: head awayfocus
         // aa0: focus td color; aa1: focus td depth; aa2: focus td region.
-        allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11",
-                "am12", "am13", "aa0", "am14", "am15", "am16")); //"aa1", "aa2", 
+        
+//allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11",
+        //       "am12", "am13", "aa0", "am14", "am15", "am16")); //"aa1", "aa2", 
+
         // States are 0 1 2 ... 5^256-1
 
         oc = outc;
@@ -170,17 +179,25 @@ public class ActionExecCodelet extends Codelet
 
     }
 
-    public static Object getLast(List list) {
-        if (list.isEmpty()) {
-                return list.get(list.size()-1);
+    public static Object getLast(List<?> list) {
+
+        if (list == null || list.isEmpty()) {
+            return null;
         }
-        return null;
+
+        return list.get(list.size() - 1);
     }
 
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
-        
+        try(
+                TimingRegistry.TimerContext ignored =
+                timingRegistry.start(
+                        getClass().getSimpleName()
+                );
+                ){
+        long startNs = System.nanoTime();
         if(debug) System.out.println("proc actEx");
         crashed = false;
         yawPos = oc.NeckYaw_m.getSpeed();
@@ -406,7 +423,11 @@ public class ActionExecCodelet extends Codelet
             }
             check_stop_experiment();
             //printToFile("object_count.txt");
-    } 
+            timingRegistry.record(
+        getClass().getSimpleName(),
+        System.nanoTime() - startNs
+);
+    } }
 
     /**
      *

@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import metrics.TimingRegistry;
 
 /**
  *
@@ -78,7 +79,8 @@ public class SalMap extends Codelet {
 
     @Override
     public void proc() {
-       
+        
+       long startNs = System.nanoTime();
     	try {
             Thread.sleep(50);
         } catch (Exception e) {
@@ -110,8 +112,14 @@ public class SalMap extends Codelet {
             }
             
         }
-        
+        if(saliencyMap.size() == timeWindow){
+                saliencyMap.remove(0);
+            }
+        saliencyMap.add(salMap_sizeMinus1);
+        System.out.print(" saliencyMap len = "+saliencyMap.size());
         printToFile(salMap_sizeMinus1, "salMap.txt");
+        
+        
     }
     
     private void printToFile(Object object,String filename    ){

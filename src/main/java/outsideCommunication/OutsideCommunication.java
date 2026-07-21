@@ -20,11 +20,14 @@ import java.util.ArrayList;
 
 import CommunicationInterface.MotorI;
 import CommunicationInterface.SensorI;
+import config.ExperimentConfig;
 import coppelia.CharWA;
 import coppelia.FloatWA;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import metrics.TimingRegistry;
 //import outsideCommunication.OrientationVrep;
 
 /**
@@ -51,12 +54,15 @@ public class OutsideCommunication {
         private ArrayList<FloatWA> allobjsPositions;
         private ArrayList<FloatWA> objsOrientations;
         private String mode;
+        private TimingRegistry timingRegistry; 
+        private ExperimentConfig config;
         Random random;
         long seed;
         String runId;
         int stage, exp, res, max_time_graph, MAX_ACTION_NUMBER,num_pioneer;
 	public OutsideCommunication(int max_epochs, String mode, int n_tables, long seed, int stage, int exp,
-                String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, int num_pioneer) {
+                String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, 
+                int num_pioneer, ExperimentConfig config,TimingRegistry timingRegistry ) {
 		vrep = new remoteApi();
 		vision_orientations = new ArrayList<>();
                 obj_handle = new IntW[nObjs];
@@ -75,9 +81,11 @@ public class OutsideCommunication {
                 this.max_time_graph=max_time_graph;
                 this.MAX_ACTION_NUMBER=MAX_ACTION_NUMBER;
                 this.num_pioneer=num_pioneer;
+                this.timingRegistry = timingRegistry;
+                this.config = config;
 	}
 
-	public void start() {
+	public void start() throws IOException {
 		// System.out.println("Program started");
 		vrep = new remoteApi();
 		vrep.simxFinish(-1); // just in case, close all opened connections
@@ -136,7 +144,7 @@ public class OutsideCommunication {
 		
 
 		vision = new VisionVrep(vrep, clientID, vision_handles, max_epochs,n_tables,stage, exp, runId, res,
-                        max_time_graph, MAX_ACTION_NUMBER,num_pioneer);
+                        max_time_graph, MAX_ACTION_NUMBER,num_pioneer, config, timingRegistry);
                 //battery = new VirtualBattery(this, this.mode, random);
                 System.out.println("hdept clientID "+clientID+"vision_handles "+vision_handles.getValue());
                 depth = new DepthVrep(vrep, clientID, vision_handles, vision.getStage(), vision);    

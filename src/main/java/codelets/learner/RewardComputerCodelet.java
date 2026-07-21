@@ -1,6 +1,7 @@
 package codelets.learner;
 
-
+import config.ExperimentConfig;
+import metrics.RewardBreakdown;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.Dictionary;
-
+import metrics.TimingRegistry;
 import attention.Winner;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryContainer;
@@ -19,10 +20,14 @@ import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.learning.QLearning;
 import br.unicamp.cst.representation.idea.Idea;
 import br.unicamp.cst.support.CodeletsProfiler;
+import config.ActionSpaceFactory;
+import config.ExperimentConfig;
 import coppelia.FloatWA;
 import coppelia.IntW;
 import coppelia.remoteApi;
 import static java.lang.Math.round;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -30,6 +35,7 @@ import java.util.Map;
 import outsideCommunication.OutsideCommunication;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import metrics.MetricsRecorder;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 /**
  * @author L. L. Rossi (leolellisr)
@@ -50,7 +56,7 @@ public class RewardComputerCodelet extends Codelet
 
     private QLearningL ql;
     
-
+    private final TimingRegistry timingRegistry;
     private List winnersList;
     private List saliencyMap, curiosityMot, curiosityAct;
     private Idea motivationMO;
@@ -85,31 +91,46 @@ public class RewardComputerCodelet extends Codelet
     private boolean crashed = false, nrewards = true;
     private boolean debug = false, sdebug = false, m_i = true;
     private int num_tables, aux_crash = 0;
-    private ArrayList<String> allActionsList;
+    private List<String> allActionsList;
     private ArrayList<Float> lastLine, lastRed, lastGreen, lastBlue, lastDist;
     private String motivation, stringOutput = "", nameOutput;
     private float  reward_i = 0, lcur_drive=1, cur_drive=1, r_imp=0, g_imp=0, b_imp=0, cur_delta;
     //private Idea ideaMotivation;
+    private ExperimentConfig config;
+private RewardBreakdown currentReward =
+        new RewardBreakdown();
+
+
+private final MetricsRecorder metricsRecorder;
     public RewardComputerCodelet (OutsideCommunication outc, int tWindow, int sensDim, String mode, String motivation, 
-            String motivationType,String nameOutput, int num_tables) {
+            String motivationType,String nameOutput, int num_tables, 
+            ExperimentConfig config, TimingRegistry timingRegistry) throws IOException {
 
     super();
-    time_graph = 0;
+    Path runDirectory = Paths.get(
+                config.resultDirectory,
+                config.runId
+        );
+        this.metricsRecorder = new MetricsRecorder(runDirectory);
 
+    time_graph = 0;
+this.config = config;
     global_reward = 0;
     reward_i = 0;
     action_number = 0;
 
     this.num_tables = num_tables;
-
+    this.timingRegistry = timingRegistry;
     this.motivation = motivation;
     // allActions: am0: focus; am1: neck left; am2: neck right; am3: head up; am4: head down; 
     // am5: fovea 0; am6: fovea 1; am7: fovea 2; am8: fovea 3; am9: fovea 4; 
     // am10: neck tofocus; am11: head tofocus; am12: neck awayfocus; am13: head awayfocus
     // aa0: focus td color; aa1: focus td depth; aa2: focus td region.
-    allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", 
-            "am7", "am8", "am9", "am10", "am11", "am12", "am13", "aa0",  "aa1", "aa2", "am14", "am15", 
-            "am16")); //"aa1", "aa2",
+    //allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", 
+    //        "am7", "am8", "am9", "am10", "am11", "am12", "am13", "aa0",  "aa1", "aa2", "am14", "am15", 
+    //        "am16")); //"aa1", "aa2",
+    this.allActionsList =
+        ActionSpaceFactory.create(config.actionSet);
     this.oc = outc;   
     MAX_ACTION_NUMBER = oc.vision.getMaxActions();
     MAX_EXPERIMENTS_NUMBER = oc.vision.getMaxEpochs();
@@ -172,11 +193,13 @@ public class RewardComputerCodelet extends Codelet
 
     }
 
-    public static Object getLast(List list) {
-        if (list.isEmpty()) {
-                return list.get(list.size()-1);
+    public static Object getLast(List<?> list) {
+
+        if (list == null || list.isEmpty()) {
+            return null;
         }
-        return null;
+
+        return list.get(list.size() - 1);
     }
     
       public static double calculateMean(ArrayList<Double> list) {
@@ -220,11 +243,21 @@ System.out.println("pitch"+pitch);
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
-
+        try(
+        TimingRegistry.TimerContext ignored =
+                timingRegistry.start(
+                        getClass().getSimpleName()
+                );
+                ){
+            
+            MetricsRecorder.StepMetrics     stepMetrics =
+        new MetricsRecorder.StepMetrics();
+            
+long startNs = System.nanoTime();
         crashed = false;
         reward_i=0;
         
-
+currentReward = new RewardBreakdown();
         
         try {
             yawPos = oc.NeckYaw_m.getSpeed();
@@ -237,8 +270,9 @@ System.out.println("pitch"+pitch);
         
 
 
-        if(motivationMO == null){
-              if(debug) System.out.println("Rewardcomputer motivationMO is null");
+        if (config.motivationEnabled
+                && motivationMO == null) {
+
             return;
         }
         
@@ -263,7 +297,7 @@ System.out.println("pitch"+pitch);
 
                         if(oc.vision.getNextActR()){
            if(nrewards){ Double reward = 1d;
-            reward_i += reward;
+           currentReward.procedureInsertion += 1.0;
            }
                         // Gets last action taken
             String lastAction = actionsList.get(actionsList.size() - 1);
@@ -289,15 +323,15 @@ System.out.println("pitch"+pitch);
 
                     
                     if(cur_delta!=0){
-                        if(cur_drive==0.0)  reward_i += 1;
-                        if(cur_drive>0.0 &&  cur_drive<=0.2)  reward_i += 1*0.5;
-                        if(cur_drive==1.0)  reward_i -= 1;
-                        if(cur_drive>=0.8 &&  cur_drive<1.0)  reward_i -= 1*0.5;
+                        if(cur_drive==0.0)  currentReward.intrinsicCuriosity += cur_delta;
+                        if(cur_drive>0.0 &&  cur_drive<=0.2)  currentReward.intrinsicCuriosity += cur_delta*0.5;
+                        if(cur_drive==1.0)  currentReward.intrinsicCuriosity += cur_delta;
+                        if(cur_drive>=0.8 &&  cur_drive<1.0)  currentReward.intrinsicCuriosity += cur_delta*0.5;
                     }
                     // cur_f = cur_delta*cur_delta;
                    // if(cur_delta!=0)  reward_i += 1*cur_delta;
                     //else if(cur_drive>lcur_drive) 
-                    reward_i += 1*cur_delta;
+                    //reward_i += 1*cur_delta;
                     
                     
                     
@@ -327,7 +361,7 @@ System.out.println("pitch"+pitch);
                 yawPos = yawPos-angle_step;
                          //neckMotorMO.setI(yawPos);
                 if(winnerFovea !=-1 && IntStream.of(posLeft).anyMatch(x -> x == winnerFovea) && stage > 1){
-                    if(nrewards) reward_i += 1;
+                    if(nrewards) currentReward.externalTracking += 1.0;
                 }
             }
 
@@ -335,51 +369,51 @@ System.out.println("pitch"+pitch);
                 yawPos = yawPos+angle_step;
                          //neckMotorMO.setI(yawPos);
                 if(winnerFovea !=-1 && IntStream.of(posRight).anyMatch(x -> x == winnerFovea)){
-                    if(nrewards) reward_i += 1;
+                    if(nrewards) currentReward.externalTracking += 1.0;
                     }
             }
             else if (lastAction.equals("am3")) {
                     headPos = headPos-angle_step;
                      // headMotorMO.setI(headPos);
                     if(winnerFovea !=-1 && IntStream.of(posUp).anyMatch(x -> x == winnerFovea)) {
-                        if(nrewards) reward_i += 1;
+                        if(nrewards) currentReward.externalTracking += 1.0;
                     } 
             }
             else if (lastAction.equals("am4")) {
                     headPos = headPos+angle_step;
                     //headMotorMO.setI(headPos);
                     if(winnerFovea !=-1 && IntStream.of(posDown).anyMatch(x -> x == winnerFovea)){
-                        if(nrewards) reward_i += 1;
+                        if(nrewards) currentReward.externalTracking += 1.0;
                     } 
             }
             else if (lastAction.equals("am5")) {
                 fovea = 0;
                 if(winnerFovea !=-1 && IntStream.of(fovea0).anyMatch(x -> x == winnerFovea)){
-                        if(nrewards) reward_i += 1;
+                        if(nrewards) currentReward.externalTracking += 1.0;
                     } 
             }
             else if (lastAction.equals("am6")) {
                 fovea = 1;
                 if(winnerFovea !=-1 && IntStream.of(fovea1).anyMatch(x -> x == winnerFovea)){
-                        if(nrewards) reward_i += 1;
+                        if(nrewards) currentReward.externalTracking += 1.0;
                     } 
             }
             else if (lastAction.equals("am7")) {
                 fovea = 2;
                 if(winnerFovea !=-1 && IntStream.of(fovea2).anyMatch(x -> x == winnerFovea)){
-                        if(nrewards) reward_i += 1;
+                        if(nrewards) currentReward.externalTracking += 1.0;
                     } 
             }
             else if (lastAction.equals("am8")) {
                 fovea = 3;
                 if(winnerFovea !=-1 && IntStream.of(fovea3).anyMatch(x -> x == winnerFovea)){
-                        if(nrewards) reward_i += 1;
+                        if(nrewards) currentReward.externalTracking += 1.0;
                     } 
             }
             else if (lastAction.equals("am9")) {
                 fovea = 4;
                 if(winnerFovea !=-1 && IntStream.of(posCenter).anyMatch(x -> x == winnerFovea)){
-                        if(nrewards) reward_i += 1;
+                        if(nrewards) currentReward.externalTracking += 1.0;
                     } 
             }
 
@@ -393,7 +427,7 @@ System.out.println("pitch"+pitch);
                     yawPos = yawPos+angle_step;
                    //  neckMotorMO.setI(yawPos);
                 }
-                if(nrewards) reward_i += 1;
+                if(nrewards) currentReward.topDown += 1.0;
              }
              else if (lastAction.equals("am11") && this.stage > 2) {
                 if(fovea == 0 || fovea == 2){
@@ -404,7 +438,7 @@ System.out.println("pitch"+pitch);
                     yawPos = yawPos-angle_step;
                    //  neckMotorMO.setI(yawPos);
                 }
-                if(nrewards) reward_i += 1;
+                if(nrewards) currentReward.topDown += 1.0;
              }
              else if (lastAction.equals("am12") && this.stage > 2) {
                 if(fovea == 3 || fovea == 2){
@@ -415,7 +449,7 @@ System.out.println("pitch"+pitch);
                     headPos = headPos+angle_step;
                    //  headMotorMO.setI(headPos);
                 }
-                if(nrewards) reward_i += 1;
+                if(nrewards) currentReward.topDown += 1.0;
              }
              else if (lastAction.equals("am13") && this.stage > 2) {
                 if(fovea == 3 || fovea == 2){
@@ -426,7 +460,7 @@ System.out.println("pitch"+pitch);
                     headPos = headPos-angle_step;
                    // headMotorMO.setI(headPos);
                 }
-                if(nrewards) reward_i += 1;
+                if(nrewards) currentReward.topDown += 1.0;
              }
 
 
@@ -437,14 +471,113 @@ System.out.println("pitch"+pitch);
         } 
         
                 if(this.oc.vision.endEpochR()){
+                    
+                    stepMetrics.timestamp =
+                            java.time.Instant.now().toString();
+
+                    stepMetrics.runId = config.runId;
+                    stepMetrics.seed = config.seed;
+                    stepMetrics.stage = config.stage;
+                    stepMetrics.scenario =
+                            "EXP-" + config.experiment;
+
+                    stepMetrics.episode =
+                           oc.vision.getEpoch();
+
+                    stepMetrics.step =
+                            oc.vision.getnAct();
+
+                    stepMetrics.training =
+                            config.training;
+
+                    stepMetrics.algorithm =
+                            config.algorithm.name();
+
+                    stepMetrics.representation =
+                            config.stateRepresentation.name();
+
+                    stepMetrics.action =
+                            oc.vision.getLastAction();
+
+                    stepMetrics.actionSource =
+                            "LEARNER_POLICY";
+
+                    stepMetrics.rawReward =
+                            currentReward.rawTotal();
+
+                    stepMetrics.scaledReward =
+                            currentReward.rawTotal()
+                            * config.rewardScale;
+
+                    stepMetrics.externalReward =
+                            currentReward.externalTracking;
+
+                    stepMetrics.intrinsicReward =
+                            currentReward.intrinsicCuriosity;
+
+                    stepMetrics.procedureReward =
+                            currentReward.procedureInsertion;
+
+                    stepMetrics.topDownReward =
+                            currentReward.topDown;
+
+                    stepMetrics.failurePenalty =
+                            currentReward.failurePenalty;
+
+                    stepMetrics.yawErrorDeg = oc.vision.getFValues(7);
+                    stepMetrics.pitchErrorDeg = oc.vision.getFValues(8);
+
+                    stepMetrics.angularErrorDeg =
+                            Math.sqrt(
+                                    oc.vision.getFValues(7) * oc.vision.getFValues(7)
+                                    + oc.vision.getFValues(8) * oc.vision.getFValues(8)
+                            );
+
+                    stepMetrics.absoluteAngularErrorDeg =
+                            Math.abs(stepMetrics.angularErrorDeg);
+
+                    boolean targetDetected =
+                    Math.abs(oc.vision.getFValues(7)) <= 30.0
+                    && Math.abs(oc.vision.getFValues(8)) <= 30.0;
+
+                    stepMetrics.targetVisible =
+                            targetDetected;
+
+                    stepMetrics.targetInFov =
+                            Math.abs(oc.vision.getFValues(8)) <= 30.0
+                            && Math.abs(oc.vision.getFValues(7)) <= 30.0;
+
+                    stepMetrics.headYaw =
+                            oc.vision.getPosition("NeckYaw")[0];
+
+                    stepMetrics.headPitch =
+                            oc.vision.getPosition("HeadPitch")[0];
+
+                    stepMetrics.foveaPosition =
+                          (int)  oc.vision.getIValues(2);
+
+                    stepMetrics.terminal =
+                            oc.vision.getCrash();
+
+                    stepMetrics.terminalReason =
+                            oc.vision.getCrash()
+                                    ? "CRASH_OR_LIMIT"
+                                    : "";
+
+                    try {
+                        metricsRecorder.recordStep(stepMetrics);
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
+
             // System.out.println("MORREU");
-                    if(oc.vision.getIValues(4)<MAX_ACTION_NUMBER) reward_i -= 100;
+                    if(oc.vision.getIValues(4)<MAX_ACTION_NUMBER) currentReward.failurePenalty -= 100.0;
                     lcur_drive=0;
                     oc.vision.setFValues(4, cur_delta);
             }
                 //Math.pow(Math.E,*0.05/350)
                 reward_i = Math.round(reward_i * 10) / 10.0f;
-
+reward_i = (float) currentReward.rawTotal();
         //reward_i += 0.00006*oc.vision.getnAct()*oc.vision.getEpoch();
         
         global_reward =  oc.vision.getFValues(0) +reward_i;
@@ -494,20 +627,40 @@ System.out.println("pitch"+pitch);
         double pitchDiff = targetPitchDeg - headPitchDeg;
         pitchDiff = ((pitchDiff + 180) % 360) - 180;
         System.out.println("Yaw diff (deg): " + Math.abs(yawDiff));
-System.out.println("pitch Diff (deg): " + Math.abs(pitchDiff));
+        System.out.println("pitch Diff (deg): " + Math.abs(pitchDiff));
 
-        // verify if is FOV 2D (horizontal and vertical)
-        if (Math.abs(yawDiff) < 30 && Math.abs(pitchDiff) < 30) {
-            oc.vision.setIValues(5, 1);
-        } else {
-            oc.vision.setIValues(5, 0);
-        }
+                // verify if is FOV 2D (horizontal and vertical)
+                if (Math.abs(yawDiff) < 30 && Math.abs(pitchDiff) < 30) {
+                    oc.vision.setIValues(5, 1);
+                } else {
+                    oc.vision.setIValues(5, 0);
+                }
 
-        oc.vision.setFValues(7, (float) yawDiff);
-        oc.vision.setFValues(8, (float) pitchDiff);             
-        }
+                oc.vision.setFValues(7, (float) yawDiff);
+                oc.vision.setFValues(8, (float) pitchDiff);          
 
+                double angularError =
+                Math.sqrt(
+                        yawDiff * yawDiff
+                        + pitchDiff * pitchDiff
+                );
+
+        boolean targetInFov =
+                Math.abs(yawDiff) <= 30.0
+                && Math.abs(pitchDiff) <= 30.0;
+
+    try {
+        metricsRecorder.recordStep(stepMetrics);
+    } catch (IOException ex) {
+        System.getLogger(RewardComputerCodelet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
     }
+                
+        }
+timingRegistry.record(
+        getClass().getSimpleName(),
+        System.nanoTime() - startNs
+);
+    }}
 
 
     // Discretization

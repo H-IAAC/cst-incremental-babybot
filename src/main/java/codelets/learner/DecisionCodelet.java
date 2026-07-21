@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.Dictionary;
-
+import metrics.TimingRegistry;
 import attention.Winner;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryContainer;
@@ -19,6 +19,7 @@ import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.learning.QLearning;
 import br.unicamp.cst.representation.idea.Idea;
 import br.unicamp.cst.support.CodeletsProfiler;
+import config.ActionSpaceFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -30,6 +31,16 @@ import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscret
 import org.deeplearning4j.rl4j.observation.Observation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
+
+import config.ExperimentConfig;
+import state.StateEncoder;
+import state.StateEncoderFactory;
+import state.StateSnapshot;
+
+import state.StateEncoder;
+import state.StateEncoderFactory;
+import state.StateSnapshot;
+
 /**
  * @author L. L. Rossi (leolellisr)
  * Obs: This class represents the implementations present in the proposed scheme for: 
@@ -66,34 +77,42 @@ private int stage, action_number=0;
 int fovea; 
 private String mode;
 
-
+private final StateEncoder stateEncoder;
 private float yawPos = 0f, headPos = 0f;   
 private boolean crashed = false;
-private boolean debug = false, sdebug = false;
+private boolean debug = true, sdebug = false;
 private int num_tables, aux_crash = 0,  aux_mt = 0, num_pioneer;
 private ArrayList<String> executedActions  = new ArrayList<>();
-private ArrayList<String> allActionsList;
+private List<String> allActionsList;
 private Map<String, ArrayList<Integer>> proceduralMemory = new HashMap<String, ArrayList<Integer>>();
 private String output, motivation, stringOutput = "";
 private ArrayList<Float> lastLine;
 private String motivationName;
-public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, String mode, String motivation, int num_tables, int num_pioneer) {
+private final TimingRegistry timingRegistry;
+private ExperimentConfig config;
+public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, String mode, String motivation, int num_tables, int num_pioneer,
+        ExperimentConfig config, TimingRegistry timingRegistry) {
 
     super();
+    this.config = config;
     time_graph = 0;
-
+    this.stateEncoder =
+        StateEncoderFactory.create(config.stateRepresentation);
     this.num_tables = num_tables;
     this.num_pioneer= num_pioneer;
     this.motivation = motivation;
+    this.timingRegistry = timingRegistry;
+    
     // allActions: am0: focus; am1: neck left; am2: neck right; am3: head up; am4: head down; 
     // am5: fovea 0; am6: fovea 1; am7: fovea 2; am8: fovea 3; am9: fovea 4; 
     // am10: neck tofocus; am11: head tofocus; am12: neck awayfocus; am13: head awayfocus
     // aa0: focus td color; aa1: focus td depth; aa2: focus td region.
-    allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12",
-            "am13", "aa0", "aa1", "aa2", "am14", "am15", "am16")); //"aa1", "aa2", 
+    //allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12",
+     //       "am13", "aa0", "aa1", "aa2", "am14", "am15", "am16")); //"aa1", "aa2", 
     // States are 0 1 2 ... 5^256-1
     //ArrayList<String> allStatesList = new ArrayList<>(Arrays.asList(IntStream.rangeClosed(0, (int)Math.pow(2, 16)-1).mapToObj(String::valueOf).toArray(String[]::new)));
-
+this.allActionsList =
+        ActionSpaceFactory.create(config.actionSet);
     oc = outc;
 
     this.stage = this.oc.vision.getStage();
@@ -154,15 +173,24 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
     }
 
     public static Object getLast(List list) {
-            if (list.isEmpty()) {
-                    return list.get(list.size()-1);
-            }
+
+        if (list == null || list.isEmpty()) {
             return null;
+        }
+
+        return list.get(list.size() - 1);
     }
 
     // Main Codelet function, to be implemented in each subclass.
     @Override
     public void proc() {
+        try(
+                TimingRegistry.TimerContext ignored =
+                timingRegistry.start(
+                        getClass().getSimpleName()
+                );
+                ){
+        long startNs = System.nanoTime();
         if(debug) System.out.println("  Decision proc"); 
                 System.out.println(" Decision proc yawPos: "+yawPos+" headPos: "+headPos);
 	/*try {
@@ -177,10 +205,11 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         }
         QLStepReturn<Observation> ql = null;
         
-        if(motivationMO == null){
-            if(debug) System.out.println("DECISION -----  motivationMO is null");
-                return;
-            }
+        if (config.motivationEnabled
+                && motivationMO == null) {
+
+            return;
+        }
         
         
        
@@ -221,105 +250,63 @@ public DecisionCodelet (OutsideCommunication outc, int tWindow, int sensDim, Str
         oc.vision.addAction(String.valueOf(actionToTake));
         oc.vision.setLastAction(String.valueOf(actionToTake));
         System.out.println("  \n end decision");
-    }
+        timingRegistry.record(
+        getClass().getSimpleName(),
+        System.nanoTime() - startNs
+);
+    }}
 	
 	
 
 	
 
     public Observation getStateFromSalMap() {
-        lastLine = (ArrayList<Float>) saliencyMap.get(saliencyMap.size() -1);
-       
-        // Drive Curiosidade
-        float driveValueFloat = (float) oc.vision.getFValues(3);
-        
-        if(debug) System.out.println("  \nDecision driveValueFloat:"+driveValueFloat);      
-        // Fovea  pos
-        float foveaPositionFloat = (float) oc.vision.getIValues(2);
-        float[] lastLineArray = new float[lastLine.size()];
-        
-        if(debug) System.out.println("  \nDecision foveaPositionFloat:"+foveaPositionFloat);
-        
-        if(debug) System.out.println("  \nDecision (\"Pioneer1\"):"+oc.vision.getPosition("Pioneer1").length);
-        if(debug && num_pioneer>1) System.out.println("  \nDecision (\"Pioneer2\"):"+oc.vision.getPosition("Pioneer2").length);
-        if(debug) System.out.println("  \nDecision (\"HeadPitch\"):"+oc.vision.getPosition("HeadPitch").length);
-        if(debug) System.out.println("  \nDecision (\"NeckYaw\"):"+oc.vision.getPosition("NeckYaw").length);
-        if(debug) System.out.println("  \nDecision (\"Color 0\"):"+oc.vision.getColor(0).length);
-        if(debug&& num_pioneer>1) System.out.println("  \nDecision (\"Color 1\"):"+oc.vision.getColor(0).length);
-        if(debug) System.out.println("  \nDecision lastLineArray:"+lastLineArray.length);
-        
-        // Converter ArrayList<Float> para float[]
-        
-        for (int i = 0; i < lastLine.size(); i++) {
-            lastLineArray[i] = lastLine.get(i);
-        }
 
-        
-        if(Math.abs(oc.HeadPitch_m.getSpeed()) < 0.001 && Math.abs(oc.NeckYaw_m.getSpeed()) < 0.001){
-            System.out.println("  \n Motor stopped");
-            aux_mt += 1;
-        } else{
-             aux_mt = 0;
+            StateSnapshot snapshot =
+                    StateSnapshot.fromSalienceHistory(
+                            saliencyMap,
+                            16,
+                            16
+                    );
+
+            snapshot.setCuriosity(
+                    oc.vision.getFValues(3)
+            );
+
+            snapshot.setFoveaPosition(
+                    (int) oc.vision.getIValues(2)
+            );
+
+            snapshot.setHeadPitchSpeed(
+                    oc.HeadPitch_m.getSpeed()
+            );
+
+            snapshot.setNeckYawSpeed(
+                    oc.NeckYaw_m.getSpeed()
+            );
+
+            float[] headPosition =
+                    oc.vision.getPosition("HeadPitch");
+
+            if (headPosition != null
+                    && headPosition.length > 0) {
+                snapshot.setHeadPitch(
+                        headPosition[0]
+                );
+            }
+
+            float[] neckPosition =
+                    oc.vision.getPosition("NeckYaw");
+
+            if (neckPosition != null
+                    && neckPosition.length > 0) {
+                snapshot.setNeckYaw(
+                        neckPosition[0]
+                );
+            }
+
+            return stateEncoder.encode(snapshot);
         }
-        oc.vision.setFValues(6, Collections.max(lastLine));
-        if(Collections.max(lastLine)<0.00001){
-         System.out.println("  \n No salMap");
-            aux_crash += 1;
-        } else{
-             aux_crash = 0;
-        }
-        
-        if(aux_mt>20) {
-                System.out.println("  \nSync failed 20");
-                oc.vision.setCrash(true);
-                aux_mt = 0;
-                oc.vision.setIValues(5, 1);
-            }else{
-             oc.vision.setIValues(5, 0);
-        }
-        
-        if(aux_crash > 10){
-            System.out.println("  \n no salicence 10");
-            oc.vision.setCrash(true);
-            aux_crash = 0;
-            
-          oc.vision.setIValues(5, 1);
-            }else{
-             oc.vision.setIValues(5, 0);
-        }
-        float[] stateArray;
-        if(num_pioneer>1){
-        // Concatenate all elements in a single array
-        stateArray = padOrTrimArray(concatenateArrays(
-            new float[]{driveValueFloat}, 
-            oc.vision.getPosition("Pioneer1"), 
-            oc.vision.getPosition("Pioneer2"), 
-            oc.vision.getColor(0), 
-            oc.vision.getColor(1),
-            new float[]{oc.HeadPitch_m.getSpeed()},
-            new float[]{oc.NeckYaw_m.getSpeed()},
-            new float[]{foveaPositionFloat}, 
-            lastLineArray
-        ),272);
-        }else{
-            stateArray = padOrTrimArray(concatenateArrays(
-            new float[]{driveValueFloat}, 
-            oc.vision.getPosition("Pioneer1"), 
-            new float[]{0, 0, 0},
-            oc.vision.getColor(0), 
-            new float[]{0, 0, 0},
-            new float[]{oc.HeadPitch_m.getSpeed()},
-            new float[]{oc.NeckYaw_m.getSpeed()},
-            new float[]{foveaPositionFloat}, 
-            lastLineArray
-        ),272);
-        }
-        // Criar um INDArray a partir do array de floats
-        INDArray observationData = Nd4j.create(new float[][]{stateArray});
-        System.out.println("  \n return ObservationData");
-        // Criar e retornar a Observation
-        return new Observation(observationData);
-    }
 
     private static float[] concatenateArrays(float[]... arrays) {
         int totalLength = 0;

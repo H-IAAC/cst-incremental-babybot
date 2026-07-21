@@ -15,6 +15,7 @@ import br.unicamp.cst.core.entities.MemoryObject;
 //import br.unicamp.cst.learning.QLearning;
 import br.unicamp.cst.representation.idea.Idea;
 import br.unicamp.cst.support.CodeletsProfiler;
+import config.ActionSpaceFactory;
 import coppelia.remoteApi;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +39,16 @@ import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
 import org.deeplearning4j.rl4j.network.dqn.IDQN;
 import org.deeplearning4j.rl4j.observation.Observation;
 import org.nd4j.linalg.factory.Nd4j;
-
+import config.ExperimentConfig;
+import config.LearningAlgorithm;
+import state.StateEncoderFactory;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import metrics.TimingRegistry;
+import outsideCommunication.VisionVrep;
+import state.StateEncoder;
+import state.StateEncoderFactory;
 
 /**
  * @author L. L. Rossi (leolellisr)
@@ -75,8 +85,8 @@ public class LearnerCodeletNet extends Codelet
     private int experiment_number,exp_s, exp_c;;
     private int stage,convergenceCounter=0;
     private String mode;
-    private boolean debug = false;
-    private ArrayList<String> allActionsList;
+    private boolean debug = true;
+    private List<String> allActionsList;
     private remoteApi vrep;
     private final int clientID;
     private String output, motivation, nameMotivation, motivationType, lastAction = "am0";
@@ -92,24 +102,11 @@ public class LearnerCodeletNet extends Codelet
     private QLearningDiscreteDenseRBF<Box> dql;
     public static int policy_step = 1;
     private String currentDir = System.getProperty("user.dir");
-    private String path_model = "/models/pol";
+    private final ExperimentConfig config;
+    private Path path_model;
+     private final TimingRegistry timingRegistry;
+     private long experimentStartTime;
     
-    public static QLearning.QLConfiguration MARTA_QL =
-                        new QLearning.QLConfiguration(
-                                123,    //Random seed
-                                500,    //Max step By epoch
-                                200, //Max step
-                                10000, //Max size of experience replay
-                                32,     //size of batches
-                                500,    //target update (hard)
-                                10,     //num step noop warmup
-                                0.01,   //reward scaling
-                                0.99,   //gamma
-                                1.0,    //td-error clipping
-                                0.1f,   //min epsilon
-                                1000,   //num step for eps greedy anneal
-                                false    //double DQN
-                        );
 
     public static DQNFactoryStdDenseRBF.Configuration MARTA_NET =
                         new DQNFactoryStdDenseRBF.Configuration(
@@ -124,12 +121,18 @@ public class LearnerCodeletNet extends Codelet
     //private Idea ideaMotivation;
     public LearnerCodeletNet (remoteApi vrep, int clientid, OutsideCommunication outc, int tWindow, 
             String mode, String motivation,  String motivationType,  String output, int num_tables, 
-            long seed) throws IOException {
+            long seed, ExperimentConfig config, TimingRegistry timingRegistry) throws IOException {
         super();
+        
+         this.timingRegistry = timingRegistry;
+        path_model = Paths.get(config.modelOutputPath);
+        Files.createDirectories(path_model.getParent());
+    this.experimentStartTime =  System.currentTimeMillis();
         this.vrep=vrep;
-
+this.config = config;
         time_graph = 0;
-
+QLearning.QLConfiguration qlConfiguration =
+        createQLConfiguration();
         action_number = 0;
         this.seed = seed;
         this.oc = outc;
@@ -140,9 +143,11 @@ public class LearnerCodeletNet extends Codelet
         // am5: fovea 0; am6: fovea 1; am7: fovea 2; am8: fovea 3; am9: fovea 4; 
         // am10: neck tofocus; am11: head tofocus; am12: neck awayfocus; am13: head awayfocus
         // aa0: focus td color; aa1: focus td depth; aa2: focus td region.
-        allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13", 
-                "aa0", "aa1", "aa2")); //
-        // States are 0 1 2 ... 5^256-1
+        //allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13", 
+        //        "aa0", "aa1", "aa2")); //
+this.allActionsList =
+        ActionSpaceFactory.create(config.actionSet);        
+// States are 0 1 2 ... 5^256-1
      //   ArrayList<String> allStatesList = new ArrayList<>(Arrays.asList(IntStream.rangeClosed(0, (int)Math.pow(2, 16)-1).mapToObj(String::valueOf).toArray(String[]::new)));
         int salMax = (int)Math.pow(2, 16); // Sal has 65536 values (0 to 65535)
         
@@ -157,15 +162,18 @@ public class LearnerCodeletNet extends Codelet
                 EnvConstructive<Box, Integer, DiscreteSpace> mdp = new EnvConstructive(maxStep, allActionsList.size());
                 DataManager manager = new DataManager(true);
                 
-                
+                System.out.println("currentDir: "+currentDir);
+                        System.out.println("path_model: "+path_model);
                 
 		// learning mode ---> build DQN from scratch
 		if (mode.equals("learning")  && experiment_number == 1) {
-			dql = new QLearningDiscreteDenseRBF(mdp, MARTA_NET, MARTA_QL, manager);
+			dql = new QLearningDiscreteDenseRBF(mdp, MARTA_NET, qlConfiguration, manager);
         
 		} else if (mode.equals("learning") && (this.stage > 1  || experiment_number > 1)){
                     try {
-                        dql = new QLearningDiscreteDenseRBF(mdp, DQNPolicy.load(currentDir+path_model).getNeuralNet(), MARTA_QL,
+                        System.out.println("currentDir: "+currentDir);
+                        System.out.println("path_model: "+path_model);
+                        dql = new QLearningDiscreteDenseRBF(mdp, DQNPolicy.load(currentDir+"/"+path_model).getNeuralNet(), qlConfiguration,
                     manager);
 			}
                     catch (Exception e) {
@@ -177,7 +185,7 @@ public class LearnerCodeletNet extends Codelet
 		// exploring mode ---> reloads Qtable 
 		else {
                     try {
-			dql = new QLearningDiscreteDenseRBF(mdp, DQNPolicy.load(currentDir+path_model).getNeuralNet(), MARTA_QL,
+			dql = new QLearningDiscreteDenseRBF(mdp, DQNPolicy.load(currentDir+"/"+path_model).getNeuralNet(), qlConfiguration,
                     manager);
                     }
                     catch (Exception e) {
@@ -194,6 +202,40 @@ if(debug) System.out.println("init learner");
         MAX_EXPERIMENTS_NUMBER = oc.vision.getMaxEpochs();
     }
 
+    QLearning.QLConfiguration createQLConfiguration() {
+        
+        int replayCapacity =
+                config.algorithm == LearningAlgorithm.ONLINE_Q_NETWORK
+                        ? 1
+                        : 10000;
+
+        int batchSize =
+                config.algorithm == LearningAlgorithm.ONLINE_Q_NETWORK
+                        ? 1
+                        : 32;
+
+        int targetUpdate =
+                config.algorithm == LearningAlgorithm.ONLINE_Q_NETWORK
+                        ? 1
+                        : 500;
+
+        return new QLearning.QLConfiguration(
+                (int) config.seed,
+                config.maxSteps,
+                200,
+                replayCapacity,
+                batchSize,
+                targetUpdate,
+                10,
+                0.01,
+                0.99,
+                1.0,
+                (float) config.epsilonEnd,
+                config.epsilonDecaySteps,
+                false
+        );
+    }
+    
     // This method is used in every Codelet to capture input, broadcast 
     // and output MemoryObjects which shall be used in the proc() method. 
     // This abstract method must be implemented by the user. 
@@ -236,17 +278,28 @@ if(debug) System.out.println("init learner");
 
     }
 
-    public static Object getLast(List list) {
-        if (list.isEmpty()) {
-                return list.get(list.size()-1);
+    public static Object getLast(List<?> list) {
+
+        if (list == null || list.isEmpty()) {
+            return null;
         }
-        return null;
+
+        return list.get(list.size() - 1);
     }
 
     
     @Override
     public void proc() {
-
+        
+        try(
+                
+                TimingRegistry.TimerContext ignored =
+                timingRegistry.start(
+                        getClass().getSimpleName()
+                );
+                
+                ){
+long startNs = System.nanoTime();
         if(debug) System.out.println("Learner proc");
         
         if(oc.vision.getIValues(5)==0){
@@ -258,7 +311,18 @@ if(debug) System.out.println("init learner");
             if(debug) System.out.println("state list is NOT empty");
         }
         else{
-            float[] initialStateArray = new float[272];
+            int inputSize =
+                    StateEncoderFactory
+                            .create(config.stateRepresentation)
+                            .inputSize();
+
+            StateEncoder encoder =
+                    StateEncoderFactory.create(
+                            config.stateRepresentation
+                    );
+
+            float[] initialStateArray =
+                    new float[encoder.inputSize()];
             lastState = new Observation(Nd4j.create(new float[][]{initialStateArray}));
 
             if(debug) System.out.println("state list is empty");
@@ -274,8 +338,9 @@ if(debug) System.out.println("init learner");
             
                  dql.setReward(reward);
                 }
-               obsStep = dql.trainSp(lastState);
-                 
+                if (!config.freezePolicy) {
+                    obsStep = dql.trainSp(lastState);
+                }
                 // Update Q-values and track Q-value changes
                 
                 
@@ -294,7 +359,7 @@ if(debug) System.out.println("init learner");
                         System.out.println("end epoch before save model");
                         DQNPolicy<Box> pol = dql.getPolicy();
                         try {
-                            pol.save(currentDir+path_model);
+                            pol.save(path_model.toString());
                             if (experiment_number > MAX_EXPERIMENTS_NUMBER) {
 
                                 System.exit(0);
@@ -315,7 +380,12 @@ if(debug) System.out.println("init learner");
             }
         qList.add(obsStep);
         }
-    }
+        timingRegistry.record(
+        getClass().getSimpleName(),
+        System.nanoTime() - startNs
+);
+        
+    }}
 
 
 

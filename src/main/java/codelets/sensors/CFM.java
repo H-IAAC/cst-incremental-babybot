@@ -41,6 +41,7 @@ private SensorI sensor;
 private int stage, print_step;
 private boolean debug = false;
 OutsideCommunication oc;
+ArrayList<String> featmapsnames;
     public CFM(SensorI sensor, int numfeatmaps, ArrayList<String> featmapsnames, 
             int timeWin, int CFMdim, int print_step, OutsideCommunication outc) {
         super(numfeatmaps, featmapsnames,timeWin,CFMdim);
@@ -49,6 +50,7 @@ OutsideCommunication oc;
         this.stage = sensor.getStage();
         this.print_step = print_step;
         this.oc = outc;
+        this.featmapsnames = featmapsnames;
     }
 
      
@@ -74,6 +76,12 @@ OutsideCommunication oc;
                 
                 
                 if(FMk.size() < 1){
+                    System.out.println(
+                        "[CFM] Feature map vazio. Índice: "
+                        + k
+                        + ", nome: "
+                        + featmapsnames.get(k)
+                );
                     return;
                 }
                 
@@ -150,9 +158,17 @@ OutsideCommunication oc;
             }   
             
             CFMrow.set(j, ctj);
-            
-            if(sum_top > sum_bottom) winners_row.set(j, TOP_DOWN);
-            else winners_row.set(j, BOTTOM_UP);
+            if (stage <= 2) {
+                winners_row.add(BOTTOM_UP);
+            } else {
+                winners_row.add(
+                        sum_top > sum_bottom
+                                ? TOP_DOWN
+                                : BOTTOM_UP
+                );
+            }
+           // if(sum_top > sum_bottom) winners_row.set(j, TOP_DOWN);
+           // else winners_row.set(j, BOTTOM_UP);
             
         }
         

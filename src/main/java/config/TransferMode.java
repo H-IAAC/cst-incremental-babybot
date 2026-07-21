@@ -1,0 +1,10 @@
+package config;
+
+public enum TransferMode {
+    FROM_SCRATCH,
+    TRANSFER_ALL,
+    TRANSFER_LEARNER_ONLY,
+    TRANSFER_PROCEDURAL_MEMORY_ONLY,
+    RESET_PROCEDURAL_MEMORY,
+    DISABLE_RECALL
+}

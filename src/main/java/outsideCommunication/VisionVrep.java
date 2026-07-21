@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
 
 import java.lang.management.ManagementFactory;
 import com.sun.management.OperatingSystemMXBean;
+import config.ExperimentConfig;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -51,6 +52,11 @@ import java.util.*;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;    
 import java.lang.management.ManagementFactory;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import metrics.MetricsRecorder;
+import metrics.ResourceMonitor;
+import metrics.TimingRegistry;
 
 /**
  *
@@ -81,17 +87,33 @@ public class VisionVrep implements SensorI{
      private static final String CHECKPOINT_FILE = "vision_checkpoint.dat";
      private static final Object COPPELIA_LOCK = new Object(); // lock global p/ chamadas remotas
     private volatile boolean imgStreamingInitialized = false; // inicia streaming uma vez
-
-
+    private ResourceMonitor resourceMonitor;
+    private ExperimentConfig config;
+    private final TimingRegistry timingRegistry;
+    private long experimentStartTime;
+    private final MetricsRecorder metricsRecorder;
+    private Path runDirectory ;
     public VisionVrep(remoteApi vrep, int clientid, IntW vision_handles, int max_epochs, int num_tables, 
-            int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, int num_pioneer) {
+            int stage, int exp, String runId, int res, int max_time_graph, int MAX_ACTION_NUMBER, int num_pioneer, 
+            ExperimentConfig config, TimingRegistry timingRegistry) throws IOException {
+        
         this.time_graph = 0;
+        this.experimentStartTime =  System.currentTimeMillis();
+        
+        runDirectory = Paths.get(
+                config.resultDirectory,
+                config.runId
+        );
+        this.config = config;
+        this.metricsRecorder = new MetricsRecorder(runDirectory);
+        this.resourceMonitor = new ResourceMonitor(runDirectory);
         
         vision_data = Collections.synchronizedList(new ArrayList<>(res*res*3));
         this.vrep = vrep;
         this.stage =stage;
         this.num_pioneer = num_pioneer;
        this.num_epoch = exp;
+       this.timingRegistry = timingRegistry;
        if(mlf) this.runId = runId;
         this.nact = 0;
         this.vision_handles = vision_handles;
@@ -154,7 +176,10 @@ public class VisionVrep implements SensorI{
     // Method to restore state
     @SuppressWarnings("unchecked")
     private void restoreCheckpoint() {
-        File file = new File(CHECKPOINT_FILE);
+        Path checkpointFile = runDirectory.resolve(
+                "checkpoints/vision_checkpoint.dat"
+        );
+        File file = new File("profile/checkpoints/vision_checkpoint.dat");
         if (!file.exists()) return;
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
             this.num_epoch = (Integer) in.readObject();
@@ -321,6 +346,8 @@ public class VisionVrep implements SensorI{
 		} catch (Exception e) {
 			Thread.currentThread().interrupt();
 		}*/
+
+
         
         FloatWA position = new FloatWA(3);
         synchronized (RemoteApiLock.COPPELIA_LOCK) {
@@ -423,13 +450,56 @@ public class VisionVrep implements SensorI{
            
             saveEpochMarker("epoch_end");
             saveCheckpoint();
+            try {
+                resourceMonitor.sample(
+                        config.runId,
+                        config.seed,
+                        config.stage,
+                        "EXP-" + config.experiment,
+                        getEpoch(),
+                        (int) getIValues(4),
+                       System.currentTimeMillis() - experimentStartTime
+                );  } catch (IOException ex) {
+                System.getLogger(VisionVrep.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+            try {
+                timingRegistry.writeCsv(
+                        Paths.get(
+                                "profile",
+                                config.runId,
+                                "codelet_timings.csv"
+                        ),
+                        config.runId,
+                        config.seed,
+                        config.stage,
+                        "EXP-" + config.experiment,
+                        getEpoch(),
+                        config.maxSteps
+                );
+            } catch (IOException ex) {
+                System.getLogger(VisionVrep.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+
+            timingRegistry.reset();
+            this.experimentStartTime = System.currentTimeMillis();
             return true;
         }
            
              printToFile("nrewards.txt",true);
              this.setNextAct(true);
             this.setNextActR(true);
-           
+            try {
+                resourceMonitor.sample(
+                        config.runId,
+                        config.seed,
+                        config.stage,
+                        "EXP-" + config.experiment,
+                        getEpoch(),
+                        (int) getIValues(4),
+                       System.currentTimeMillis() - experimentStartTime
+                );  } catch (IOException ex) {
+                System.getLogger(VisionVrep.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }        
             return false;
     }
     }
@@ -537,6 +607,11 @@ public class VisionVrep implements SensorI{
     
     @Override
     public Object getData() {
+        try(
+        TimingRegistry.TimerContext ignored =
+                timingRegistry.start(
+                        getClass().getSimpleName()
+                );){
         time_graph++;
         final IntWA resolution = new IntWA(2);
         final CharWA imageWA   = new CharWA(0); 
@@ -599,7 +674,7 @@ public class VisionVrep implements SensorI{
 
         return vision_data;
         }
-    }
+    }}
 
     private void fillVisionDataWithZeros() {
         if (vision_data == null) {

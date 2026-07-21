@@ -137,6 +137,7 @@ public class WinnerPicker extends Codelet{
     }
     @Override
     public void proc() {
+        long startNs = System.nanoTime();
         procCounter++;
 
         saliencyMap = saliencyMapMO == null ? null : (List) saliencyMapMO.getI();
@@ -328,6 +329,7 @@ public class WinnerPicker extends Codelet{
                         + " attListId=" + System.identityHashCode(attentionalMap)
                         + " attMO=" + System.identityHashCode(attentionalMapMO));
        printToFile(attMap_sizeMinus1, "attMap.txt");
+       
     }
 
     private double exponentialGrowDecayBottomUp(double pre, double ts, double tm, float t) {

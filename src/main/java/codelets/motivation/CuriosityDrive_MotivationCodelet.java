@@ -27,6 +27,7 @@ import java.util.stream.IntStream;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
+import metrics.TimingRegistry;
 
 import outsideCommunication.OutsideCommunication;
 
@@ -53,12 +54,14 @@ private List<String> allStatesList;
     private static int MAX_EXPERIMENTS_NUMBER;   
     private MemoryContainer proceduralMemoryMO;
     private float exp_fact = (float) 0.15;
+    private final TimingRegistry timingRegistry;
     public CuriosityDrive_MotivationCodelet(String id, double level, double priority, double urgencyThreshold, 
-            OutsideCommunication outc, int num_tables){
+            OutsideCommunication outc, int num_tables, TimingRegistry timingRegistry){
         super(id, level, priority, urgencyThreshold);
         this.oc = outc;
         this.stage = this.oc.vision.getStage();
         this.activation = 0.0;
+        this.timingRegistry = timingRegistry;
         MAX_ACTION_NUMBER = oc.vision.getMaxActions();
         MAX_EXPERIMENTS_NUMBER = oc.vision.getMaxEpochs();
         this.num_tables = num_tables;
@@ -143,6 +146,13 @@ private List<String> allStatesList;
     @Override
     public void proc() {
         
+        try(
+                TimingRegistry.TimerContext ignored =
+                timingRegistry.start(
+                        getClass().getSimpleName()
+                );
+                ){
+        long startNs = System.nanoTime();
         getActivation();
        
 
@@ -224,7 +234,11 @@ private List<String> allStatesList;
             action_number=0;
         }*/
         //}
-    }
+        timingRegistry.record(
+        getClass().getSimpleName(),
+        System.nanoTime() - startNs
+);
+    }}
 
     @Override
     public double calculateSimpleActivation(List<Memory> list) {

@@ -14,6 +14,8 @@ import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.learning.QLearning;
 import br.unicamp.cst.representation.idea.Idea;
+import config.ActionSpaceFactory;
+import config.ExperimentConfig;
 import coppelia.remoteApi;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +24,9 @@ import outsideCommunication.OutsideCommunication;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
-
+import state.StateEncoder;
+import state.StateEncoderFactory;
+import metrics.TimingRegistry;
 /**
  * @author L. L. Rossi (leolellisr)
  * Obs: This class represents the implementations present in the proposed scheme for: 
@@ -58,8 +62,8 @@ public class LearnerCodelet extends Codelet
     private int experiment_number,exp_s, exp_c;;
     private int stage,convergenceCounter=0;
     private String mode;
-    private boolean debug = false;
-    private ArrayList<String> allActionsList;
+    private boolean debug = true;
+    private List<String> allActionsList;
     private remoteApi vrep;
     private final int clientID;
     private String output, motivation, nameMotivation, motivationType, lastAction = "am0";
@@ -67,21 +71,25 @@ public class LearnerCodelet extends Codelet
     
     
     private final int numSalValues = 65536;  // Sal has 2^16 values
-
+    private final ExperimentConfig config;
+private final StateEncoder stateEncoder;
     private final double Q_CHANGE_THRESHOLD = 0.001;
     private final int CONVERGENCE_EPOCHS = 100;
     private List<Integer> allStatesList = new ArrayList<>();
     private long seed;
+    private final TimingRegistry timingRegistry;
     //private int past_exp;
     //private Idea ideaMotivation;
     public LearnerCodelet (remoteApi vrep, int clientid, OutsideCommunication outc, int tWindow, 
             String mode, String motivation,  String motivationType,  String output, int num_tables, 
-            long seed) {
+            long seed, ExperimentConfig config, TimingRegistry timingRegistry) {
         super();
         this.vrep=vrep;
-
+        this.timingRegistry = timingRegistry;
         time_graph = 0;
-
+        this.config = config;
+this.stateEncoder =
+        StateEncoderFactory.create(config.stateRepresentation);
         action_number = 0;
         this.seed = seed;
         this.oc = outc;
@@ -92,7 +100,10 @@ public class LearnerCodelet extends Codelet
         // am5: fovea 0; am6: fovea 1; am7: fovea 2; am8: fovea 3; am9: fovea 4; 
         // am10: neck tofocus; am11: head tofocus; am12: neck awayfocus; am13: head awayfocus
         // aa0: focus td color; aa1: focus td depth; aa2: focus td region.
-        allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13", "aa0", "aa1", "aa2")); //
+        
+this.allActionsList =
+        ActionSpaceFactory.create(config.actionSet);
+//allActionsList  = new ArrayList<>(Arrays.asList("am0", "am1", "am2", "am3", "am4", "am5", "am6", "am7", "am8", "am9", "am10", "am11", "am12", "am13", "aa0", "aa1", "aa2")); //
         // States are 0 1 2 ... 5^256-1
      //   ArrayList<String> allStatesList = new ArrayList<>(Arrays.asList(IntStream.rangeClosed(0, (int)Math.pow(2, 16)-1).mapToObj(String::valueOf).toArray(String[]::new)));
         int salMax = (int)Math.pow(2, 16); // Sal has 65536 values (0 to 65535)
@@ -102,7 +113,7 @@ public class LearnerCodelet extends Codelet
         this.stage = this.oc.vision.getStage();
         
         // QLearning initialization
-         ql = new QLearningSQL("Qtable.db",allActionsList,this.seed);
+         ql = new QLearningSQL("Qtable.db", (ArrayList<String>) allActionsList,this.seed);
         ql.setFilename("Qtable.db");
          ql.setAlpha((double) 0.9);
          //ql.setGamma((double) 0.99);
@@ -192,6 +203,14 @@ if(debug) System.out.println("init learner");
     
     @Override
     public void proc() {
+       
+        try(
+        TimingRegistry.TimerContext ignored =
+                timingRegistry.start(
+                        getClass().getSimpleName()
+                );
+                ){
+         long startNs = System.nanoTime();
         if (mode.equals("learning") && oc.vision.endEpochR()) {
             double totalDeltaQ = 0.0;
             int updatesCount = 0;
@@ -238,8 +257,11 @@ if(debug) System.out.println("init learner");
                 qTableList.remove(0);
             }
         qTableList.add(ql);
-        
-    }
+        timingRegistry.record(
+        getClass().getSimpleName(),
+        System.nanoTime() - startNs
+);
+    }}
 
 
 

@@ -14,6 +14,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.json.JSONException;
@@ -27,7 +28,7 @@ public class QLearningL extends QLearning{
     
     private boolean showDebugMessages=false;
     private ArrayList<Integer> statesList;
-    private ArrayList<String> actionsList;
+    private List<String> actionsList;
     private String fileName="QTable.txt";
     private HashMap<Integer, HashMap<String,Double>> Q;
 
